@@ -97,7 +97,8 @@ def main():
             with open(report_path, "a", encoding="utf-8") as f:
                 f.write(f"| {filename} | ERROR | {str(e)} |\n")
 
-        time.sleep(1)
+        print(">>> 為了避免觸發 API 頻率限制 (Rate Limit) 或伺服器過載 (503)，冷卻等待 15 秒...\n")
+        time.sleep(15)
 
     print("\n" + "=" * 50)
     print(f"✅ 所有處理皆已完成！總結報表已在:\n   {report_path}")
