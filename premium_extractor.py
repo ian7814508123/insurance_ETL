@@ -8,7 +8,7 @@ import shutil
 from typing import Dict, Any, List
 import concurrent.futures
 import config
-from pypdf import PdfReader, PdfWriter
+import pymupdf
 
 
 def safe_json_loads(text: str, context: str = "未知階段") -> Any:
@@ -21,9 +21,9 @@ def safe_json_loads(text: str, context: str = "未知階段") -> Any:
         )
         with open(debug_path, "w", encoding="utf-8") as f:
             f.write(text)
-        print(f"\n🚨 [JSON 解析錯誤] 發生於 {context}")
+        print(f"\n [JSON 解析錯誤] 發生於 {context}")
         print(f"錯誤詳情: {e}")
-        print(f"📄 已將 LLM 原始回傳文本儲存至: {debug_path}\n")
+        print(f" 已將 LLM 原始回傳文本儲存至: {debug_path}\n")
         raise RuntimeError(
             f"LLM 產生了無效的 JSON ({context})，這通常是因為文件過長、超過 Token 限制或模型幻覺。"
         ) from e
@@ -591,38 +591,42 @@ class ConfidenceOrchestrator:
                 time.sleep(2)
                 myfile = self.client.files.get(name=myfile.name)
 
-            # Stage 0: Quality
-            results["stages"]["quality"] = self.quality_eval.evaluate(myfile)
-
             # Stage 1: Extraction (二階段 Agent A & B)
-            # Step 1: 呼叫 Agent A (Metadata & Strategy)
             print(">>> 準備 Agent A 分析環境...")
             is_pdf = ext.lower() == ".pdf"
 
             if is_pdf:
-                reader = PdfReader(temp_path)
-                total_pages = len(reader.pages)
+                # 使用 PyMuPDF 將 PDF 每一頁轉換為圖片以避免 Unicode 損壞
+                doc = pymupdf.open(temp_path)
+                total_pages = len(doc)
+                page_images = []
+                for i in range(total_pages):
+                    page = doc[i]
+                    zoom = 3  # 216 DPI
+                    mat = pymupdf.Matrix(zoom, zoom)
+                    pix = page.get_pixmap(matrix=mat)
+                    page_images.append(pix.tobytes("jpg"))
+                doc.close()
+
+                print(f"    [PDF 模式] 總頁數 {total_pages}, 使用 PyMuPDF 轉換為圖片...")
+                
+                # Stage 0: Quality (使用第一頁圖片)
+                first_page_part = types.Part.from_bytes(data=page_images[0], mime_type="image/jpeg")
+                results["stages"]["quality"] = self.quality_eval.evaluate(first_page_part)
+
                 preview_count = min(3, total_pages)
-                print(
-                    f"    [PDF 模式] 總頁數 {total_pages}, 選取前 {preview_count} 頁 (Inline) 作為 Agent A 預覽..."
-                )
-
-                writer = PdfWriter()
-                for i in range(preview_count):
-                    writer.add_page(reader.pages[i])
-
-                with tempfile.TemporaryFile(suffix=".pdf") as tf:
-                    writer.write(tf)
-                    tf.seek(0)
-                    preview_bytes = tf.read()
-
                 agent_a_contents = [
-                    types.Part.from_bytes(
-                        data=preview_bytes, mime_type="application/pdf"
-                    )
+                    types.Part.from_bytes(data=img, mime_type="image/jpeg")
+                    for img in page_images[:preview_count]
                 ]
+                
+                # 用於後續驗證的參考 (使用預覽圖)
+                validation_file = agent_a_contents[0]
             else:
+                # 圖片模式
+                results["stages"]["quality"] = self.quality_eval.evaluate(myfile)
                 agent_a_contents = [myfile]
+                validation_file = myfile
 
             print(">>> 執行 Agent A 分析 (Metadata & Strategy)...")
             a_output = self.agent_a.analyze(agent_a_contents)
@@ -636,19 +640,20 @@ class ConfidenceOrchestrator:
                     f">>> 檔案格式為 PDF, 共 {total_pages} 頁, 啟動 Agent B 併發分批解析 (API File 模式)..."
                 )
                 page_chunks = []
-                # 為防止單次請求 Output Token 超過上限 (8192) 導致 JSON 截斷，直接改回單頁逐頁提取機制
-                # 同時搭配下方的 concurrent.futures 繼續保有極速的併發效率
                 for page_num in range(1, total_pages + 1):
                     page_chunks.append((page_num, page_num, str(page_num)))
 
                 def extract_chunk(chunk_info):
                     _start, _end, r_str = chunk_info
                     print(
-                        f"    [頁面 {r_str}/{total_pages}] (API File) Agent B 提取中..."
+                        f"    [頁面 {r_str}/{total_pages}] (PyMuPDF Image) Agent B 提取中..."
                     )
-                    # 直接傳入 myfile (File object) 並透過 prompt 鎖定處理範圍
+                    # 傳遞該頁的圖片 Part
+                    img_part = types.Part.from_bytes(
+                        data=page_images[_start - 1], mime_type="image/jpeg"
+                    )
                     return self.agent_b.extract_page(
-                        [myfile], strategy, page_range=r_str
+                        [img_part], strategy, page_range=r_str
                     )
 
                 # 採用 concurrent.futures 併發處理以避免循序導致速度過慢
@@ -674,7 +679,7 @@ class ConfidenceOrchestrator:
             # Stage 2 & 3 (原 Stage 2 自評模組已依策略移除以提升效能)
             try:
                 results["stages"]["negative_reasoning"] = (
-                    self.negative_check.validate_missing_fields(myfile, data)
+                    self.negative_check.validate_missing_fields(validation_file, data)
                 )
             except Exception as e:
                 print(f">>> [警告] 空值合理性自評發生例外錯誤，已跳過該環節: {e}")
