@@ -76,7 +76,10 @@ class LookupModelerAgent(BaseAgent):
         # 所有查表邏輯統一表示為：LOOKUP(Table_Name, {Dim1, Dim2, Dim3})
         """
         super().__init__(
-            schema=AGENT_5_SCHEMA, system_instruction=instruction, **kwargs
+            schema=AGENT_5_SCHEMA,
+            system_instruction=instruction,
+            temperature=0.1,
+            **kwargs,
         )
 
     def model_lookup(

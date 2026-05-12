@@ -14,7 +14,7 @@ AGENT_1_SCHEMA = {
             },
             "section": {
                 "type": "string",
-                "description": "章節或條款標題，如 '身故保險金'",
+                "description": "完整的章節或條款標題(不可省略或修改)，必須包含條號與完整名稱，例如 '第十五條：加護病房保險金的給付'",
             },
             "text": {"type": "string", "description": "條款原文內容"},
         },
@@ -154,7 +154,12 @@ AGENT_4_SCHEMA = {
             "type": "array",
             "items": {
                 "type": "object",
-                "required": ["param_name", "param_description", "source_type"],
+                "required": [
+                    "param_name",
+                    "param_description",
+                    "source_type",
+                    "value_binding",
+                ],
                 "properties": {
                     "param_name": {"type": "string", "pattern": "^[A-Z0-9_]+$"},
                     "display_name": {"type": "string"},
@@ -172,6 +177,30 @@ AGENT_4_SCHEMA = {
                     "data_type": {
                         "type": "string",
                         "enum": ["STRING", "INTEGER", "FLOAT", "BOOLEAN", "DATE"],
+                    },
+                    "value_binding": {
+                        "type": "object",
+                        "description": "說明此參數的值如何取得：由使用者填入、條款已定值、或公式推導",
+                        "required": ["binding_type"],
+                        "properties": {
+                            "binding_type": {
+                                "type": "string",
+                                "enum": [
+                                    "USER_INPUT",
+                                    "POLICY_FIXED",
+                                    "SYSTEM_CALCULATED",
+                                ],
+                                "description": (
+                                    "USER_INPUT: 使用者在報價/試算時需要主動提供的參數。"
+                                    "POLICY_FIXED: 條款書上已有明確數值，系統直接帶入，不向使用者詢問。"
+                                    "SYSTEM_CALCULATED: 由其他參數依公式推導，不需手動填入。"
+                                ),
+                            },
+                            "fixed_value": {
+                                "type": "string",
+                                "description": "binding_type 為 POLICY_FIXED 時，填入條款所載的確切值（如 '0.025'、'90' 等）。其他類型留空。",
+                            },
+                        },
                     },
                     "depends_on": {"type": "array", "items": {"type": "string"}},
                     "formula_definition": {
