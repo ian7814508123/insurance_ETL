@@ -7,7 +7,7 @@ from google.genai import types
 import time
 
 from pipeline.orchestrator import PipelineOrchestrator
-
+from pipeline.pdf_processor import HybridPDFProcessor
 
 import pymupdf
 from pathlib import Path
@@ -86,6 +86,7 @@ def main():
 
     print(f"找到 {len(files)} 個檔案，準備啟動 Pipeline...")
     orchestrator = PipelineOrchestrator()
+    pdf_processor = HybridPDFProcessor()  # 初始化前處理器
 
     for idx, fp in enumerate(files, start=1):
         print(f"\n======================================")
@@ -94,7 +95,9 @@ def main():
 
         try:
             if fp.suffix.lower() == ".pdf":
-                content = pdf_to_parts(fp)
+                # 使用智慧型 PDF 前處理器，自動處理亂碼並存成 Markdown
+                md_content = pdf_processor.process(str(fp))
+                content = [md_content]
             else:
                 content = [fp.read_text(encoding="utf-8")]
 

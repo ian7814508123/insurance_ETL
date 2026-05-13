@@ -65,7 +65,7 @@ class ParameterGraphBuilderAgent(BaseAgent):
             **kwargs,
         )
 
-    def build_parameters(
+    async def build_parameters(
         self,
         benefit_code: str,
         logic_structure: dict,
@@ -74,11 +74,6 @@ class ParameterGraphBuilderAgent(BaseAgent):
     ) -> dict:
         """
         為「單一」給付項目解析變數系統。
-        :param benefit_code: 給付項目代碼
-        :param logic_structure: Agent 3 產生的邏輯結構 (供 LLM 參考)
-        :param related_segments: 相關條文 (供 LLM 參考原文)
-        :param context: 包含全域定義與標準參數名的上下文
-        :return: 依照 AGENT_4_SCHEMA 輸出的變數清單
         """
         global_defs_str = json.dumps(
             context.global_definitions, ensure_ascii=False, indent=2
@@ -102,7 +97,7 @@ class ParameterGraphBuilderAgent(BaseAgent):
             "請根據上述資訊，列出所有參與運算的參數與變數。"
         )
 
-        result = self.execute([content])
+        result = await self.async_execute([content])
         if result:
             result["benefit_code"] = benefit_code
         return result or {}

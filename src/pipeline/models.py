@@ -27,7 +27,7 @@ AGENT_2_SCHEMA = {
     "description": "保單包含的給付項目清單",
     "items": {
         "type": "object",
-        "required": ["benefit_code", "display_name", "payment_type", "segment_refs"],
+        "required": ["benefit_code", "display_name", "payment_type", "segment_refs", "base_definition"],
         "properties": {
             "benefit_code": {
                 "type": "string",
@@ -52,6 +52,10 @@ AGENT_2_SCHEMA = {
                 "type": "array",
                 "items": {"type": "string"},
                 "description": "對應的 segment_id 列表，說明該給付項目由哪些條文定義",
+            },
+            "base_definition": {
+                "type": "string",
+                "description": "該給付項目的原始條文描述(精密影印，排除前置宣告文字)",
             },
         },
     },

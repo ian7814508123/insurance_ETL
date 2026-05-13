@@ -74,15 +74,11 @@ class LogicParserAgent(BaseAgent):
             **kwargs,
         )
 
-    def parse_logic(
+    async def parse_logic(
         self, benefit_code: str, related_segments: List[dict], context: PipelineContext
     ) -> dict:
         """
         為「單一」給付項目解析公式邏輯。
-        :param benefit_code: 給付項目代碼
-        :param related_segments: 該給付項目所關聯的條文片段
-        :param context: PipelineContext 包含全域萃取出的名詞定義
-        :return: 依照 AGENT_3_SCHEMA 輸出的結果
         """
         global_defs_str = json.dumps(
             context.global_definitions, ensure_ascii=False, indent=2
@@ -97,7 +93,7 @@ class LogicParserAgent(BaseAgent):
             f"{json.dumps(related_segments, ensure_ascii=False, indent=2)}"
         )
 
-        result = self.execute([content])
+        result = await self.async_execute([content])
         if result:
             result["benefit_code"] = benefit_code
         return result or {}

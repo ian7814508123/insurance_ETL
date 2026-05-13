@@ -82,15 +82,11 @@ class LookupModelerAgent(BaseAgent):
             **kwargs,
         )
 
-    def model_lookup(
+    async def model_lookup(
         self, benefit_code: str, parameters: dict, document_contents: List[Any]
     ) -> dict:
         """
         為「單一」給付項目解析查表模型。
-        :param benefit_code: 給付項目代碼
-        :param parameters: Agent 4 解析出的參數系統 (用來鎖定哪些參數是 TABLE_LOOKUP)
-        :param document_contents: 包含 PDF 圖片的完整內容，用以分析表格
-        :return: 依照 AGENT_5_SCHEMA 輸出的結果
         """
         # 過濾出確實需要 TABLE_LOOKUP 的變數
         lookup_params = [
@@ -111,7 +107,7 @@ class LookupModelerAgent(BaseAgent):
         inputs = [content_str]
         inputs.extend(document_contents)
 
-        result = self.execute(inputs)
+        result = await self.async_execute(inputs)
         if result:
             result["benefit_code"] = benefit_code
         return result or {"benefit_code": benefit_code, "lookup_tables": []}
