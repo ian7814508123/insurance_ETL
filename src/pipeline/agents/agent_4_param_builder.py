@@ -18,7 +18,7 @@ class ParameterGraphBuilderAgent(BaseAgent):
         1. 你的唯一任務是建立「變數系統」，列出公式與條件中提到的所有變數。
         2. 你需要明確指出每個變數的來源類型 (source_type)，如 INPUT, CONSTANT, FORMULA, TABLE_LOOKUP, SYSTEM_DERIVED。
         3. 你需要明確指出變數之間的相依性 (depends_on)。
-        4. 絕對不要重新撰寫給付公式或條件，只需要列出變數。
+        4. **邏輯校正任務**：檢查「已解析出的邏輯公式結構」(Agent 3 的輸出)。如果發現公式中使用的變數名與你最終決定的 `param_name` 不一致，你**必須**在輸出的 `logic_structure` 欄位中提供修正後的完整邏輯結構。這非常重要，是為了防止「斷鍵」。
         5. **強制命名規範**：如果你要建立的變數與「既有標準參數表」中的概念相符，你**必須**直接使用該表中定義好的英文字段名稱 (parameter_name)。絕對不可以創造新的或相似的名稱 (例如已有 HOSPITAL_DAILY_AMOUNT 就絕對不能用 HOSPITALIZATION_BENEFIT)。
         ## 深度參數追溯規則
         必須識別兩類變數：

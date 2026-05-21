@@ -150,10 +150,14 @@ AGENT_3_SCHEMA = {
 # Agent 4: 變數與相依性解析 (Parameter Graph Builder)
 AGENT_4_SCHEMA = {
     "type": "object",
-    "description": "單一給付項目的參數清單",
+    "description": "單一給付項目的參數清單，並負責校正邏輯中的變數命名",
     "required": ["benefit_code", "parameters"],
     "properties": {
         "benefit_code": {"type": "string"},
+        "logic_structure": {
+            "type": "object",
+            "description": "如果 Agent 3 提供的邏輯中變數命名與標準不符，請在此回傳修正後的完整 logic_structure。若無須修正則可省略。",
+        },
         "parameters": {
             "type": "array",
             "items": {

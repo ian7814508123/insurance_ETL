@@ -65,7 +65,13 @@ class LogicParserAgent(BaseAgent):
         | xxx 乘以百分之兩  | xxx * 0.02   | 2% = 0.02                        |
         | xxx 的 120%         | xxx * 1.2    | 120% = 1.2（不是 xxx + xxx*0.2） |
 
-        重要原則：「xxx 的 N 倍」= xxx * N，不是 xxx * (1+N)。
+        ## 命名一致性規範（重要）
+        1. 你在撰寫 `formula_template` 與 `python_logic_eval` 時，必須檢查「全域商品名詞定義」與「既有標準參數表」。
+        2. 如果你要使用的概念已經有對應的 `code` 或 `parameter_name`，你**必須**直接使用該名稱。
+        3. 禁止自行發明縮寫 (例如：已有 `HOSPITAL_DAYS` 就不可使用 `HOSP_D`)。
+
+        ## 正確範例
+        ... (略)
         """
         super().__init__(
             schema=AGENT_3_SCHEMA,
@@ -83,11 +89,16 @@ class LogicParserAgent(BaseAgent):
         global_defs_str = json.dumps(
             context.global_definitions, ensure_ascii=False, indent=2
         )
+        std_params_str = json.dumps(
+            context.standard_parameters, ensure_ascii=False, indent=2
+        )
 
         content = (
             f"目前正在解析的給付項目代碼: {benefit_code}\n\n"
+            f"--- 既有標準參數表 (優先參考) ---\n"
+            f"{std_params_str}\n\n"
             f"--- 全域商品名詞定義參考 ---\n"
-            f"你在解析邏輯時，請參考以下已經定義好的名詞，以正確理解條款涵義：\n"
+            f"你在解析邏輯時，請參考以下已經定義好的名詞，若符合請務必使用其對應的 code：\n"
             f"{global_defs_str}\n\n"
             f"--- 相關條文內容 ---\n"
             f"{json.dumps(related_segments, ensure_ascii=False, indent=2)}"
