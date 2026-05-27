@@ -172,8 +172,6 @@ def main():
             print(f"    - LLM 建議重新歸類   : {case['llm']}")
             print(f"    - 原始定義摘要   : {case['base_definition'][:100]}...")
             print(f"    💡 [去重與重歸類指引]: 建議執行 'python src/manager.py --target definition reclassify {case['code']}' 進行覆核與去重搬移")
-    else:
-        print("\n 恭喜！抽樣比對一致率為 100%，分類系統極為穩定！")
 
 
 if __name__ == "__main__":

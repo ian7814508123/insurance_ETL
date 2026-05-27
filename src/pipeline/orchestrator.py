@@ -7,10 +7,13 @@ import json
 from google import genai
 from google.genai import types
 
-# Ensure pipeline modules can be imported
+# Ensure pipeline and root modules can be imported
 src_path = Path(__file__).parent.parent
+root_path = src_path.parent
 if str(src_path) not in sys.path:
     sys.path.append(str(src_path))
+if str(root_path) not in sys.path:
+    sys.path.append(str(root_path))
 
 import config
 from pipeline.agents.agent_1_segmenter import ClaimLocatorAgent
@@ -50,7 +53,9 @@ class PipelineOrchestrator:
 
         return loop.run_until_complete(self.async_process(document_contents, base_info))
 
-    def detect_product_type(self, client: genai.Client, document_contents: List[Any]) -> str:
+    def detect_product_type(
+        self, client: genai.Client, document_contents: List[Any]
+    ) -> str:
         """前處理：讀取 PDF/條款前置內容（1-2頁），利用 LLM 自動判定商品險種"""
         sample_content = []
         if document_contents:
@@ -63,14 +68,11 @@ class PipelineOrchestrator:
                 "category": {
                     "type": "STRING",
                     "enum": ["health", "injury", "investment", "life_annuity"],
-                    "description": "HEALTH (健康醫療險), INJURY (傷害意外險), INVESTMENT (投資型保險), LIFE_ANNUITY (壽險與年金險)"
+                    "description": "HEALTH (健康醫療險), INJURY (傷害意外險), INVESTMENT (投資型保險), LIFE_ANNUITY (壽險與年金險)",
                 },
-                "reason": {
-                    "type": "STRING",
-                    "description": "判斷的簡短依據"
-                }
+                "reason": {"type": "STRING", "description": "判斷的簡短依據"},
             },
-            "required": ["category", "reason"]
+            "required": ["category", "reason"],
         }
 
         prompt = (
@@ -90,7 +92,7 @@ class PipelineOrchestrator:
                     response_mime_type="application/json",
                     response_schema=schema,
                     temperature=0.1,
-                )
+                ),
             )
             res = json.loads(response.text)
             category = res.get("category", "health").lower()
@@ -115,24 +117,40 @@ class PipelineOrchestrator:
 
         # 2. 依據 Method 1 載入對應子詞庫
         definitions_dir = Path(__file__).parent.parent.parent / "data" / "definitions"
-        
+
         # 主要載入：通用型 + 該商品險種類型
         primary_categories = ["general", detected_category]
         primary_defs = []
         for cat in primary_categories:
-            file_name = "base_definition_investment.json" if cat == "investment" else f"base_definitions_{cat}.json"
+            file_name = (
+                "base_definition_investment.json"
+                if cat == "investment"
+                else f"base_definitions_{cat}.json"
+            )
             path = definitions_dir / file_name
             primary_defs.extend(def_extractor.load_definitions(str(path)))
-        print(f"  -> 載入主要子詞庫 ({'+'.join(primary_categories)})：共 {len(primary_defs)} 筆名詞定義做為比對基準")
+        print(
+            f"  -> 載入主要子詞庫 ({'+'.join(primary_categories)})：共 {len(primary_defs)} 筆名詞定義做為比對基準"
+        )
 
         # 備用載入：其餘三種險種類型
-        fallback_categories = [c for c in ["health", "injury", "investment", "life_annuity"] if c != detected_category]
+        fallback_categories = [
+            c
+            for c in ["health", "injury", "investment", "life_annuity"]
+            if c != detected_category
+        ]
         fallback_defs = []
         for cat in fallback_categories:
-            file_name = "base_definition_investment.json" if cat == "investment" else f"base_definitions_{cat}.json"
+            file_name = (
+                "base_definition_investment.json"
+                if cat == "investment"
+                else f"base_definitions_{cat}.json"
+            )
             path = definitions_dir / file_name
             fallback_defs.extend(def_extractor.load_definitions(str(path)))
-        print(f"  -> 載入備用子詞庫 ({'+'.join(fallback_categories)})：共 {len(fallback_defs)} 筆名詞定義以備後續比對")
+        print(
+            f"  -> 載入備用子詞庫 ({'+'.join(fallback_categories)})：共 {len(fallback_defs)} 筆名詞定義以備後續比對"
+        )
 
         # 讀取理賠項目的基礎定義檔
         base_claim_items_path = (
@@ -171,22 +189,47 @@ class PipelineOrchestrator:
                     if display_name == fb_display or display_name in fb_synonyms:
                         matched_fallback = fb_def
                         break
-                
+
                 if matched_fallback:
                     fallback_hit_count += 1
                     item["classification"] = "EXISTING_MATCH"
                     item["code"] = matched_fallback.get("code")
-                    item["description"] = matched_fallback.get("description", item.get("description"))
-                    item["base_definition"] = matched_fallback.get("base_definition", item.get("base_definition"))
-                    item["parameter"] = matched_fallback.get("parameter", item.get("parameter", {}))
-                    item["synonym_map"] = list(set(item.get("synonym_map", [])).union(set(matched_fallback.get("synonym_map", []))))
-                    print(f"  -> 【備用詞庫命中】新名詞「{display_name}」成功對齊至備用詞庫中的既存名詞 {item['code']}")
+                    item["description"] = matched_fallback.get(
+                        "description", item.get("description")
+                    )
+                    item["base_definition"] = matched_fallback.get(
+                        "base_definition", item.get("base_definition")
+                    )
+                    item["parameter"] = matched_fallback.get(
+                        "parameter", item.get("parameter", {})
+                    )
+                    item["synonym_map"] = list(
+                        set(item.get("synonym_map", [])).union(
+                            set(matched_fallback.get("synonym_map", []))
+                        )
+                    )
+                    print(
+                        f"  -> 【備用詞庫命中】新名詞「{display_name}」成功對齊至備用詞庫中的既存名詞 {item['code']}"
+                    )
 
         if fallback_hit_count > 0:
-            print(f"  -> 透過備用詞庫成功對齊與修正了 {fallback_hit_count} 筆名詞定義分類")
+            print(
+                f"  -> 透過備用詞庫成功對齊與修正了 {fallback_hit_count} 筆名詞定義分類"
+            )
 
         context.global_definitions = extracted_defs
         print(f"  -> 成功萃取 {len(context.global_definitions)} 筆名詞定義")
+
+        # --- 新增快捷返回分支 ---
+        if base_info.get("only_definitions", False):
+            print(
+                "\n[快捷結束] --definitions 已啟用，直接回傳名詞定義結果並終止後續 Agent 解析。"
+            )
+            return {
+                "global_definitions": context.global_definitions,
+                "claim_items": [],
+            }
+        # ------------------------
 
         print("[1/6] Running Agent 1: 條文切片...")
         segments = await self.agent_1.extract_segments(document_contents)

@@ -73,6 +73,11 @@ def main():
         help="輸出目錄",
     )
     parser.add_argument("--level", default="PRODUCT", help="保險商品知識層級")
+    parser.add_argument(
+        "--definitions",
+        action="store_true",
+        help="是否僅提取並對齊名詞定義，略過後續給付項目解析 (節省 API與時間)",
+    )
     args = parser.parse_args()
 
     input_dir = Path(args.input_dir)
@@ -105,6 +110,7 @@ def main():
                 "product_code": fp.stem,
                 "level": args.level,
                 "document_name": fp.name,
+                "only_definitions": args.definitions,  # 傳遞僅提取名詞定義的 Flag
             }
 
             final_items = orchestrator.process(content, base_info)
