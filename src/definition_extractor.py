@@ -1,3 +1,18 @@
+"""
+1. 用途說明:
+   保險商品「名詞定義」提取器 (Definition Extractor)。本腳本讀取保險商品條款（支援 PDF 與純文字），運用結構化 Prompt 與 JSON Schema 約束，調用 Gemini API 精確識別並整理條款中的核心名詞定義。支援從 PDF 中自動提取圖片以避免 Unicode 亂碼，並支援新舊名詞定義的無損合併。
+
+2. 如何使用:
+   - 由其他入口腳本 (如 run_pipeline.py 或 extractor.py) 調用執行核心名詞提取：
+     from definition_extractor import DefinitionExtractor
+     extractor = DefinitionExtractor()
+     extracted_defs = extractor.extract_definitions(content, context_definitions, level, product_code)
+   - 獨立批次執行提取基本層 (BASE) 名詞：
+     python src/definition_extractor.py BASE
+   - 獨立批次執行提取商品層 (PRODUCT) 名詞：
+     python src/definition_extractor.py PRODUCT
+"""
+
 import json
 import os
 import sys
@@ -12,7 +27,10 @@ from google import genai
 from google.genai import types
 import config
 
-import pymupdf
+try:
+    import pymupdf
+except ImportError:
+    pymupdf = None
 
 
 class DefinitionExtractor:
@@ -73,7 +91,7 @@ class DefinitionExtractor:
                             "OVERRIDE",
                             "EXISTING_MATCH",
                         ],
-                        "description": "分類：NEW_GENERAL(通用漏網), PRODUCT_SPECIFIC(商品特約), OVERRIDE(修改基本定義), EXISTING_MATCH(與基本層一致)",
+                        "description": "分類：NEW_GENERAL(全新名詞), PRODUCT_SPECIFIC(商品特約), OVERRIDE(修改基本定義), EXISTING_MATCH(與基本層一致)",
                     },
                     "origin_product": {
                         "type": "string",

@@ -1,3 +1,14 @@
+"""
+1. 用途說明:
+   名詞定義詞庫分類與無損拆分工具。本腳本讀取 `data/definitions/base_definitions.json`，套用關鍵字規則引擎與 Gemini API 語意分類器，將既存的名詞定義項目依照 5 大險種分類（通用、醫療、意外、壽險年金、投資型）無損拆分，並寫入對應的 5 個子 JSON 檔案中，以維持資料單一事實來源 (SSOT)。
+
+2. 如何使用:
+   - 執行自動險種分類（優先使用規則，無法判定時調用 Gemini API）：
+     python src/classify_definitions.py
+   - 執行純離線規則分類（不呼叫 Gemini API，無法判定時預設歸為 general）：
+     python src/classify_definitions.py --pure-rules
+"""
+
 import json
 import os
 import sys

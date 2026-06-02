@@ -1,6 +1,22 @@
+"""
+1. 用途說明:
+   多階段 Agent Pipeline 自動化處理入口 (Automation Pipeline Run Entry)。本腳本讀取指定目錄下的保險商品條款（支援 PDF 與純文字 TXT），自動調用智慧型 PDF 前處理器進行亂碼修復與前處理，然後啟動 PipelineOrchestrator 執行多階段 Agent 解析與詞庫對齊，最後輸出標準理賠精算 JSON。
+
+2. 如何使用:
+   - 啟動 Pipeline 處理特定商品目錄下的所有商品：
+     python src/run_pipeline.py --input-dir ./product --level PRODUCT
+   - 僅對齊並提取名詞定義，略過後續給付項目解析 (省 API 成本與執行時間)：
+     python src/run_pipeline.py --input-dir ./product --definitions --level PRODUCT
+   - 自訂輸出路徑：
+     python src/run_pipeline.py --input-dir ./product --output-dir ./data/claim_items/products
+"""
+
 import argparse
 import json
-import pymupdf
+try:
+    import pymupdf
+except ImportError:
+    pymupdf = None
 from pathlib import Path
 from typing import List, Dict, Any
 from google.genai import types
@@ -8,10 +24,6 @@ import time
 
 from pipeline.orchestrator import PipelineOrchestrator
 from pipeline.pdf_processor import HybridPDFProcessor
-
-import pymupdf
-from pathlib import Path
-from typing import List
 
 
 def pdf_to_parts(pdf_path: Path, max_pages: int = 15) -> List[types.Part]:
@@ -78,6 +90,7 @@ def main():
         action="store_true",
         help="是否僅提取並對齊名詞定義，略過後續給付項目解析 (節省 API與時間)",
     )
+
     args = parser.parse_args()
 
     input_dir = Path(args.input_dir)

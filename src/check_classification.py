@@ -1,3 +1,12 @@
+"""
+1. 用途說明:
+   名詞分類正確性抽樣檢查工具 (Classification Sample Checker)。本腳本為詞庫維護階段開發的語義審查工具，隨機從已分類的 5 大類名詞子詞庫中抽選 10% 的名詞（最少 5 個，最多 30 個），調用 Gemini API 重新判定其歸屬險種，輸出「分類一致率報告」與「歧異案例分析」，提供 manager.py 重新分類 (reclassify) 與跨庫去重的覆核指引。
+
+2. 如何使用:
+   - 執行名詞分類隨機抽樣與語義覆核：
+     python src/check_classification.py
+"""
+
 import json
 import os
 import random

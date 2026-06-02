@@ -1,3 +1,14 @@
+"""
+1. 用途說明:
+   保險商品「理賠給付項目與公式」提取器 (Claim Item Extractor)。本腳本讀取保險商品條款（支援 PDF 與純文字），運用結構化 Prompt 與 JSON Schema 約束，調用 Gemini API 執行精準的資訊萃取，獲取所有理賠、給付、退還、豁免項目的邏輯鏈、給付公式、公式參數與 N 維度查表模型。支援與既存理賠基礎詞庫的合併與更新。
+
+2. 如何使用:
+   - 由其他入口腳本 (如 run_pipeline.py 或 extractor.py) 調用執行核心理賠給付項目提取：
+     from claim_item_extractor import ClaimItemExtractor
+     extractor = ClaimItemExtractor()
+     extracted_items = extractor.extract(content, context_claim_items, level, product_code)
+"""
+
 import json
 import os
 import time

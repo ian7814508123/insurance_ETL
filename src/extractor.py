@@ -1,21 +1,16 @@
 """
-整合提取器入口 (Unified Extractor Entry Point)
+1. 用途說明:
+   整合提取器入口 (Unified Extractor Entry Point)。本腳本提供統一的命令列 (CLI) 介面，整合了 DefinitionExtractor (提取保險商品「名詞定義」) 與 ClaimItemExtractor (提取保險商品「理賠項目與計算公式」)。支援單檔解析與整目錄批次解析處理。
 
-提供統一的 CLI 介面，整合以下兩個提取器：
-  - DefinitionExtractor  → 提取保險商品「名詞定義」
-  - ClaimItemExtractor   → 提取保險商品「理賠項目與計算公式」
-
-使用方式（單檔模式）：
-  python src/extractor.py --target product_definition  --input-file ./product/xxx.pdf --product UC099
-  python src/extractor.py --target product_claim_item  --input-file ./product/xxx.pdf --product UC099
-
-使用方式（批次模式）：
-  python src/extractor.py --target product_definition  --input-dir ./product
-  python src/extractor.py --target product_claim_item  --input-dir ./product
-
-使用方式（指定輸出路徑）：
-  python src/extractor.py --target product_definition  --input-dir ./product --output-dir ./data/definitions
-  python src/extractor.py --target product_claim_item  --input-dir ./product --output-dir ./data/claim_items
+2. 如何使用:
+   - 提取保險商品「名詞定義」 (單檔模式)：
+     python src/extractor.py --target product_definition --input-file ./product/xxx.pdf --product UC099
+   - 提取保險商品「理賠項目與計算公式」 (單檔模式)：
+     python src/extractor.py --target product_claim_item --input-file ./product/xxx.pdf --product UC099
+   - 提取保險商品「名詞定義」 (批次模式)：
+     python src/extractor.py --target product_definition --input-dir ./product
+   - 提取保險商品「理賠項目與計算公式」 (批次模式)：
+     python src/extractor.py --target product_claim_item --input-dir ./product --output-dir ./data/claim_items
 """
 
 import argparse

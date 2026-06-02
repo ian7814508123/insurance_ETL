@@ -1,3 +1,14 @@
+"""
+1. 用途說明:
+   多階段 Agent Pipeline 協調器 (Pipeline Orchestrator)。本腳本為整個商品提取 Pipeline 的核心引擎，負責協調整合：前處理商品險種判定、DefinitionExtractor (名詞定義提取)、Agent 1 (條文定位)、Agent 2 (給付項目註冊)、Agent 2.5 (全域變數收割)、Agent 3 (邏輯解析)、Agent 4 (參數建置與對齊)、Agent 5 (附表查表建模) 等協作流程，實作雙層詞庫對齊與備用庫 fallback 融合，最終輸出標準理賠精算 JSON。
+
+2. 如何使用:
+   - 由其他入口腳本 (如 run_pipeline.py) 調用並執行整個 Pipeline 流程：
+     from pipeline.orchestrator import PipelineOrchestrator
+     orchestrator = PipelineOrchestrator()
+     result = orchestrator.process(document_contents, base_info)
+"""
+
 import sys
 from pathlib import Path
 from typing import List, Any
@@ -115,12 +126,13 @@ class PipelineOrchestrator:
         detected_category = self.detect_product_type(client, document_contents)
         print(f"  -> 險種自動判定結果：【{detected_category.upper()}】")
 
-        # 2. 依據 Method 1 載入對應子詞庫
+        # 2. 載入名詞定義詞庫 (Method 1: CLASSIFIED 險種分類詞庫載入機制)
         definitions_dir = Path(__file__).parent.parent.parent / "data" / "definitions"
 
-        # 主要載入：通用型 + 該商品險種類型
-        primary_categories = ["general", detected_category]
         primary_defs = []
+        fallback_defs = []
+
+        primary_categories = ["general", detected_category]
         for cat in primary_categories:
             file_name = (
                 "base_definition_investment.json"
@@ -133,13 +145,11 @@ class PipelineOrchestrator:
             f"  -> 載入主要子詞庫 ({'+'.join(primary_categories)})：共 {len(primary_defs)} 筆名詞定義做為比對基準"
         )
 
-        # 備用載入：其餘三種險種類型
         fallback_categories = [
             c
             for c in ["health", "injury", "investment", "life_annuity"]
             if c != detected_category
         ]
-        fallback_defs = []
         for cat in fallback_categories:
             file_name = (
                 "base_definition_investment.json"
@@ -152,21 +162,50 @@ class PipelineOrchestrator:
             f"  -> 載入備用子詞庫 ({'+'.join(fallback_categories)})：共 {len(fallback_defs)} 筆名詞定義以備後續比對"
         )
 
-        # 讀取理賠項目的基礎定義檔
-        base_claim_items_path = (
-            Path(__file__).parent.parent.parent
-            / "data"
-            / "definitions"
-            / "base_claim_items.json"
-        )
-        try:
-            with open(base_claim_items_path, "r", encoding="utf-8") as f:
-                context.base_claim_items = json.load(f)
-            print(
-                f"  -> 載入 {len(context.base_claim_items)} 筆基礎理賠項目做為對齊基準"
+        # 3. 載入理賠項目子詞庫 (支援 Method 1 CLASSIFIED 的雙層對齊)
+        primary_categories = ["general", detected_category]
+        for cat in primary_categories:
+            path = (
+                Path(__file__).parent.parent.parent
+                / "data"
+                / "definitions"
+                / f"base_claim_items_{cat}.json"
             )
-        except Exception as e:
-            print(f"Warning: Failed to load base_claim_items.json: {e}")
+            if path.exists():
+                try:
+                    with open(path, "r", encoding="utf-8") as f:
+                        data = json.load(f)
+                        if isinstance(data, list):
+                            context.base_claim_items.extend(data)
+                except Exception as e:
+                    print(f"Warning: Failed to load {path.name}: {e}")
+        print(
+            f"  -> [Method 1] 載入主要理賠項目庫 ({'+'.join(primary_categories)})：共 {len(context.base_claim_items)} 筆做為比對基準"
+        )
+
+        fallback_categories = [
+            c
+            for c in ["health", "injury", "investment", "life_annuity"]
+            if c != detected_category
+        ]
+        for cat in fallback_categories:
+            path = (
+                Path(__file__).parent.parent.parent
+                / "data"
+                / "definitions"
+                / f"base_claim_items_{cat}.json"
+            )
+            if path.exists():
+                try:
+                    with open(path, "r", encoding="utf-8") as f:
+                        data = json.load(f)
+                        if isinstance(data, list):
+                            context.fallback_claim_items.extend(data)
+                except Exception as e:
+                    print(f"Warning: Failed to load {path.name}: {e}")
+        print(
+            f"  -> [Method 1] 載入備用理賠項目庫 ({'+'.join(fallback_categories)})：共 {len(context.fallback_claim_items)} 筆以備後續比對"
+        )
 
         # 呼叫 LLM 進行提取（傳入主要詞庫進行優先對齊）
         extracted_defs = def_extractor.extract_definitions(
@@ -350,9 +389,39 @@ class PipelineOrchestrator:
 
             benefit_code = reg.get("benefit_code", "")
             base_codes = {b.get("code") for b in context.base_claim_items}
-            classification = (
-                "EXISTING_MATCH" if benefit_code in base_codes else "NEW_GENERAL"
-            )
+            
+            classification = "NEW_GENERAL"
+            matched_fallback = None
+            
+            if benefit_code in base_codes:
+                classification = "EXISTING_MATCH"
+            else:
+                # 備用理賠項目庫離線 fallback 對齊：當主詞庫未命中時，循序比對備用庫
+                display_name = reg.get("display_name", "")
+                for fb_item in context.fallback_claim_items:
+                    fb_code = fb_item.get("code", "")
+                    fb_display = fb_item.get("display_name", "")
+                    fb_synonyms = fb_item.get("synonym_map", [])
+                    
+                    if benefit_code == fb_code or display_name == fb_display or display_name in fb_synonyms:
+                        matched_fallback = fb_item
+                        classification = "EXISTING_MATCH"
+                        benefit_code = fb_item.get("code")  # 修正為標準 Code
+                        break
+            
+            # 若對齊到備用理賠項目，進行結構與資訊融合，將基礎定義/參數/邏輯結構與既存表達式融合，防止斷鍵
+            if matched_fallback:
+                print(
+                    f"  -> 【備用理賠項目庫命中】新理賠項目「{reg.get('display_name')}」成功對齊至備用庫中的既存理賠項目 {benefit_code}"
+                )
+                # 融合 logic_structure
+                if not final_logic and matched_fallback.get("logic_structure"):
+                    final_logic = matched_fallback.get("logic_structure")
+                
+                # 融合 parameters
+                fb_params = matched_fallback.get("parameters", [])
+                if fb_params and not param.get("parameters"):
+                    param["parameters"] = fb_params
 
             item = {
                 "type": "理賠項目定義",

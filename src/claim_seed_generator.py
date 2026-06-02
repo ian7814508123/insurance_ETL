@@ -1,3 +1,12 @@
+"""
+1. 用途說明:
+   基本理賠項目種子庫生成器 (Base Claim Item Seed Generator)。本腳本基於《中華民國保險法》與基本精算給付條文，調用 Gemini API 生成一套核心理賠項目定義種子（包含唯一代碼、名稱、觸發條件與 logic_structure 邏輯架構），作為專案冷啟動時的基本層對照，並無損合併寫入至 `claim_items_base.json`。
+
+2. 如何使用:
+   - 執行基本理賠項目種子生成與寫入合併：
+     python src/claim_seed_generator.py
+"""
+
 import json
 import os
 import sys

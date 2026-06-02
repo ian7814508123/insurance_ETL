@@ -4,13 +4,18 @@ import re
 import io
 import numpy as np
 from typing import Optional, List
-import fitz  # PyMuPDF
 from PIL import Image
+fitz = None
+try:
+    import fitz  # PyMuPDF
+except Exception as e:
+    print(f"[!] 無法載入 PyMuPDF (fitz)，部分 PDF 功能可能無法使用: {e}")
 
+pymupdf4llm = None
 try:
     import pymupdf4llm
-except ImportError:
-    print("請安裝: pip install pymupdf4llm")
+except Exception as e:
+    print(f"[!] 無法載入 pymupdf4llm: {e}")
 
 # 延遲載入 PaddleOCR
 _paddle_ocr_instance = None

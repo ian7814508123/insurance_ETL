@@ -1,3 +1,19 @@
+"""
+1. 用途說明:
+   名詞定義與理賠項目管理中心 (Definition & Claim Item Manager)。本腳本提供控制台命令列 (CLI) 介面，供管理人員對商品解析出的 NEW_GENERAL 候選名詞與理賠項目進行晉升 (promote) 審核，寫入對應的 5 大類子詞庫，並執行跨詞庫防禦性去重與聯動更新商品狀態。同時提供既存項目的重新分類 (reclassify) 與刪除功能。
+
+2. 如何使用:
+   - 列出所有待晉升的名詞或理賠項目候選代號：
+     python src/manager.py --target definition list
+     python src/manager.py --target claim_item list
+   - 審查特定代號在各商品中的定義差異：
+     python src/manager.py --target definition review [CODE]
+   - 晉升特定代號至基本層子詞庫（附帶人機互動審查與去重）：
+     python src/manager.py --target claim_item promote [CODE]
+   - 調整既存項目的分類歸屬或徹底刪除項目（自動執行防禦性去重）：
+     python src/manager.py --target definition reclassify [CODE]
+"""
+
 import json
 import os
 import sys
@@ -38,6 +54,14 @@ class DefinitionManager:
             "life_annuity": "base_definitions_life_annuity.json",
         }
 
+        self.claim_category_files = {
+            "general": "base_claim_items_general.json",
+            "health": "base_claim_items_health.json",
+            "injury": "base_claim_items_injury.json",
+            "investment": "base_claim_items_investment.json",
+            "life_annuity": "base_claim_items_life_annuity.json",
+        }
+
         if target_type == "definition":
             self.data_key = "global_definitions"
             self.base_files = {
@@ -45,8 +69,11 @@ class DefinitionManager:
                 for cat, fname in self.category_files.items()
             }
         elif target_type == "claim_item":
-            self.base_file = self.data_dir / "definitions" / "base_claim_items.json"
             self.data_key = "claim_items"
+            self.base_files = {
+                cat: self.data_dir / "definitions" / fname
+                for cat, fname in self.claim_category_files.items()
+            }
         else:
             raise ValueError(
                 "不支援的 target_type。請使用 'definition' 或 'claim_item'"
@@ -64,27 +91,39 @@ class DefinitionManager:
             json.dump(data, f, ensure_ascii=False, indent=2)
 
     def load_base_data(self) -> List[Dict[str, Any]]:
-        """載入基本層數據，如果 target_type 為 definition 則自動載入並合併所有子詞庫"""
-        if self.target_type == "claim_item":
-            data = self.load_json(self.base_file)
-            return data if isinstance(data, list) else []
-        else:
-            merged = []
-            for cat, path in self.base_files.items():
-                if path.exists():
-                    data = self.load_json(path)
-                    if isinstance(data, list):
-                        merged.extend(data)
-            return merged
+        """載入基本層數據，自動載入並合併所有子詞庫"""
+        merged = []
+        for cat, path in self.base_files.items():
+            if path.exists():
+                data = self.load_json(path)
+                if isinstance(data, list):
+                    merged.extend(data)
+        return merged
 
     def get_category_for_definition(self, item: Dict[str, Any]) -> str:
-        """根據規則判定名詞定義應歸入的子類別"""
+        """根據規則與語義判定名詞定義或理賠項目應歸入的子類別"""
         try:
             src_dir = Path(__file__).parent
             if str(src_dir) not in sys.path:
                 sys.path.append(str(src_dir))
-            from classify_definitions import rule_classify
-            cat = rule_classify(item)
+            
+            if self.target_type == "claim_item":
+                from classify_claim_items import rule_classify_claim_item
+                cat = rule_classify_claim_item(item)
+                if not cat:
+                    # 如果規則引擎無法判定，使用 LLM 判定
+                    try:
+                        from classify_claim_items import llm_classify_claim_item
+                        from google import genai
+                        import config
+                        client = genai.Client(api_key=config.GEMINI_API_KEY)
+                        cat = llm_classify_claim_item(client, item)
+                    except Exception:
+                        cat = "general"
+            else:
+                from classify_definitions import rule_classify
+                cat = rule_classify(item)
+                
             if cat in self.base_files:
                 return cat
         except Exception:
@@ -105,7 +144,11 @@ class DefinitionManager:
 
             # 讀取對應的陣列 (global_definitions 或 claim_items)
             items = file_data.get(self.data_key, [])
+            if not isinstance(items, list):
+                continue
             for d in items:
+                if not isinstance(d, dict):
+                    continue
                 if d.get("classification") == "NEW_GENERAL":
                     code = d.get("code")
                     if not code:
@@ -137,81 +180,7 @@ class DefinitionManager:
                 "synonym_map": winner.get("synonym_map", []),
                 "level": "BASE",
             }
-
-            # 進行分類與儲存
-            cat = self.get_category_for_definition(new_base_entry)
-            print(f"\n[自動分析結果] 名詞: {code} ({new_base_entry['display_name']})")
-            print(f"  -> 系統推薦分類: 【{cat}】")
-            print("  請選擇操作:")
-            print(f"    [1] 同意系統推薦 (將其寫入 {self.category_files[cat]})")
-            print("    [2] 手動變更分類 (由人員決定)")
-            print("    [3] 取消晉升")
-            
-            choice = "1"
-            if sys.stdin.isatty():
-                try:
-                    choice = input("  請輸入選擇 [1-3] (預設 1): ").strip()
-                except Exception:
-                    choice = "1"
-            else:
-                choice = "1"
-
-            if choice == "3":
-                print("已取消晉升。")
-                return
-            elif choice == "2":
-                print("\n  可選的分類子詞庫:")
-                print("    1. general      (通用底層契約關係)")
-                print("    2. health       (健康醫療/住院手術/長照)")
-                print("    3. injury       (傷害意外)")
-                print("    4. investment   (投資型保險)")
-                print("    5. life_annuity (壽險與年金險)")
-                cat_choices = {
-                    "1": "general",
-                    "2": "health",
-                    "3": "injury",
-                    "4": "investment",
-                    "5": "life_annuity"
-                }
-                sub_choice = "1"
-                if sys.stdin.isatty():
-                    try:
-                        sub_choice = input("  請輸入分類編號 [1-5]: ").strip()
-                    except Exception:
-                        sub_choice = "1"
-                cat = cat_choices.get(sub_choice, "general")
-                print(f"  -> 手動選擇分類: 【{cat}】")
-            else:
-                print(f"  -> 使用推薦分類: 【{cat}】")
-
-            target_file = self.base_files[cat]
-
-            cat_data = self.load_json(target_file)
-            if not isinstance(cat_data, list):
-                cat_data = []
-
-            # 檢查是否已存在於該子詞庫中
-            for i, existing in enumerate(cat_data):
-                if existing.get("code") == code:
-                    cat_data[i] = new_base_entry
-                    break
-            else:
-                cat_data.append(new_base_entry)
-
-            # 防禦性清理：將同 code 的舊定義從其他子詞庫中移除，避免重複
-            for other_cat, other_path in self.base_files.items():
-                if other_cat == cat:
-                    continue
-                if other_path.exists():
-                    other_data = self.load_json(other_path)
-                    if isinstance(other_data, list):
-                        filtered = [d for d in other_data if d.get("code") != code]
-                        if len(filtered) != len(other_data):
-                            self.save_json(other_path, filtered)
-
-            self.save_json(target_file, cat_data)
-            print(f"已將 {code} 晉升至基本層子詞庫 {cat} ({target_file.name}) 並執行跨詞庫去重。")
-
+            files_dict = self.category_files
         else:
             # claim_item: 根據需求保留 logic_structure 與 parameters
             new_base_entry = {
@@ -228,20 +197,94 @@ class DefinitionManager:
             }
             if "payment_type" in winner:
                 new_base_entry["payment_type"] = winner["payment_type"]
+            files_dict = self.claim_category_files
 
-            base_data = self.load_json(self.base_file)
-            if not isinstance(base_data, list):
-                base_data = []
+        # 進行分類與儲存
+        cat = self.get_category_for_definition(new_base_entry)
+        
+        # 顯示詳細結構
+        print(f"\n=== 審核 [{self.target_type.upper()}] 晉升候選項目 ===")
+        print(f"  代碼 (Code)      : {new_base_entry['code']}")
+        print(f"  顯示名稱 (Name)   : {new_base_entry['display_name']}")
+        print(f"  白話描述 (Desc)   : {new_base_entry.get('description', '無')}")
+        
+        if self.target_type == "claim_item":
+            print(f"  理賠類型 (Type)   : {new_base_entry.get('payment_type', '無')}")
+            print(f"  邏輯結構 (Logic)  : {json.dumps(new_base_entry.get('logic_structure', {}), ensure_ascii=False, indent=4)}")
+            print(f"  參數清單 (Params) : {json.dumps(new_base_entry.get('parameters', []), ensure_ascii=False, indent=4)}")
+        else:
+            print(f"  原始定義 (Def)    : {new_base_entry.get('base_definition', '無')}")
 
-            for i, existing in enumerate(base_data):
-                if existing.get("code") == code:
-                    base_data[i] = new_base_entry
-                    break
-            else:
-                base_data.append(new_base_entry)
+        print(f"\n[自動分析結果] 系統推薦分類: 【{cat}】")
+        print("  請選擇操作:")
+        print(f"    [1] 同意系統推薦 (將其寫入 {files_dict[cat]})")
+        print("    [2] 手動變更分類 (由人員決定)")
+        print("    [3] 取消晉升")
+        
+        choice = "1"
+        if sys.stdin.isatty():
+            try:
+                choice = input("  請輸入選擇 [1-3] (預設 1): ").strip()
+            except Exception:
+                choice = "1"
+        else:
+            choice = "1"
 
-            self.save_json(self.base_file, base_data)
-            print(f"已將 {code} 晉升至基本層 ({self.base_file.name})。")
+        if choice == "3":
+            print("已取消晉升。")
+            return
+        elif choice == "2":
+            print("\n  可選的分類子詞庫:")
+            print("    1. general      (通用底層契約關係)")
+            print("    2. health       (健康醫療/住院手術/長照)")
+            print("    3. injury       (傷害意外)")
+            print("    4. investment   (投資型保險)")
+            print("    5. life_annuity (壽險與年金險)")
+            cat_choices = {
+                "1": "general",
+                "2": "health",
+                "3": "injury",
+                "4": "investment",
+                "5": "life_annuity"
+            }
+            sub_choice = "1"
+            if sys.stdin.isatty():
+                try:
+                    sub_choice = input("  請輸入分類編號 [1-5]: ").strip()
+                except Exception:
+                    sub_choice = "1"
+            cat = cat_choices.get(sub_choice, "general")
+            print(f"  -> 手動選擇分類: 【{cat}】")
+        else:
+            print(f"  -> 使用推薦分類: 【{cat}】")
+
+        target_file = self.base_files[cat]
+
+        cat_data = self.load_json(target_file)
+        if not isinstance(cat_data, list):
+            cat_data = []
+
+        # 檢查是否已存在於該子詞庫中
+        for i, existing in enumerate(cat_data):
+            if existing.get("code") == code:
+                cat_data[i] = new_base_entry
+                break
+        else:
+            cat_data.append(new_base_entry)
+
+        # 防禦性清理：將同 code 的舊項目從其他子詞庫中移除，避免重複
+        for other_cat, other_path in self.base_files.items():
+            if other_cat == cat:
+                continue
+            if other_path.exists():
+                other_data = self.load_json(other_path)
+                if isinstance(other_data, list):
+                    filtered = [d for d in other_data if d.get("code") != code]
+                    if len(filtered) != len(other_data):
+                        self.save_json(other_path, filtered)
+
+        self.save_json(target_file, cat_data)
+        print(f"已將 {code} 晉升至基本層子詞庫 {cat} ({target_file.name}) 並執行跨詞庫去重。")
 
         # 更新所有商品層的標籤
         for file in self.products_dir.glob("*.json"):
@@ -250,8 +293,12 @@ class DefinitionManager:
                 continue
 
             items = file_data.get(self.data_key, [])
+            if not isinstance(items, list):
+                continue
             updated = False
             for d in items:
+                if not isinstance(d, dict):
+                    continue
                 if d.get("code") == code:
                     d["classification"] = "EXISTING_MATCH"
                     # d["level"] = "PRODUCT" # 保持原商品的層級，只改狀態
@@ -262,12 +309,8 @@ class DefinitionManager:
                 print(f"已更新商品檔案: {file.name}")
 
     def reclassify(self, code: str):
-        """重新調整既存名詞定義的分類歸屬與防禦性去重。"""
-        if self.target_type != "definition":
-            print("錯誤：reclassify 指令僅支援 definition (名詞定義)。")
-            return
-
-        # 1. 尋找既存名詞在哪個子詞庫中
+        """重新調整既存項目的分類歸屬與防禦性去重。"""
+        # 1. 尋找既存項目在哪個子詞庫中
         found_cat = None
         found_item = None
         for cat, path in self.base_files.items():
@@ -286,15 +329,22 @@ class DefinitionManager:
             print(f"錯誤：在所有既存子詞庫中找不到代號: {code}")
             return
 
+        files_dict = self.category_files if self.target_type == "definition" else self.claim_category_files
+
         print(f"\n=== 重新調整分類 : {code} ({found_item.get('display_name', '')}) ===")
-        print(f"當前分類子詞庫: 【{found_cat}】 ({self.category_files[found_cat]})")
+        print(f"當前分類子詞庫: 【{found_cat}】 ({files_dict[found_cat]})")
         print(f"白話描述: {found_item.get('description', '')}")
-        print(f"原始定義: {found_item.get('base_definition', '')[:120]}...")
+        
+        if self.target_type == "claim_item":
+            print(f"邏輯結構: {json.dumps(found_item.get('logic_structure', {}), ensure_ascii=False, indent=2)}")
+            print(f"參數清單: {json.dumps(found_item.get('parameters', []), ensure_ascii=False, indent=2)}")
+        else:
+            print(f"原始定義: {found_item.get('base_definition', '')[:120]}...")
         
         print("\n請選擇操作:")
         print("  [1] 保持不變並退出")
         print("  [2] 調整至其他子詞庫分類")
-        print("  [3] 刪除此名詞定義")
+        print("  [3] 刪除此項目")
         
         choice = input("請輸入選擇 [1-3]: ").strip()
         
@@ -349,7 +399,7 @@ class DefinitionManager:
             if not isinstance(target_data, list):
                 target_data = []
             
-            # 將名詞加入目標詞庫 (確保不重複加入)
+            # 將項目加入目標詞庫 (確保不重複加入)
             if not any(d.get("code") == code for d in target_data):
                 target_data.append(found_item)
                 self.save_json(target_path, target_data)

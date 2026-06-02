@@ -13,8 +13,11 @@ class PipelineContext:
         # 格式: { "中文名詞": "英文變數名 (例如: HOSPITAL_DAILY_AMOUNT)" }
         self.standard_parameters: Dict[str, str] = {}
 
-        # 存放基礎理賠項目定義，供 Agent 2 參考對齊
+        # 存放基礎理賠項目定義，供 Agent 2 參考對齊 (主詞庫)
         self.base_claim_items: List[Dict[str, Any]] = []
+
+        # 存放備用理賠項目定義，供離線 fallback 對齊 (備用庫)
+        self.fallback_claim_items: List[Dict[str, Any]] = []
 
     def add_standard_parameter(self, zh_name: str, en_name: str) -> None:
         """

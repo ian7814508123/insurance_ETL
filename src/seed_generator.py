@@ -1,3 +1,16 @@
+"""
+1. 用途說明:
+   名詞定義與理賠項目基礎種子庫生成器 (Base Seed Generator)。本腳本調用 Gemini API，基於保險法與示範條款，自動化生成可跨商品重用的基礎「名詞定義」種子清單 (base_definitions.json) 與基礎「理賠項目」種子清單 (base_claim_items.json)，並將新產生的種子與既有基礎庫資料依據 Code 進行無損合併。
+
+2. 如何使用:
+   - 生成基礎名詞定義種子並合併寫入：
+     python src/seed_generator.py --target base_definition
+   - 生成基礎理賠項目種子並合併寫入 (自動以 `base_definitions.json` 作為語義錨點對齊)：
+     python src/seed_generator.py --target base_claim_item
+   - 自訂輸出目錄：
+     python src/seed_generator.py --target base_definition --output-dir ./data/definitions
+"""
+
 import argparse
 import json
 import os
