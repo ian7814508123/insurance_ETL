@@ -128,6 +128,17 @@ def main():
 
             final_items = orchestrator.process(content, base_info)
 
+            # ─── 自動後處理：參數來源三向診斷與命名一致性即時修復 ───
+            try:
+                from diagnose_parameters import ParameterDiagnoser
+                diagnoser = ParameterDiagnoser(output_dir.parent)
+                final_items, warnings, modified = diagnoser.process_data(final_items, fix_mode=True)
+                if modified and warnings:
+                    print(f"  -> [後處理] 自動標記與對齊完成，共修復/標記 {len(warnings)} 處變數。")
+            except Exception as pe:
+                print(f"  -> [後處理警告] 執行自動對齊診斷失敗: {pe}")
+            # ──────────────────────────────────────────────────
+
             target_file = output_dir / f"{fp.stem}.json"
             save_json(target_file, final_items)
             print(f"\n[成功] 已將結果寫入: {target_file}")
