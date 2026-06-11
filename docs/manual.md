@@ -188,4 +188,6 @@ python src/run_pipeline.py --input-dir ./product --level PRODUCT
 ```bash
 python src/cluster.py --target claim_item
 ```
-*執行完成後，會於 `data/` 下產出聚類結果 JSON 檔，供 `manager.py batch-promote` 進行批量晉升對齊。*
+* 執行完成後，會於 `data/` 下產出聚類結果 JSON 檔，供 `manager.py batch-promote` 進行批量晉升對齊。*
+
+* 注意: 未來進行測試、腳本自動化前, 應先將所有資料輸入/輸出之靜態路徑替換為指定之動態路徑。

@@ -270,36 +270,13 @@ class AgentB:
         self.client = client
         self.model_name = model_name
 
-    def extract_page(
-        self, contents: List[Any], strategy: Dict[str, Any], page_range: str = None
-    ) -> List[Dict[str, Any]]:
-        """根據策略提取單頁/多頁費率"""
-        strategy_str = json.dumps(strategy, ensure_ascii=False, indent=2)
+    def get_base_schema_deprecated(self) -> Dict[str, Any]:
+        """[DEPRECATED] 靜態解析 Schema
 
-        page_instruction = ""
-        if page_range:
-            page_instruction = f"\n\n [專注頁面提醒] :\n請**特別針對第 {page_range} 頁**的內容進行分析與提取，忽略其他頁面的數據！\n\n"
-
-        prompt = f"""
-        作為費率提取員，請根據以下「提取策略」提取費率資料：
-        {page_instruction}
-        [提取策略 (Extraction Strategy)]:
-        {strategy_str}
-        
-        任務要求：
-        1. 優先辨識「表格共同維度」並歸納至 `shared_attributes`。
-        2. 嚴格遵守策略中的 `parsing_hints`。
-        3. 輸出 `rate_blocks` 陣列，每個 block 代表一組具有相同屬性的費率。
-        4. 歲數處理：
-           - 單一歲數：`age_start`: 20, `age_end`: 20
-           - 歲數區間：`age_start`: 0, `age_end`: 4
-           - 極端值:年齡「0歲」或「不滿1歲」統一設定為 age_start: 0, age_end: 0。
-           - 例外處理:續保件通常沒有0歲 (常表示 0:"-" 或從1歲開始),若遇到時跳過該列。
-        5. `scenario_name`: 描述屬性的組合（如：集體彙繳+自動轉帳件）。
-        6. `scenario_description`: 詳細描述屬性的判斷準則。
+        此方法僅供靜態解析時相容保留。
+        未來所有新險種與功能的開發，皆以動態解析方法 (Dynamic Schema) 為主。
         """
-
-        schema = {
+        return {
             "type": "object",
             "properties": {
                 "rate_blocks": {
@@ -446,9 +423,118 @@ class AgentB:
                             },
                         },
                     },
-                }
+                },
             },
         }
+
+    def _build_dynamic_schema(
+        self, alignment_hints: Dict[str, str] = None
+    ) -> Dict[str, Any]:
+        """[動態解析方法] 根據 hints 動態改寫 Schema 的屬性鍵名。"""
+        import copy
+
+        schema = copy.deepcopy(self.get_base_schema_deprecated())
+        if not alignment_hints:
+            return schema
+
+        try:
+            properties = schema["properties"]["rate_blocks"]["items"]["properties"]
+            shared_attrs = properties["shared_attributes"]
+            shared_properties = shared_attrs["properties"]
+            shared_required = shared_attrs.get("required", [])
+
+            variation_properties = properties["variations"]["items"]["properties"]
+            variation_required = properties["variations"]["items"].get("required", [])
+        except KeyError:
+            return schema
+
+        # 1. gender -> GENDER
+        if "GENDER" in alignment_hints:
+            if "gender" in variation_properties:
+                variation_properties["GENDER"] = variation_properties.pop("gender")
+                variation_properties["GENDER"]["description"] = (
+                    f"性別對齊代碼 (對照商品條款: {alignment_hints['GENDER']})"
+                )
+                if "gender" in variation_required:
+                    variation_required.remove("gender")
+                if "GENDER" not in variation_required:
+                    variation_required.append("GENDER")
+
+        # 2. premium_period -> PAYMENT_PERIOD
+        if "PAYMENT_PERIOD" in alignment_hints:
+            if "premium_period" in shared_properties:
+                shared_properties["PAYMENT_PERIOD"] = shared_properties.pop(
+                    "premium_period"
+                )
+                shared_properties["PAYMENT_PERIOD"]["description"] = (
+                    f"繳費年期對齊代碼 (對照商品條款: {alignment_hints['PAYMENT_PERIOD']})"
+                )
+                if "premium_period" in shared_required:
+                    shared_required.remove("premium_period")
+                if "PAYMENT_PERIOD" not in shared_required:
+                    shared_required.append("PAYMENT_PERIOD")
+
+        # 3. occupation_level -> OCCUPATION_CLASS
+        if "OCCUPATION_CLASS" in alignment_hints:
+            if "occupation_level" in shared_properties:
+                shared_properties["OCCUPATION_CLASS"] = shared_properties.pop(
+                    "occupation_level"
+                )
+                shared_properties["OCCUPATION_CLASS"]["description"] = (
+                    f"職業等級對齊代碼 (對照商品條款: {alignment_hints['OCCUPATION_CLASS']})"
+                )
+                if "occupation_level" in shared_required:
+                    shared_required.remove("occupation_level")
+                if "OCCUPATION_CLASS" not in shared_required:
+                    shared_required.append("OCCUPATION_CLASS")
+
+        return schema
+
+    def extract_page(
+        self,
+        contents: List[Any],
+        strategy: Dict[str, Any],
+        page_range: str = None,
+        alignment_hints: Dict[str, str] = None,
+    ) -> List[Dict[str, Any]]:
+        """根據策略提取單頁/多頁費率"""
+        strategy_str = json.dumps(strategy, ensure_ascii=False, indent=2)
+
+        page_instruction = ""
+        if page_range:
+            page_instruction = f"\n\n [專注頁面提醒] :\n請**特別針對第 {page_range} 頁**的內容進行分析與提取，忽略其他頁面的數據！\n\n"
+
+        alignment_instruction = ""
+        if alignment_hints:
+            hints_str = json.dumps(alignment_hints, ensure_ascii=False, indent=2)
+            alignment_instruction = (
+                f"\n\n [標準維度參數對齊指引] :\n"
+                f"在提取費率表的維度欄位（例如 `shared_attributes` 或是 `variations` 中的屬性）時，"
+                f"請優先且強制使用以下標準參數代碼作為 JSON 鍵值，以避免參數斷鍵。若非以下變數概念才允許自創：\n"
+                f"{hints_str}\n\n"
+            )
+
+        prompt = f"""
+        作為費率提取員，請根據以下「提取策略」提取費率資料：
+        {page_instruction}
+        {alignment_instruction}
+        [提取策略 (Extraction Strategy)]:
+        {strategy_str}
+        
+        任務要求：
+        1. 優先辨識「表格共同維度」並歸納至 `shared_attributes`。
+        2. 嚴格遵守策略中的 `parsing_hints`。
+        3. 輸出 `rate_blocks` 陣列，每個 block 代表一組具有相同屬性的費率。
+        4. 歲數處理：
+           - 單一歲數：`age_start`: 20, `age_end`: 20
+           - 歲數區間：`age_start`: 0, `age_end`: 4
+           - 極端值:年齡「0歲」或「不滿1歲」統一設定為 age_start: 0, age_end: 0。
+           - 例外處理:續保件通常沒有0歲 (常表示 0:"-" 或從1歲開始),若遇到時跳過該列。
+        5. `scenario_name`: 描述屬性的組合（如：集體彙繳+自動轉帳件）。
+        6. `scenario_description`: 詳細描述屬性的判斷準則。
+        """
+
+        schema = self._build_dynamic_schema(alignment_hints)
 
         response = self.client.models.generate_content(
             model=self.model_name,
@@ -572,7 +658,13 @@ class ConfidenceOrchestrator:
         final_score = base_score - logic_penalty - missing_penalty
         return max(0, final_score)
 
-    def process(self, file_path: str, batch_size: int = 10, eval_chunk_size: int = 20):
+    def process(
+        self,
+        file_path: str,
+        batch_size: int = 10,
+        eval_chunk_size: int = 20,
+        alignment_hints: Dict[str, str] = None,
+    ):
         # 解決 google-genai/httpx 處理非 ASCII 檔名的 multipart 編碼錯誤 (ascii codec error)
         ext = os.path.splitext(file_path)[1]
         temp_fd, temp_path = tempfile.mkstemp(suffix=ext)
@@ -608,18 +700,24 @@ class ConfidenceOrchestrator:
                     page_images.append(pix.tobytes("jpg"))
                 doc.close()
 
-                print(f"    [PDF 模式] 總頁數 {total_pages}, 使用 PyMuPDF 轉換為圖片...")
-                
+                print(
+                    f"    [PDF 模式] 總頁數 {total_pages}, 使用 PyMuPDF 轉換為圖片..."
+                )
+
                 # Stage 0: Quality (使用第一頁圖片)
-                first_page_part = types.Part.from_bytes(data=page_images[0], mime_type="image/jpeg")
-                results["stages"]["quality"] = self.quality_eval.evaluate(first_page_part)
+                first_page_part = types.Part.from_bytes(
+                    data=page_images[0], mime_type="image/jpeg"
+                )
+                results["stages"]["quality"] = self.quality_eval.evaluate(
+                    first_page_part
+                )
 
                 preview_count = min(3, total_pages)
                 agent_a_contents = [
                     types.Part.from_bytes(data=img, mime_type="image/jpeg")
                     for img in page_images[:preview_count]
                 ]
-                
+
                 # 用於後續驗證的參考 (使用預覽圖)
                 validation_file = agent_a_contents[0]
             else:
@@ -653,7 +751,10 @@ class ConfidenceOrchestrator:
                         data=page_images[_start - 1], mime_type="image/jpeg"
                     )
                     return self.agent_b.extract_page(
-                        [img_part], strategy, page_range=r_str
+                        [img_part],
+                        strategy,
+                        page_range=r_str,
+                        alignment_hints=alignment_hints,
                     )
 
                 # 採用 concurrent.futures 併發處理以避免循序導致速度過慢
@@ -664,7 +765,9 @@ class ConfidenceOrchestrator:
             else:
                 # 圖片或單頁
                 print(">>> 執行 Agent B 提取 (單文件模式)...")
-                blocks = self.agent_b.extract_page([myfile], strategy)
+                blocks = self.agent_b.extract_page(
+                    [myfile], strategy, alignment_hints=alignment_hints
+                )
                 all_rate_blocks.extend(blocks)
 
             # Step 4: 合併結果
