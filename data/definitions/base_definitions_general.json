@@ -1,0 +1,256 @@
+[
+  {
+    "type": "名詞定義",
+    "code": "BASIC_SUM_INSURED",
+    "display_name": "基本保險金額",
+    "base_definition": "係指本契約所載明之投保金額。要保人在本契約有效期間內，得申請增加或減少基本保額，且須符合第十條第二項約定。惟增加基本保額，需經本公司同意；減少後之基本保額，不得低於本保險最低承保金額。如該基本保額有所變更時，以變更後之基本保額為準。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "指保險契約中載明的投保金額，要保人可在契約有效期間內申請增減，但需符合特定條件並經保險公司同意。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "code": "ACCUMULATED_INCREASED_SUM_INSURED",
+    "display_name": "累計增加保險金額",
+    "base_definition": "本契約所稱「累計增加保險金額」係指就每一保單週年日依第十條約定計算所得增額繳清保險金額逐次累計之值。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "指每一保單週年日依約定計算所得增額繳清保險金額逐次累計的值。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "code": "SUM_INSURED",
+    "display_name": "保險金額",
+    "base_definition": "係指本公司於被保險人身故或完全失能所給付之金額。該金額以淨危險保額與保單帳戶價值兩者之總和給付，其中，淨危險保額及保單帳戶價值係以受益人檢齊申請身故、完全失能保險金之所須文件並送達本公司之次○個資產評價日的保單帳戶價值計算。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "指保險公司在被保險人身故或完全失能時給付的金額，計算方式為淨危險保額與保單帳戶價值的總和。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "code": "PREMIUM_CHARGE",
+    "display_name": "保費費用",
+    "base_definition": "係指因本契約簽訂及運作所產生並自保險費中扣除之相關費用，包含核保、發單、銷售、服務及其他必要費用。保費費用之金額為要保人繳付之保險費乘以附表○相關費用一覽表中「保費費用表」所列之百分率所得之數額。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "簽訂及運作契約產生並從保險費中扣除的費用，包含核保、發單、銷售、服務等，金額依保險費乘以特定百分率計算。",
+    "classification": "EXISTING_MATCH",
+    "level": "BASE"
+  },
+  {
+    "type": "名詞定義",
+    "code": "INSURANCE_AGE",
+    "display_name": "保險年齡",
+    "base_definition": "係指按投保時被保險人以足歲計算之年齡，但未滿一歲的零數超過六個月者加算一歲，以後每經過一個保險單年度加算一歲。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "投保時被保險人以足歲計算的年齡，未滿一歲零數超過六個月者加算一歲，之後每經過一個保險單年度加算一歲。",
+    "classification": "EXISTING_MATCH",
+    "level": "BASE"
+  },
+  {
+    "type": "名詞定義",
+    "code": "POLICY_MONTHLY_ANNIVERSARY",
+    "display_name": "保單週月日",
+    "base_definition": "係指本契約生效日以後每月與契約生效日相當之日，若當月無相當日者，指該月之末日。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "契約生效日後每月與生效日相同的日期，若無則為該月最後一天。",
+    "classification": "EXISTING_MATCH",
+    "level": "BASE"
+  },
+  {
+    "type": "名詞定義",
+    "code": "OVERSEAS",
+    "display_name": "海外",
+    "base_definition": "係指臺灣、澎湖、金門、馬祖等由中華民國政府所轄範圍以外之地區。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "指中華民國政府管轄範圍以外的地區。",
+    "classification": "EXISTING_MATCH",
+    "level": "BASE"
+  },
+  {
+    "type": "名詞定義",
+    "description": "指向保險人申請訂立保險契約，並負有支付保險費義務的人。",
+    "code": "POLICY_HOLDER",
+    "display_name": "要保人",
+    "base_definition": "本法所稱要保人，指向保險人申請訂立保險契約，並負有交付保險費義務之人。(中華民國保險法第三條)",
+    "level": "BASE",
+    "parameter": {},
+    "synonym_map": []
+  },
+  {
+    "type": "名詞定義",
+    "description": "指在保險事故發生時，遭受損害並享有賠償請求權的人。要保人也可以是被保險人。",
+    "code": "INSURED",
+    "display_name": "被保險人",
+    "base_definition": "本法所稱被保險人，指於保險事故發生時，遭受損害，享有賠償請求權之人；要保人亦得為被保險人。(中華民國保險法第四條)",
+    "level": "BASE",
+    "parameter": {},
+    "synonym_map": []
+  },
+  {
+    "type": "名詞定義",
+    "description": "指由被保險人或要保人指定，在保險事故發生時，有權獲得賠償或給付保險金額的人。",
+    "code": "BENEFICIARY",
+    "display_name": "受益人",
+    "base_definition": "本法所稱受益人，指被保險人或要保人約定，於保險事故發生時，得受賠償或給付金額之人；要保人或被保險人均得為受益人。(中華民國保險法第五條)",
+    "level": "BASE",
+    "parameter": {},
+    "synonym_map": []
+  },
+  {
+    "type": "名詞定義",
+    "description": "指要保人依保險契約約定，向保險人支付的對價，以換取保險人承擔保險責任。",
+    "code": "PREMIUM",
+    "display_name": "保險費",
+    "base_definition": "本法第一條規定「一方交付保險費於他方」；第三條規定「負有交付保險費義務之人」為要保人。(中華民國保險法第一條、第三條)",
+    "level": "BASE",
+    "parameter": {},
+    "synonym_map": []
+  },
+  {
+    "type": "名詞定義",
+    "description": "指保險契約中約定，一旦發生即觸發保險人賠償或給付保險金額責任的事件。",
+    "code": "INSURANCE_ACCIDENT",
+    "display_name": "保險事故",
+    "base_definition": "本法第一條規定「因不可預料，或不可抗力之事故所致之損害」；第四條規定「於保險事故發生時，遭受損害」；第五條規定「於保險事故發生時，得受賠償或給付金額之人」。(中華民國保險法第一條、第四條、第五條)",
+    "level": "BASE",
+    "parameter": {},
+    "synonym_map": []
+  },
+  {
+    "type": "名詞定義",
+    "description": "指人壽保險契約中，保險費到期未繳付時，保險人給予要保人的一段緩衝期，在此期間內保險契約效力仍持續，但若期滿仍未繳付，契約效力將停止。",
+    "code": "GRACE_PERIOD",
+    "display_name": "寬限期間",
+    "base_definition": "人壽保險之保險費到期未交付者，除契約另有約定外，經保險人催告到達後屆三十日，或經契約約定，遲延給付保險費已達六十日者，保險契約之效力停止。(中華民國保險法第一百十六條)",
+    "level": "BASE",
+    "parameter": {},
+    "synonym_map": []
+  },
+  {
+    "type": "名詞定義",
+    "description": "指保險契約因保險費未繳而停止效力後，要保人在一定期限內，依約定條件向保險人申請恢復契約效力的行為。",
+    "code": "REINSTATEMENT",
+    "display_name": "復效",
+    "base_definition": "保險契約停止效力後，要保人得在停止效力之日起二年內，申請復效。(中華民國保險法第一百十六條第三項)",
+    "level": "BASE",
+    "parameter": {},
+    "synonym_map": []
+  },
+  {
+    "type": "名詞定義",
+    "description": "指當事人約定，一方交付保險費於他方，他方對於因不可預料或不可抗力之事故所致之損害，負擔賠償財物之行為。",
+    "code": "INSURANCE_CONTRACT",
+    "display_name": "保險契約",
+    "base_definition": "依《保險法》第一條及第十一條之規定，指當事人約定，一方交付保險費於他方，他方對於因不可預料或不可抗力之事故所致之損害，負擔賠償財物之行為，並以當事人之一方對於他方負擔危險，而他方支付保險費為其對價。",
+    "level": "BASE",
+    "parameter": {},
+    "synonym_map": []
+  },
+  {
+    "type": "名詞定義",
+    "description": "指契約生效後每年與生效日相當之日，若無則為該月最後一日。",
+    "code": "POLICY_ANNIVERSARY",
+    "display_name": "保單週年日",
+    "base_definition": "係指本契約生效後，每年與本契約生效日相當之日，若該月無相當日，則為該月最後一日。",
+    "level": "BASE",
+    "parameter": {},
+    "synonym_map": []
+  },
+  {
+    "type": "名詞定義",
+    "description": "指經營保險事業之各種組織，在保險契約成立時，負擔賠償或給付保險金責任之當事人。",
+    "code": "INSURER",
+    "display_name": "保險人",
+    "base_definition": "依《保險法》第十條之規定，指經營保險事業之各種組織，在保險契約成立時，負擔賠償或給付保險金責任之當事人。",
+    "level": "BASE",
+    "parameter": {},
+    "synonym_map": []
+  },
+  {
+    "type": "名詞定義",
+    "description": "契約生效日起持續有效一段時間。",
+    "code": "WAITING_PERIOD",
+    "display_name": "等待期間",
+    "base_definition": "係指被保險人自本契約生效日起持續有效一段期間。各商品之等待期間另計載於條款書",
+    "parameter": {},
+    "synonym_map": [],
+    "level": "BASE"
+  },
+  {
+    "type": "名詞定義",
+    "description": "保險單首頁載明的本契約繳費年限。",
+    "code": "PAYMENT_PERIOD",
+    "display_name": "繳費期間",
+    "base_definition": "係指保險單首頁所載本契約之繳費年限。",
+    "parameter": {},
+    "synonym_map": [],
+    "level": "BASE"
+  },
+  {
+    "type": "名詞定義",
+    "code": "SURRENDER_CHARGE",
+    "display_name": "解約費用",
+    "base_definition": "係指本公司依本契約第十九條約定於要保人終止契約時，自給付金額中所收取之費用。其金額按附表○所載之方式計算。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "要保人終止契約時，保險公司從給付金額中收取的費用。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "description": "指參加本附約時主契約被保險人戶籍登記的配偶。",
+    "code": "SPOUSE",
+    "display_name": "配偶",
+    "base_definition": "係指參加本附約時主契約被保險人戶籍登記之配偶。",
+    "level": "BASE",
+    "parameter": {},
+    "synonym_map": []
+  },
+  {
+    "type": "名詞定義",
+    "description": "指投保時未滿23歲且戶籍登記的婚生、養或繼子女。",
+    "code": "CHILD",
+    "display_name": "子女",
+    "base_definition": "係指投保當時出生至未滿二十三歲之主契約被保險人戶籍登記的婚生子女、養子女或繼子女。",
+    "level": "BASE",
+    "parameter": {},
+    "synonym_map": []
+  },
+  {
+    "type": "名詞定義",
+    "description": "臺灣、澎湖、金門、馬祖及其他中華民國統轄權所及地區。",
+    "code": "WITHIN_ROC",
+    "display_name": "中華民國境內",
+    "base_definition": "指臺灣、澎湖、金門、馬祖及其他為統轄權所及之地區。",
+    "parameter": {},
+    "synonym_map": [],
+    "level": "BASE"
+  },
+  {
+    "type": "名詞定義",
+    "description": "病理切片、血液學或其他相關檢驗報告出具的日期。",
+    "code": "DIAGNOSIS_CONFIRMATION_DATE",
+    "display_name": "診斷確定日",
+    "base_definition": "係指病理切片檢查、血液學或其他相關檢驗報告出具之日期。",
+    "parameter": {},
+    "synonym_map": [],
+    "level": "BASE"
+  },
+  {
+    "type": "名詞定義",
+    "description": "雖有扶持或輔具仍無法行動，且需他人協助操作輪椅。",
+    "code": "AMBULATION_IMPAIRMENT",
+    "display_name": "平地行動障礙",
+    "base_definition": "雖經別人扶持或使用輔具亦無法行動，且須別人協助才能操作輪椅或電動輪椅。",
+    "parameter": {},
+    "synonym_map": [],
+    "level": "BASE"
+  }
+]

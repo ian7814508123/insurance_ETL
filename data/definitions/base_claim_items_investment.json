@@ -1,0 +1,2623 @@
+[
+  {
+    "type": "理賠項目定義",
+    "description": "被保險人身故時，受益人可領取的變額壽險保險金額，依保單帳戶價值與基本保額計算。",
+    "code": "DEATH_BENEFIT_VARIABLE_LIFE",
+    "display_name": "變額壽險身故保險金",
+    "base_definition": "當[INSURED]身故時，[BENEFICIARY]可領取[NET_RISK_SUM_INSURED]與[POLICY_ACCOUNT_VALUE]之{MAX_VALUE}。",
+    "level": "BASE",
+    "parameter": {},
+    "synonym_map": [
+      "變額壽險死亡給付"
+    ]
+  },
+  {
+    "type": "理賠項目定義",
+    "code": "INVESTMENT_RETURN_DISTRIBUTION",
+    "display_name": "投資標的收益分配或撥回資產",
+    "level": "BASE",
+    "classification": "EXISTING_MATCH",
+    "description": "本契約所提供之投資標的如有收益分配或自投資資產中撥回資產時，本公司應以該投資標的之收益或撥回資產總額，依本契約所持該投資標的價值占本公司投資 該標的總價值之比例將該收益分配或撥回資產予要保人。但若有依法應先扣繳之 稅捐時，本公司應先扣除之。 依前項分配予要保人之收益分配或撥回資產，本公司以下列方式給付： 一、以現金給付（指投資標的名稱有標明現金撥回之投資標的）：投資機構以現 金給付收益分配或撥回資產予本公司時，若實際收受各投資標的收益分配或 撥回資產之日為同一日，本公司將合併計算當次收益分配金額。本公司應於 實際收受收益分配或撥回資產之日後十日內，將當次收益分配金額以匯款方 式給付予要保人；如當次收益分配金額未達新臺幣一千元或要保人未提供符 合本公司規定之匯款帳號者，本公司應於實際收受收益分配或撥回資產之日 後次一個資產評價日，將當次收益分配金額投資配置於配息停泊標的。但因 可歸責於本公司之事由致未於實際收受收益分配或撥回資產之日起算十日內 給付者，應加計利息給付，其利息按給付當時本保單辦理保險單借款之利率 與民法第二百零三條法定週年利率兩者取其大之值以日單利計算。 二、轉投入原投資標的（指投資標的名稱有標明轉投入之投資標的）：本公司應 於實際收受收益分配或撥回資產之日後次一個資產評價日，將該收益分配或 撥回資產金額投資配置於原投資標的。 但若本契約於收益實際分配日或撥回資產日已終止、停效、收益實際分配日或撥 回資產日已超過有效期間屆滿日或其他原因造成無法按前項第二款投資該標的時 ，本公司將改以支票或匯款方式給付予要保人。 本公司得報主管機關調整第二項第一款之收益分配或撥回資產金額標準，並應於 三個月前通知要保人；但若屬對保戶有利之調降，則不在此限。",
+    "base_definition": "本契約所提供之投資標的如有收益分配或自投資資產中撥回資產時，本公司應以該投資標的之收益或撥回資產總額，依本契約所持該投資標的價值占本公司投資 該標的總價值之比例將該收益分配或撥回資產予要保人。但若有依法應先扣繳之 稅捐時，本公司應先扣除之。 依前項分配予要保人之收益分配或撥回資產，本公司以下列方式給付： 一、以現金給付（指投資標的名稱有標明現金撥回之投資標的）：投資機構以現 金給付收益分配或撥回資產予本公司時，若實際收受各投資標的收益分配或 撥回資產之日為同一日，本公司將合併計算當次收益分配金額。本公司應於 實際收受收益分配或撥回資產之日後十日內，將當次收益分配金額以匯款方 式給付予要保人；如當次收益分配金額未達新臺幣一千元或要保人未提供符 合本公司規定之匯款帳號者，本公司應於實際收受收益分配或撥回資產之日 後次一個資產評價日，將當次收益分配金額投資配置於配息停泊標的。但因 可歸責於本公司之事由致未於實際收受收益分配或撥回資產之日起算十日內 給付者，應加計利息給付，其利息按給付當時本保單辦理保險單借款之利率 與民法第二百零三條法定週年利率兩者取其大之值以日單利計算。 二、轉投入原投資標的（指投資標的名稱有標明轉投入之投資標的）：本公司應 於實際收受收益分配或撥回資產之日後次一個資產評價日，將該收益分配或 撥回資產金額投資配置於原投資標的。 但若本契約於收益實際分配日或撥回資產日已終止、停效、收益實際分配日或撥 回資產日已超過有效期間屆滿日或其他原因造成無法按前項第二款投資該標的時 ，本公司將改以支票或匯款方式給付予要保人。 本公司得報主管機關調整第二項第一款之收益分配或撥回資產金額標準，並應於 三個月前通知要保人；但若屬對保戶有利之調降，則不在此限。",
+    "logic_structure": {
+      "trigger_condition": "INVESTMENT_OPTION.has_income_distribution OR INVESTMENT_OPTION.has_asset_return",
+      "effective_condition": "POLICY_EFFECTIVE_PERIOD",
+      "termination_condition": "NOT POLICY_IN_FORCE_STATUS == 'ACTIVE' OR ACTUAL_DISTRIBUTION_CONFIRMATION_DATE > POLICY_EXPIRATION_DATE",
+      "formula_template": {
+        "syntax_type": "DSL",
+        "expression": "LET calculated_amount = (TOTAL_INCOME_OR_ASSET_RETURN * (INVESTMENT_OPTION_VALUE / TOTAL_COMPANY_INVESTMENT_VALUE_IN_OPTION)) - TAX_WITHHOLDING_AMOUNT IF (INVESTMENT_OPTION.has_cash_distribution_flag) THEN IF (CURRENT_DISTRIBUTION_AMOUNT >= THRESHOLD_NTD_1000 AND POLICYHOLDER.has_valid_bank_account) THEN RETURN {\"type\": \"CASH_PAYMENT\", \"amount\": calculated_amount} ELSE RETURN {\"type\": \"REINVESTMENT\", \"option\": \"DIVIDEND_PARKING_OPTION\", \"amount\": calculated_amount} ENDIF ELSE IF (INVESTMENT_OPTION.has_reinvestment_flag) THEN IF (POLICY_IN_FORCE_STATUS == \"ACTIVE\" AND ACTUAL_DISTRIBUTION_CONFIRMATION_DATE <= POLICY_EXPIRATION_DATE) THEN RETURN {\"type\": \"REINVESTMENT\", \"option\": \"INVESTMENT_OPTION\", \"amount\": calculated_amount} ELSE RETURN {\"type\": \"CASH_PAYMENT_FALLBACK\", \"amount\": calculated_amount} ENDIF ELSE RETURN {\"type\": \"NO_ACTION\", \"amount\": 0} ENDIF"
+      },
+      "python_logic_eval": "(lambda calculated_amount: {\"type\": \"CASH_PAYMENT\", \"amount\": calculated_amount} if INVESTMENT_OPTION.has_cash_distribution_flag and CURRENT_DISTRIBUTION_AMOUNT >= THRESHOLD_NTD_1000 and POLICYHOLDER.has_valid_bank_account else {\"type\": \"REINVESTMENT\", \"option\": \"DIVIDEND_PARKING_OPTION\", \"amount\": calculated_amount} if INVESTMENT_OPTION.has_cash_distribution_flag else {\"type\": \"REINVESTMENT\", \"option\": \"INVESTMENT_OPTION\", \"amount\": calculated_amount} if INVESTMENT_OPTION.has_reinvestment_flag and POLICY_IN_FORCE_STATUS == \"ACTIVE\" and ACTUAL_DISTRIBUTION_CONFIRMATION_DATE <= POLICY_EXPIRATION_DATE else {\"type\": \"CASH_PAYMENT_FALLBACK\", \"amount\": calculated_amount} if INVESTMENT_OPTION.has_reinvestment_flag else {\"type\": \"NO_ACTION\", \"amount\": 0})((TOTAL_INCOME_OR_ASSET_RETURN * (INVESTMENT_OPTION_VALUE / TOTAL_COMPANY_INVESTMENT_VALUE_IN_OPTION)) - TAX_WITHHOLDING_AMOUNT)",
+      "is_recursive": true,
+      "payment_period": {
+        "frequency": "ONCE"
+      },
+      "conditions": [
+        {
+          "condition_type": "OTHER",
+          "description": "若因可歸責於本公司之事由導致延遲給付，應加計利息。",
+          "formula_ref": "CURRENT_DISTRIBUTION_AMOUNT * max(POLICY_LOAN_INTEREST_RATE, CIVIL_CODE_STATUTORY_ANNUAL_INTEREST_RATE) * DAILY_SIMPLE_INTEREST_FACTOR * DAYS_OVERDUE"
+        },
+        {
+          "condition_type": "LIMITATION",
+          "description": "給付時應先扣除保險單借款本息、欠繳之保險成本、保單帳戶管理費及保單管理費等未償款項及應付利息。",
+          "formula_ref": "PAYMENT_AMOUNT - (POLICY_LOAN_PRINCIPAL_AND_INTEREST + OVERDUE_COST_OF_INSURANCE + POLICY_ACCOUNT_MANAGEMENT_FEE + POLICY_MANAGEMENT_FEE + ACCRUED_INTEREST_ON_UNPAID_AMOUNTS)"
+        }
+      ]
+    },
+    "parameters": [
+      {
+        "param_name": "TOTAL_INCOME_OR_ASSET_RETURN",
+        "display_name": "收益或撥回資產總額",
+        "param_description": "投資標的之收益或撥回資產總額，由投資機構交付給本公司。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "INVESTMENT_OPTION_VALUE",
+        "display_name": "投資標的價值",
+        "param_description": "以原投資標的計價幣別為單位基準，單位數乘以單位淨值計算所得之值。",
+        "source_type": "DEFINITION_ALIGN",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "INVESTMENT_OPTION_UNITS",
+          "INVESTMENT_OPTION_UNIT_NET_VALUE"
+        ],
+        "formula_definition": "INVESTMENT_OPTION_UNITS * INVESTMENT_OPTION_UNIT_NET_VALUE"
+      },
+      {
+        "param_name": "TOTAL_COMPANY_INVESTMENT_VALUE_IN_OPTION",
+        "display_name": "本公司投資該標的總價值",
+        "param_description": "本公司投資該投資標的之總價值，用於計算要保人所持比例。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "TAX_WITHHOLDING_AMOUNT",
+        "display_name": "稅捐",
+        "param_description": "依法應先扣繳之稅捐金額。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "TOTAL_INCOME_OR_ASSET_RETURN"
+        ]
+      },
+      {
+        "param_name": "CURRENT_DISTRIBUTION_AMOUNT",
+        "display_name": "當次收益分配金額",
+        "param_description": "本公司於收益實際確認日所計算出，當日本契約各投資標的之收益分配金額和撥回資產金額總和。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "TOTAL_INCOME_OR_ASSET_RETURN",
+          "INVESTMENT_OPTION_VALUE",
+          "TOTAL_COMPANY_INVESTMENT_VALUE_IN_OPTION",
+          "TAX_WITHHOLDING_AMOUNT"
+        ],
+        "formula_definition": "(TOTAL_INCOME_OR_ASSET_RETURN * (INVESTMENT_OPTION_VALUE / TOTAL_COMPANY_INVESTMENT_VALUE_IN_OPTION)) - TAX_WITHHOLDING_AMOUNT"
+      },
+      {
+        "param_name": "INVESTMENT_OPTION",
+        "display_name": "投資標的",
+        "param_description": "本契約提供要保人選擇以累積保單帳戶價值之投資工具。",
+        "source_type": "DEFINITION_ALIGN",
+        "data_type": "STRING",
+        "value_binding": {
+          "binding_type": "USER_INPUT"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "INVESTMENT_OPTION_HAS_CASH_DISTRIBUTION",
+        "display_name": "投資標的是否有現金給付特性",
+        "param_description": "指示所選投資標的是否有現金給付收益分配或撥回資產的特性。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "BOOLEAN",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "INVESTMENT_OPTION"
+        ]
+      },
+      {
+        "param_name": "THRESHOLD_NTD_1000",
+        "display_name": "新臺幣一千元",
+        "param_description": "收益分配金額的現金給付門檻。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "INTEGER",
+        "value_binding": {
+          "binding_type": "POLICY_FIXED",
+          "fixed_value": "1000"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "HAS_VALID_BANK_ACCOUNT",
+        "display_name": "要保人是否提供有效匯款帳號",
+        "param_description": "要保人是否提供符合本公司規定之匯款帳號。",
+        "source_type": "USER_INPUT",
+        "data_type": "BOOLEAN",
+        "value_binding": {
+          "binding_type": "USER_INPUT"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "DIVIDEND_PARKING_OPTION",
+        "display_name": "配息停泊標的",
+        "param_description": "當次收益分配金額不符合現金給付條件時，用以配置當次收益分配金額之投資標的。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "STRING",
+        "value_binding": {
+          "binding_type": "POLICY_FIXED",
+          "fixed_value": "DEFAULT_DIVIDEND_PARKING_OPTION_CODE"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "INVESTMENT_OPTION_HAS_REINVESTMENT",
+        "display_name": "投資標的是否有轉投入特性",
+        "param_description": "指示所選投資標的是否有轉投入原投資標的收益分配或撥回資產的特性。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "BOOLEAN",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "INVESTMENT_OPTION"
+        ]
+      },
+      {
+        "param_name": "POLICY_IN_FORCE_STATUS",
+        "display_name": "本契約仍有效",
+        "param_description": "本契約的有效狀態。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "STRING",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "ACTUAL_DISTRIBUTION_CONFIRMATION_DATE",
+        "display_name": "收益實際確認日",
+        "param_description": "本公司收受投資機構所交付之投資標的收益或撥回資產，並確認當次收益分配金額及其是否達收益分配金額標準之日。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "DATE",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "POLICY_EXPIRATION_DATE",
+        "display_name": "有效期間屆滿日",
+        "param_description": "本契約的有效期間屆滿日期。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "DATE",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "POLICY_EFFECTIVE_PERIOD",
+        "display_name": "本契約有效期間",
+        "param_description": "指示本契約是否在有效期間內。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "BOOLEAN",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "POLICY_LOAN_INTEREST_RATE",
+        "display_name": "保險單借款之利率",
+        "param_description": "本保單辦理保險單借款之利率。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "POLICY_FIXED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "CIVIL_CODE_STATUTORY_ANNUAL_INTEREST_RATE",
+        "display_name": "民法第二百零三條法定週年利率",
+        "param_description": "民法第二百零三條所定之法定週年利率。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "POLICY_FIXED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "DAILY_INTEREST_FACTOR",
+        "display_name": "日單利因子",
+        "param_description": "用於計算日單利的因子，通常為 1/365。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "POLICY_FIXED",
+          "fixed_value": "0.002739726"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "DAYS_OVERDUE",
+        "display_name": "延遲給付天數",
+        "param_description": "因可歸責於本公司之事由導致延遲給付的天數。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "INTEGER",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "ACTUAL_DISTRIBUTION_CONFIRMATION_DATE",
+          "PAYMENT_DATE"
+        ]
+      },
+      {
+        "param_name": "PAYMENT_DATE",
+        "display_name": "給付日",
+        "param_description": "實際給付收益分配或撥回資產的日期。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "DATE",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "PAYMENT_AMOUNT",
+        "display_name": "最終給付金額 (扣除前)",
+        "param_description": "經計算後，在扣除未償款項前的給付金額，可能包含延遲利息。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "CURRENT_DISTRIBUTION_AMOUNT",
+          "POLICY_LOAN_INTEREST_RATE",
+          "CIVIL_CODE_STATUTORY_ANNUAL_INTEREST_RATE",
+          "DAILY_INTEREST_FACTOR",
+          "DAYS_OVERDUE"
+        ],
+        "formula_definition": "CURRENT_DISTRIBUTION_AMOUNT + (CURRENT_DISTRIBUTION_AMOUNT * max(POLICY_LOAN_INTEREST_RATE, CIVIL_CODE_STATUTORY_ANNUAL_INTEREST_RATE) * DAILY_INTEREST_FACTOR * DAYS_OVERDUE)"
+      },
+      {
+        "param_name": "POLICY_LOAN_PRINCIPAL_AND_INTEREST",
+        "display_name": "保險單借款本息",
+        "param_description": "要保人未償還的保險單借款本金及利息。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "OVERDUE_COST_OF_INSURANCE",
+        "display_name": "欠繳之保險成本",
+        "param_description": "要保人欠繳的保險成本。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "POLICY_ACCOUNT_MANAGEMENT_FEE",
+        "display_name": "保單帳戶管理費",
+        "param_description": "因本契約簽訂及運作所產生並自保單帳戶價值中扣除之費用。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "POLICY_MANAGEMENT_FEE",
+        "display_name": "保單管理費",
+        "param_description": "為維持本契約每月管理所產生且自保單帳戶價值中扣除之費用。",
+        "source_type": "DEFINITION_ALIGN",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "ACCRUED_INTEREST_ON_UNPAID_AMOUNTS",
+        "display_name": "應付利息",
+        "param_description": "對於未償款項應支付的利息。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "POLICY_LOAN_PRINCIPAL_AND_INTEREST",
+          "OVERDUE_COST_OF_INSURANCE",
+          "POLICY_ACCOUNT_MANAGEMENT_FEE",
+          "POLICY_MANAGEMENT_FEE"
+        ]
+      },
+      {
+        "param_name": "INVESTMENT_OPTION_UNITS",
+        "display_name": "投資標的單位數",
+        "param_description": "本契約項下各該投資標的之單位數。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "INVESTMENT_OPTION_UNIT_NET_VALUE",
+        "display_name": "投資標的單位淨值",
+        "param_description": "投資標的於資產評價日實際交易所採用之每單位淨資產價值或市場價值。",
+        "source_type": "DEFINITION_ALIGN",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "INVESTMENT_OPTION_HAS_INCOME_DISTRIBUTION",
+        "display_name": "投資標的是否有收益分配",
+        "param_description": "指示所選投資標的是否有收益分配。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "BOOLEAN",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "INVESTMENT_OPTION"
+        ]
+      },
+      {
+        "param_name": "INVESTMENT_OPTION_HAS_ASSET_RETURN",
+        "display_name": "投資標的是否有撥回資產",
+        "param_description": "指示所選投資標的是否有撥回資產。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "BOOLEAN",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "INVESTMENT_OPTION"
+        ]
+      }
+    ],
+    "synonym_map": [
+      "投資標的收益分配或提解返還/給付",
+      "投資標的收益分配或撥回資產(現金給付)"
+    ],
+    "payment_type": "RECURSIVE_INSTALLMENT"
+  },
+  {
+    "type": "理賠項目定義",
+    "code": "PARTIAL_WITHDRAWAL_POLICY_ACCOUNT_VALUE",
+    "display_name": "保單帳戶價值的部分提領",
+    "level": "BASE",
+    "classification": "EXISTING_MATCH",
+    "description": "本契約有效期間內，如累積有保單帳戶價值時，要保人得向本公司提出申請部分提領其保單帳戶價值， 但每次部分提領之保單帳戶價值不得低於參佰美元，且部分提領後的保單帳戶價值不得低於參佰美元。 要保人申請部分提領時，按下列方式處理： 一、要保人必須在申請文件中指明部分提領的投資標的單位數或比例。 二、本公司以收到前款申請文件之日為基準日，依附表三「評價時點一覽表」贖回評價時點所約定淨 值資產評價日之投資標的單位淨值計算部分提領的保單帳戶價值，並以該資產評價日投資標的單 位淨值為基準，計算剩餘之投資單位及保單帳戶價值。 三、本公司將於收到要保人之申請文件後一個月內，支付部分提領的金額扣除部分提領之作業費及部 分提領費用後之餘額。逾期本公司應加計利息給付，其利息按年利率一分計算。 前項部分提領之作業費及部分提領費用如附表一「本公司收取之相關費用一覽表」。 甲型適用： 若要保人申請部分提領時，本公司將自動調整本契約基本保額，其方式如下： 一、若申請當時基本保額大於或等於申請當時保單帳戶價值時，則調整後基本保額為申請當時基本保 額扣除申請減少金額之餘額。 二、若申請當時基本保額小於申請當時保單帳戶價值時，則調整後基本保險額為下列金額之較小者： (一)申請當時基本保額。 (二)申請當時保單帳戶價值扣除申請減少金額之餘額。 乙型適用： 若要保人申請部分提領者，本契約之基本保額不受影響。 要保人申請部分提領時，若有保險單借款本息尚未償還，且未償還本金金額對應剩餘保單帳戶價值之 比率，已逾 第三十五條第一項所定範圍者，本公司將再依序扣除保險單借款利息及本金至符合前述所 定範圍後，就餘額給付要保人。",
+    "base_definition": "本契約有效期間內，如累積有保單帳戶價值時，要保人得向本公司提出申請部分提領其保單帳戶價值， 但每次部分提領之保單帳戶價值不得低於參佰美元，且部分提領後的保單帳戶價值不得低於參佰美元。 要保人申請部分提領時，按下列方式處理： 一、要保人必須在申請文件中指明部分提領的投資標的單位數或比例。 二、本公司以收到前款申請文件之日為基準日，依附表三「評價時點一覽表」贖回評價時點所約定淨 值資產評價日之投資標的單位淨值計算部分提領的保單帳戶價值，並以該資產評價日投資標的單 位淨值為基準，計算剩餘之投資單位及保單帳戶價值。 三、本公司將於收到要保人之申請文件後一個月內，支付部分提領的金額扣除部分提領之作業費及部 分提領費用後之餘額。逾期本公司應加計利息給付，其利息按年利率一分計算。 前項部分提領之作業費及部分提領費用如附表一「本公司收取之相關費用一覽表」。 甲型適用： 若要保人申請部分提領時，本公司將自動調整本契約基本保額，其方式如下： 一、若申請當時基本保額大於或等於申請當時保單帳戶價值時，則調整後基本保額為申請當時基本保 額扣除申請減少金額之餘額。 二、若申請當時基本保額小於申請當時保單帳戶價值時，則調整後基本保險額為下列金額之較小者： (一)申請當時基本保額。 (二)申請當時保單帳戶價值扣除申請減少金額之餘額。 乙型適用： 若要保人申請部分提領者，本契約之基本保額不受影響。 要保人申請部分提領時，若有保險單借款本息尚未償還，且未償還本金金額對應剩餘保單帳戶價值之 比率，已逾 第三十五條第一項所定範圍者，本公司將再依序扣除保險單借款利息及本金至符合前述所 定範圍後，就餘額給付要保人。",
+    "logic_structure": {
+      "trigger_condition": "POLICY_EFFECTIVE_PERIOD is true AND POLICY_ACCOUNT_VALUE > 0 AND POLICY_HOLDER applies for PARTIAL_WITHDRAWAL",
+      "effective_condition": "POLICY_EFFECTIVE_PERIOD is true",
+      "termination_condition": "POLICY_EFFECTIVE_PERIOD is false",
+      "formula_template": {
+        "syntax_type": "DSL",
+        "expression": "LET net_payment_after_fees = PARTIAL_WITHDRAWAL_AMOUNT - PARTIAL_WITHDRAWAL_PROCESSING_FEE - PARTIAL_WITHDRAWAL_FEE LET total_unpaid_deductions = POLICY_LOAN_PRINCIPAL_AND_INTEREST + GRACE_PERIOD_OVERDUE_COST_OF_INSURANCE + POLICY_MANAGEMENT_FEE + UNPAID_AMOUNTS + INTEREST_PAYABLE LET final_payment_before_overdue_interest = net_payment_after_fees - total_unpaid_deductions IF (PAYMENT_OVERDUE) THEN final_payment_before_overdue_interest * (1 + 0.01 * DAYS_OVERDUE / 365) ELSE final_payment_before_overdue_interest ENDIF"
+      },
+      "python_logic_eval": "initial_withdrawal_amount = PARTIAL_WITHDRAWAL_AMOUNT; net_payment_after_fees = initial_withdrawal_amount - PARTIAL_WITHDRAWAL_PROCESSING_FEE - PARTIAL_WITHDRAWAL_FEE; total_unpaid_deductions = POLICY_LOAN_PRINCIPAL_AND_INTEREST + GRACE_PERIOD_OVERDUE_COST_OF_INSURANCE + POLICY_MANAGEMENT_FEE + UNPAID_AMOUNTS + INTEREST_PAYABLE; final_payment_before_overdue_interest = net_payment_after_fees - total_unpaid_deductions; result = final_payment_before_overdue_interest * (1 + 0.01 * DAYS_OVERDUE / 365) if PAYMENT_OVERDUE else final_payment_before_overdue_interest; return result",
+      "is_recursive": false,
+      "payment_period": {
+        "frequency": "ONCE",
+        "waiting_period": "0 days",
+        "coverage_period": "POLICY_EFFECTIVE_PERIOD",
+        "max_period": "POLICY_EFFECTIVE_PERIOD",
+        "max_payment_count": 999999
+      },
+      "conditions": [
+        {
+          "condition_type": "MIN_LIMIT",
+          "description": "每次部分提領之保單帳戶價值不得低於三百美元",
+          "formula_ref": "EACH_PARTIAL_WITHDRAWAL_POLICY_ACCOUNT_VALUE >= THREE_HUNDRED_USD"
+        },
+        {
+          "condition_type": "MIN_LIMIT",
+          "description": "部分提領後的保單帳戶價值不得低於三百美元",
+          "formula_ref": "POLICY_ACCOUNT_VALUE_AFTER_PARTIAL_WITHDRAWAL >= THREE_HUNDRED_USD"
+        },
+        {
+          "condition_type": "OTHER",
+          "description": "若有保險單借款本息尚未償還，且未償還本金金額對應剩餘保單帳戶價值之比率，已逾第三十五條第一項所定範圍者，本公司將再依序扣除保險單借款利息及本金至符合前述所定範圍後，就餘額給付要保人。",
+          "formula_ref": "UNPAID_PRINCIPAL_AMOUNT / REMAINING_POLICY_ACCOUNT_VALUE > THIRTY_FIFTH_ARTICLE_FIRST_PARAGRAPH_RATIO_LIMIT"
+        }
+      ]
+    },
+    "parameters": [
+      {
+        "param_name": "POLICY_EFFECTIVE_PERIOD",
+        "display_name": "本契約有效期間",
+        "param_description": "本契約有效期間",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "BOOLEAN",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "POLICY_ACCOUNT_VALUE",
+        "display_name": "保單帳戶價值",
+        "param_description": "保單帳戶價值",
+        "source_type": "DEFINITION_ALIGN",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "POLICY_HOLDER",
+        "display_name": "要保人",
+        "param_description": "要保人",
+        "source_type": "DEFINITION_ALIGN",
+        "data_type": "STRING",
+        "value_binding": {
+          "binding_type": "USER_INPUT"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "PARTIAL_WITHDRAWAL_AMOUNT",
+        "display_name": "部分提領的金額",
+        "param_description": "要保人申請部分提領的金額",
+        "source_type": "USER_INPUT",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "USER_INPUT"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "PARTIAL_WITHDRAWAL_PROCESSING_FEE",
+        "display_name": "部分提領之作業費",
+        "param_description": "部分提領之作業費，依附表一「本公司收取之相關費用一覽表」規定",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "POLICY_FIXED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "PARTIAL_WITHDRAWAL_FEE",
+        "display_name": "部分提領費用",
+        "param_description": "部分提領費用，依附表一「本公司收取之相關費用一覽表」規定",
+        "source_type": "DEFINITION_ALIGN",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "POLICY_FIXED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "POLICY_LOAN_PRINCIPAL_AND_INTEREST",
+        "display_name": "保險單借款本息",
+        "param_description": "保險單借款本金與利息的總和",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "POLICY_LOAN_PRINCIPAL",
+          "POLICY_LOAN_INTEREST"
+        ]
+      },
+      {
+        "param_name": "GRACE_PERIOD_OVERDUE_COST_OF_INSURANCE",
+        "display_name": "寬限期間欠繳之保險成本",
+        "param_description": "寬限期間內尚未繳納的保險成本",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "POLICY_MANAGEMENT_FEE",
+        "display_name": "保單管理費",
+        "param_description": "保單管理費，依附表一「本公司收取之相關費用一覽表」規定",
+        "source_type": "DEFINITION_ALIGN",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "POLICY_FIXED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "UNPAID_AMOUNTS",
+        "display_name": "未償款項",
+        "param_description": "其他尚未償還的款項",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "INTEREST_PAYABLE",
+        "display_name": "應付利息",
+        "param_description": "其他應付的利息",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "PAYMENT_OVERDUE",
+        "display_name": "給付是否逾期",
+        "param_description": "判斷給付是否已逾期一個月",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "BOOLEAN",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "CURRENT_DATE",
+          "APPLICATION_DOCUMENTS_RECEIPT_DATE",
+          "ONE_MONTH_IN_DAYS"
+        ],
+        "formula_definition": "CURRENT_DATE > (APPLICATION_DOCUMENTS_RECEIPT_DATE + ONE_MONTH_IN_DAYS)"
+      },
+      {
+        "param_name": "DAYS_OVERDUE",
+        "display_name": "逾期天數",
+        "param_description": "給付逾期的天數",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "INTEGER",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "CURRENT_DATE",
+          "APPLICATION_DOCUMENTS_RECEIPT_DATE",
+          "ONE_MONTH_IN_DAYS"
+        ],
+        "formula_definition": "MAX(0, DAYS_BETWEEN(CURRENT_DATE, (APPLICATION_DOCUMENTS_RECEIPT_DATE + ONE_MONTH_IN_DAYS)))"
+      },
+      {
+        "param_name": "ANNUAL_INTEREST_RATE_ONE_PERCENT",
+        "display_name": "年利率一分",
+        "param_description": "逾期給付的年利率，為百分之一 (1%)",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "POLICY_FIXED",
+          "fixed_value": "0.01"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "DAYS_IN_YEAR",
+        "display_name": "一年天數",
+        "param_description": "計算年利率時使用的一年天數",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "INTEGER",
+        "value_binding": {
+          "binding_type": "POLICY_FIXED",
+          "fixed_value": "365"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "THREE_HUNDRED_USD",
+        "display_name": "參佰美元",
+        "param_description": "條款中規定的三百美元最低限制",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "INTEGER",
+        "value_binding": {
+          "binding_type": "POLICY_FIXED",
+          "fixed_value": "300"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "POLICY_ACCOUNT_VALUE_AFTER_PARTIAL_WITHDRAWAL",
+        "display_name": "部分提領後的保單帳戶價值",
+        "param_description": "部分提領操作完成後的保單帳戶價值",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "POLICY_ACCOUNT_VALUE",
+          "PARTIAL_WITHDRAWAL_AMOUNT"
+        ],
+        "formula_definition": "POLICY_ACCOUNT_VALUE - PARTIAL_WITHDRAWAL_AMOUNT"
+      },
+      {
+        "param_name": "UNPAID_PRINCIPAL_AMOUNT",
+        "display_name": "未償還本金金額",
+        "param_description": "尚未償還的保險單借款本金金額",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "POLICY_LOAN_PRINCIPAL"
+        ]
+      },
+      {
+        "param_name": "REMAINING_POLICY_ACCOUNT_VALUE",
+        "display_name": "剩餘保單帳戶價值",
+        "param_description": "部分提領後，用於計算保險單借款比率的剩餘保單帳戶價值",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "POLICY_ACCOUNT_VALUE",
+          "PARTIAL_WITHDRAWAL_AMOUNT"
+        ],
+        "formula_definition": "POLICY_ACCOUNT_VALUE - PARTIAL_WITHDRAWAL_AMOUNT"
+      },
+      {
+        "param_name": "ARTICLE_35_PARAGRAPH_1_RATIO_LIMIT",
+        "display_name": "第三十五條第一項所定範圍之比率限制",
+        "param_description": "依第三十五條第一項規定，未償還本金金額對應剩餘保單帳戶價值之比率上限",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "POLICY_FIXED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "APPLICATION_DOCUMENTS_RECEIPT_DATE",
+        "display_name": "收到申請文件之日",
+        "param_description": "本公司收到要保人申請文件之日期",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "DATE",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "CURRENT_DATE",
+        "display_name": "當前系統日期",
+        "param_description": "系統當前的日期",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "DATE",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "ONE_MONTH_IN_DAYS",
+        "display_name": "一個月的日數",
+        "param_description": "用於計算逾期給付的一個月天數",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "INTEGER",
+        "value_binding": {
+          "binding_type": "POLICY_FIXED",
+          "fixed_value": "30"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "POLICY_LOAN_PRINCIPAL",
+        "display_name": "保險單借款本金",
+        "param_description": "保險單借款的本金金額",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "POLICY_LOAN_INTEREST",
+        "display_name": "保險單借款利息",
+        "param_description": "保險單借款的利息金額",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "INSURANCE_TYPE",
+        "display_name": "保險型態",
+        "param_description": "要保人選擇的保險型態 (甲型或乙型)",
+        "source_type": "USER_INPUT",
+        "data_type": "STRING",
+        "value_binding": {
+          "binding_type": "USER_INPUT"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "BASIC_SUM_INSURED_AT_APPLICATION",
+        "display_name": "申請當時基本保額",
+        "param_description": "要保人申請部分提領時的基本保額",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "BASIC_SUM_INSURED"
+        ]
+      },
+      {
+        "param_name": "POLICY_ACCOUNT_VALUE_AT_APPLICATION",
+        "display_name": "申請當時保單帳戶價值",
+        "param_description": "要保人申請部分提領時的保單帳戶價值",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "POLICY_ACCOUNT_VALUE"
+        ]
+      },
+      {
+        "param_name": "ADJUSTED_BASIC_SUM_INSURED",
+        "display_name": "調整後基本保額",
+        "param_description": "甲型保單部分提領後調整的基本保額",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "INSURANCE_TYPE",
+          "BASIC_SUM_INSURED_AT_APPLICATION",
+          "POLICY_ACCOUNT_VALUE_AT_APPLICATION",
+          "PARTIAL_WITHDRAWAL_AMOUNT"
+        ],
+        "formula_definition": "IF (INSURANCE_TYPE == 'TYPE_A') THEN IF (BASIC_SUM_INSURED_AT_APPLICATION >= POLICY_ACCOUNT_VALUE_AT_APPLICATION) THEN ADJUSTED_BASIC_SUM_INSURED = BASIC_SUM_INSURED_AT_APPLICATION - PARTIAL_WITHDRAWAL_AMOUNT ELSE ADJUSTED_BASIC_SUM_INSURED = MIN(BASIC_SUM_INSURED_AT_APPLICATION, POLICY_ACCOUNT_VALUE_AT_APPLICATION - PARTIAL_WITHDRAWAL_AMOUNT) ENDIF ELSE ADJUSTED_BASIC_SUM_INSURED = BASIC_SUM_INSURED_AT_APPLICATION ENDIF"
+      }
+    ],
+    "synonym_map": [
+      "保單帳戶價值部分提領",
+      "部分投資終止返還金",
+      "部分提領",
+      "部分提領金",
+      "部分提領金額"
+    ],
+    "payment_type": "REFUND"
+  },
+  {
+    "type": "理賠項目定義",
+    "code": "POLICY_ACCOUNT_VALUE_REFUND",
+    "display_name": "保單帳戶價值之返還",
+    "level": "BASE",
+    "classification": "EXISTING_MATCH",
+    "description": "本公司將本契約項下的保單帳戶價值，返還予應得之人，本契約項下之保單帳戶即為結清。依本條約定應給付保單帳戶價值者，均以受益人檢齊申請身故保險金或喪葬費用保險金之所須文件送達本公司之日為基準日，依附表三「評價時點一覽表」贖回評價時點所約定的淨值資產評價日之投資標的價值計算。",
+    "base_definition": "本公司將本契約項下的保單帳戶價值，返還予應得之人，本契約項下之保單帳戶即為結清。依本條約定應給付保單帳戶價值者，均以受益人檢齊申請身故保險金或喪葬費用保險金之所須文件送達本公司之日為基準日，依附表三「評價時點一覽表」贖回評價時點所約定的淨值資產評價日之投資標的價值計算。",
+    "logic_structure": {
+      "trigger_condition": "發生保單終止、停效、有效期間屆滿、被保險人身故、完全失能，或因除外責任免給付保險金時",
+      "effective_condition": "POLICY_EFFECTIVE_PERIOD",
+      "termination_condition": "POLICY_TERMINATION_IMMEDIATELY",
+      "formula_template": {
+        "syntax_type": "DSL",
+        "expression": "POLICY_ACCOUNT_VALUE - (IF(RELEVANT_TAX_LAWS_APPLY) THEN WITHHOLDING_TAX ELSE 0 ENDIF) - (IF(UNPAID_AMOUNTS > 0 OR INTEREST_PAYABLE > 0) THEN (UNPAID_AMOUNTS + INTEREST_PAYABLE) ELSE 0 ENDIF)"
+      },
+      "python_logic_eval": "POLICY_ACCOUNT_VALUE - (WITHHOLDING_TAX if RELEVANT_TAX_LAWS_APPLY else 0) - (UNPAID_AMOUNTS + INTEREST_PAYABLE if UNPAID_AMOUNTS > 0 or INTEREST_PAYABLE > 0 else 0)",
+      "is_recursive": false,
+      "payment_period": {
+        "frequency": "ONCE",
+        "max_payment_count": 1
+      },
+      "conditions": [
+        {
+          "condition_type": "OTHER",
+          "description": "給付時，若要保人有保險單借款本息、寬限期間欠繳之保險成本、保單管理費等未償款項，本公司得先抵銷上述欠款及扣除其應付利息後給付餘額。",
+          "formula_ref": "UNPAID_AMOUNTS + INTEREST_PAYABLE"
+        },
+        {
+          "condition_type": "OTHER",
+          "description": "依相關稅法規定，應扣繳稅捐。",
+          "formula_ref": "WITHHOLDING_TAX"
+        },
+        {
+          "condition_type": "OTHER",
+          "description": "若因投資標的特殊情事導致暫停計算單位淨值或贖回價格，本公司應自該資產評價日起三十日內給付保單帳戶價值。",
+          "formula_ref": "PAYMENT_WITHIN_30_DAYS_AFTER_ASSET_VALUATION_DATE"
+        },
+        {
+          "condition_type": "OTHER",
+          "description": "若因保單終止、停效、有效期間屆滿或其他原因造成無法投資標的，本公司應於實際分配日起算十五日內返還保單帳戶價值。",
+          "formula_ref": "PAYMENT_WITHIN_15_DAYS_AFTER_ACTUAL_DISTRIBUTION_DATE"
+        }
+      ]
+    },
+    "parameters": [
+      {
+        "param_name": "POLICY_ACCOUNT_VALUE",
+        "display_name": "保單帳戶價值",
+        "param_description": "以新臺幣為單位基準，其價值係依本契約所有投資標的之投資標的價值總和加上尚未投入投資標的之金額；但於首次投資配置日前，係指依第十二款方式計算至計算日之金額。對於此給付項目，此值以基準日計算。",
+        "source_type": "DEFINITION_ALIGN",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "INVESTMENT_OPTION_VALUE",
+          "UNINVESTED_AMOUNT",
+          "INITIAL_INVESTMENT_ALLOCATION_AMOUNT",
+          "INITIAL_INVESTMENT_ALLOCATION_DATE",
+          "CURRENT_DATE"
+        ],
+        "formula_definition": "IF CURRENT_DATE < INITIAL_INVESTMENT_ALLOCATION_DATE THEN INITIAL_INVESTMENT_ALLOCATION_AMOUNT ELSE SUM(INVESTMENT_OPTION_VALUE) + UNINVESTED_AMOUNT ENDIF"
+      },
+      {
+        "param_name": "RELEVANT_TAX_LAWS_APPLY",
+        "display_name": "相關稅法是否適用",
+        "param_description": "指示是否依相關稅法規定應扣繳稅捐。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "BOOLEAN",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "WITHHOLDING_TAX",
+        "display_name": "扣繳稅捐",
+        "param_description": "依相關稅法規定應扣繳之稅捐金額。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "POLICY_ACCOUNT_VALUE",
+          "TAX_RATE",
+          "RELEVANT_TAX_LAWS_APPLY"
+        ],
+        "formula_definition": "IF RELEVANT_TAX_LAWS_APPLY THEN POLICY_ACCOUNT_VALUE * TAX_RATE ELSE 0 ENDIF"
+      },
+      {
+        "param_name": "UNPAID_AMOUNTS",
+        "display_name": "未償款項",
+        "param_description": "要保人未償還之保險單借款本息、寬限期間欠繳之保險成本、保單管理費等款項總和。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "POLICY_LOAN_PRINCIPAL_AND_INTEREST",
+          "OVERDUE_COST_OF_INSURANCE_DURING_GRACE_PERIOD",
+          "UNPAID_POLICY_MANAGEMENT_FEE"
+        ],
+        "formula_definition": "POLICY_LOAN_PRINCIPAL_AND_INTEREST + OVERDUE_COST_OF_INSURANCE_DURING_GRACE_PERIOD + UNPAID_POLICY_MANAGEMENT_FEE"
+      },
+      {
+        "param_name": "INTEREST_PAYABLE",
+        "display_name": "應付利息",
+        "param_description": "因未償款項而應支付的利息。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "UNPAID_AMOUNTS",
+          "POLICY_LOAN_INTEREST_RATE",
+          "INTEREST_CALCULATION_METHOD",
+          "DAYS_OVERDUE"
+        ],
+        "formula_definition": "UNPAID_AMOUNTS * POLICY_LOAN_INTEREST_RATE * (DAYS_OVERDUE / 365)"
+      },
+      {
+        "param_name": "POLICY_EFFECTIVE_PERIOD",
+        "display_name": "本契約有效期間",
+        "param_description": "本契約的有效期間狀態。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "BOOLEAN",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "POLICY_START_DATE",
+          "POLICY_END_DATE",
+          "CURRENT_DATE"
+        ]
+      },
+      {
+        "param_name": "POLICY_TERMINATION_IMMEDIATELY",
+        "display_name": "契約效力即行終止",
+        "param_description": "指示契約效力是否立即終止。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "BOOLEAN",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "DEATH_EVENT",
+          "TOTAL_PERMANENT_DISABILITY_EVENT",
+          "COURT_DECLARED_DEATH",
+          "ACCIDENTAL_INJURY_EVENT"
+        ]
+      },
+      {
+        "param_name": "PAYMENT_WITHIN_30_DAYS_AFTER_ASSET_VALUATION_DATE",
+        "display_name": "資產評價日起三十日內給付",
+        "param_description": "若因投資標的特殊情事導致暫停計算單位淨值或贖回價格，本公司應自該資產評價日起三十日內給付保單帳戶價值。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "BOOLEAN",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "SPECIAL_CIRCUMSTANCES",
+          "ASSET_VALUATION_DATE",
+          "CURRENT_DATE"
+        ]
+      },
+      {
+        "param_name": "PAYMENT_WITHIN_15_DAYS_AFTER_ACTUAL_DISTRIBUTION_DATE",
+        "display_name": "實際分配日起十五日內返還",
+        "param_description": "若因保單終止、停效、有效期間屆滿或其他原因造成無法投資標的，本公司應於實際分配日起算十五日內返還保單帳戶價值。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "BOOLEAN",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "POLICY_TERMINATION",
+          "POLICY_SUSPENSION",
+          "POLICY_EXPIRATION_DATE",
+          "ACTUAL_DISTRIBUTION_DATE",
+          "CURRENT_DATE"
+        ]
+      },
+      {
+        "param_name": "POLICY_LOAN_PRINCIPAL_AND_INTEREST",
+        "display_name": "保險單借款本息",
+        "param_description": "要保人未償還的保險單借款本金與利息總和。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "POLICY_LOAN_PRINCIPAL",
+          "POLICY_LOAN_INTEREST"
+        ],
+        "formula_definition": "POLICY_LOAN_PRINCIPAL + POLICY_LOAN_INTEREST"
+      },
+      {
+        "param_name": "OVERDUE_COST_OF_INSURANCE_DURING_GRACE_PERIOD",
+        "display_name": "寬限期間欠繳之保險成本",
+        "param_description": "寬限期間內應繳而未繳的保險成本。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "COST_OF_INSURANCE",
+          "GRACE_PERIOD_STATUS"
+        ]
+      },
+      {
+        "param_name": "UNPAID_POLICY_MANAGEMENT_FEE",
+        "display_name": "未繳保單管理費",
+        "param_description": "應繳而未繳的保單管理費。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "POLICY_MANAGEMENT_FEE",
+          "BILLING_STATUS"
+        ]
+      },
+      {
+        "param_name": "POLICY_LOAN_INTEREST_RATE",
+        "display_name": "保險單借款之利率",
+        "param_description": "辦理保險單借款時的利率。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "CIVIL_CODE_ARTICLE_203_STATUTORY_ANNUAL_INTEREST_RATE",
+        "display_name": "民法第二百零三條法定週年利率",
+        "param_description": "民法第二百零三條所定的法定週年利率。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "INTEREST_CALCULATION_METHOD",
+        "display_name": "利息計算方式",
+        "param_description": "利息的計算方式，例如逐日以日單利計算。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "STRING",
+        "value_binding": {
+          "binding_type": "POLICY_FIXED",
+          "fixed_value": "DAILY_SIMPLE_INTEREST_CALCULATION"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "DAYS_OVERDUE",
+        "display_name": "逾期天數",
+        "param_description": "款項逾期的天數。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "INTEGER",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "DUE_DATE",
+          "CURRENT_DATE"
+        ]
+      },
+      {
+        "param_name": "INVESTMENT_OPTION_VALUE",
+        "display_name": "投資標的價值",
+        "param_description": "以原投資標的計價幣別作為投資標的之單位基準，其價值係依本契約項下各該投資標的之單位數乘以其投資標的單位淨值計算所得之值。",
+        "source_type": "DEFINITION_ALIGN",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "INVESTMENT_OPTION_UNITS",
+          "INVESTMENT_OPTION_UNIT_NET_VALUE"
+        ],
+        "formula_definition": "INVESTMENT_OPTION_UNITS * INVESTMENT_OPTION_UNIT_NET_VALUE"
+      },
+      {
+        "param_name": "UNINVESTED_AMOUNT",
+        "display_name": "尚未投入投資標的之金額",
+        "param_description": "尚未配置到投資標的中的金額。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "INITIAL_INVESTMENT_ALLOCATION_AMOUNT",
+        "display_name": "首次投資配置金額",
+        "param_description": "依特定順序計算的金額，包含保費扣除費用、扣除保險成本及管理費，並加計利息。",
+        "source_type": "DEFINITION_ALIGN",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "PREMIUM",
+          "PREMIUM_CHARGE",
+          "COST_OF_INSURANCE",
+          "POLICY_MANAGEMENT_FEE",
+          "POLICY_ACCOUNT_MANAGEMENT_FEE",
+          "POLICY_EFFECTIVE_DATE",
+          "CUSTODIAN_BANK_DEMAND_DEPOSIT_INTEREST_RATE",
+          "INITIAL_INVESTMENT_ALLOCATION_DATE"
+        ],
+        "formula_definition": "PREMIUM - PREMIUM_CHARGE - (COST_OF_INSURANCE + POLICY_MANAGEMENT_FEE + POLICY_ACCOUNT_MANAGEMENT_FEE_DEDUCTION_AMOUNT_BEFORE_INITIAL_ALLOCATION_DATE) + INTEREST_ON_NET_AMOUNT"
+      },
+      {
+        "param_name": "INITIAL_INVESTMENT_ALLOCATION_DATE",
+        "display_name": "首次投資配置日",
+        "param_description": "公司將首次投資配置金額投入投資標的之日期，依契約撤銷期限屆滿日後第二日計算。",
+        "source_type": "DEFINITION_ALIGN",
+        "data_type": "DATE",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "POLICY_CANCELLATION_EXPIRATION_DATE"
+        ]
+      },
+      {
+        "param_name": "CURRENT_DATE",
+        "display_name": "當前日期",
+        "param_description": "系統進行計算或評估時的當前日期。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "DATE",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "INVESTMENT_OPTION_UNITS",
+        "display_name": "投資單位數",
+        "param_description": "投資標的持有的單位數量。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "INVESTMENT_OPTION_UNIT_NET_VALUE",
+        "display_name": "投資標的單位淨值",
+        "param_description": "投資標的於資產評價日實際交易所採用之每單位「淨資產價值或市場價值」。",
+        "source_type": "DEFINITION_ALIGN",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "ASSET_VALUATION_DATE",
+          "INVESTMENT_OPTION"
+        ]
+      },
+      {
+        "param_name": "ASSET_VALUATION_DATE",
+        "display_name": "資產評價日",
+        "param_description": "投資標的發行公司計算投資標的淨資產價值之營業日。",
+        "source_type": "DEFINITION_ALIGN",
+        "data_type": "DATE",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "REFERENCE_DATE",
+          "IS_BUSINESS_DAY"
+        ]
+      },
+      {
+        "param_name": "INVESTMENT_OPTION",
+        "display_name": "投資標的",
+        "param_description": "本契約提供要保人選擇以累積保單帳戶價值之投資工具。",
+        "source_type": "DEFINITION_ALIGN",
+        "data_type": "STRING",
+        "value_binding": {
+          "binding_type": "USER_INPUT"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "REFERENCE_DATE",
+        "display_name": "基準日",
+        "param_description": "本契約用以計算附表三「評價時點一覽表」中買入、贖回及轉換評價時點之日期，若該日非為本公司之營業日，則順延至本公司之下一個營業日。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "DATE",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "DATE_RECEIVED_BY_COMPANY",
+          "IS_BUSINESS_DAY"
+        ],
+        "formula_definition": "IF IS_BUSINESS_DAY(DATE_RECEIVED_BY_COMPANY) THEN DATE_RECEIVED_BY_COMPANY ELSE NEXT_BUSINESS_DAY(DATE_RECEIVED_BY_COMPANY) ENDIF"
+      },
+      {
+        "param_name": "DATE_RECEIVED_BY_COMPANY",
+        "display_name": "送達本公司之日",
+        "param_description": "受益人檢齊申請文件並送達本公司之日。",
+        "source_type": "USER_INPUT",
+        "data_type": "DATE",
+        "value_binding": {
+          "binding_type": "USER_INPUT"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "IS_BUSINESS_DAY",
+        "display_name": "是否為營業日",
+        "param_description": "判斷指定日期是否為本公司之營業日。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "BOOLEAN",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "DATE"
+        ]
+      },
+      {
+        "param_name": "TAX_RATE",
+        "display_name": "稅率",
+        "param_description": "依相關稅法規定應扣繳稅捐的稅率。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "POLICY_START_DATE",
+        "display_name": "保單生效日",
+        "param_description": "保單契約生效的日期。",
+        "source_type": "USER_INPUT",
+        "data_type": "DATE",
+        "value_binding": {
+          "binding_type": "USER_INPUT"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "POLICY_END_DATE",
+        "display_name": "保單終止日",
+        "param_description": "保單契約終止的日期。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "DATE",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "POLICY_START_DATE",
+          "POLICY_TERM"
+        ]
+      },
+      {
+        "param_name": "POLICY_LOAN_PRINCIPAL",
+        "display_name": "保險單借款本金",
+        "param_description": "保險單借款的未償還本金。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "POLICY_LOAN_INTEREST",
+        "display_name": "保險單借款利息",
+        "param_description": "保險單借款的未償還利息。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "POLICY_LOAN_PRINCIPAL",
+          "POLICY_LOAN_INTEREST_RATE",
+          "INTEREST_CALCULATION_METHOD",
+          "DAYS_SINCE_LAST_LOAN_INTEREST_CALCULATION"
+        ],
+        "formula_definition": "POLICY_LOAN_PRINCIPAL * POLICY_LOAN_INTEREST_RATE * (DAYS_SINCE_LAST_LOAN_INTEREST_CALCULATION / 365)"
+      },
+      {
+        "param_name": "COST_OF_INSURANCE",
+        "display_name": "保險成本",
+        "param_description": "提供被保險人本契約身故、完全失能保障所需的成本。",
+        "source_type": "DEFINITION_ALIGN",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "INSURED_GENDER",
+          "INSURANCE_AGE",
+          "HEALTH_STATUS",
+          "NET_RISK_SUM_INSURED"
+        ],
+        "formula_definition": "LOOKUP_COST_OF_INSURANCE_TABLE(INSURED_GENDER, INSURANCE_AGE, HEALTH_STATUS) * NET_RISK_SUM_INSURED"
+      },
+      {
+        "param_name": "POLICY_MANAGEMENT_FEE",
+        "display_name": "保單管理費",
+        "param_description": "為維持本契約每月管理所產生且自保單帳戶價值中扣除之費用。",
+        "source_type": "DEFINITION_ALIGN",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "POLICY_MONTHLY_ANNIVERSARY"
+        ]
+      },
+      {
+        "param_name": "GRACE_PERIOD_STATUS",
+        "display_name": "寬限期間狀態",
+        "param_description": "指示保單是否處於寬限期間。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "BOOLEAN",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "PREMIUM_DUE_DATE",
+          "GRACE_PERIOD_DAYS",
+          "CURRENT_DATE"
+        ]
+      },
+      {
+        "param_name": "BILLING_STATUS",
+        "display_name": "繳費狀態",
+        "param_description": "指示保單管理費的繳費狀態。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "BOOLEAN",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "POLICY_MANAGEMENT_FEE_DUE_DATE",
+          "PAYMENT_RECEIVED_DATE"
+        ]
+      },
+      {
+        "param_name": "DEATH_EVENT",
+        "display_name": "身故事件",
+        "param_description": "被保險人身故。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "BOOLEAN",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "TOTAL_PERMANENT_DISABILITY_EVENT",
+        "display_name": "完全失能事件",
+        "param_description": "被保險人完全失能。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "BOOLEAN",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "COURT_DECLARED_DEATH",
+        "display_name": "法院宣告死亡",
+        "param_description": "被保險人經法院宣告死亡。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "BOOLEAN",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "ACCIDENTAL_INJURY_EVENT",
+        "display_name": "意外傷害事故",
+        "param_description": "被保險人發生意外傷害事故。",
+        "source_type": "DEFINITION_ALIGN",
+        "data_type": "BOOLEAN",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "SPECIAL_CIRCUMSTANCES",
+        "display_name": "特殊情事",
+        "param_description": "投資標的於資產評價日遇有特殊情事，致投資標的發行、經理或計算代理機構暫停計算投資標的單位淨值或贖回價格。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "BOOLEAN",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "ASSET_VALUATION_DATE"
+        ]
+      },
+      {
+        "param_name": "POLICY_TERMINATION",
+        "display_name": "契約終止",
+        "param_description": "保單契約終止。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "BOOLEAN",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "POLICY_SUSPENSION",
+        "display_name": "停效",
+        "param_description": "保單契約停效。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "BOOLEAN",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "POLICY_EXPIRATION_DATE",
+        "display_name": "有效期間屆滿日",
+        "param_description": "保單契約有效期間屆滿的日期。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "DATE",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "POLICY_START_DATE",
+          "POLICY_TERM"
+        ]
+      },
+      {
+        "param_name": "TAX_RATE",
+        "display_name": "稅率",
+        "param_description": "依相關稅法規定應扣繳稅捐的稅率。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "POLICY_START_DATE",
+        "display_name": "保單生效日",
+        "param_description": "保單契約生效的日期。",
+        "source_type": "USER_INPUT",
+        "data_type": "DATE",
+        "value_binding": {
+          "binding_type": "USER_INPUT"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "POLICY_TERM",
+        "display_name": "保單期間",
+        "param_description": "保單的總有效期間。",
+        "source_type": "USER_INPUT",
+        "data_type": "INTEGER",
+        "value_binding": {
+          "binding_type": "USER_INPUT"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "POLICY_LOAN_PRINCIPAL",
+        "display_name": "保險單借款本金",
+        "param_description": "保險單借款的未償還本金。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "DAYS_SINCE_LAST_LOAN_INTEREST_CALCULATION",
+        "display_name": "自上次借款利息計算以來的天數",
+        "param_description": "自上次計算保險單借款利息以來的天數。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "INTEGER",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "LAST_LOAN_INTEREST_CALCULATION_DATE",
+          "CURRENT_DATE"
+        ]
+      },
+      {
+        "param_name": "INSURED_GENDER",
+        "display_name": "被保險人性別",
+        "param_description": "被保險人的性別。",
+        "source_type": "USER_INPUT",
+        "data_type": "STRING",
+        "value_binding": {
+          "binding_type": "USER_INPUT"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "INSURANCE_AGE",
+        "display_name": "保險年齡",
+        "param_description": "按投保時被保險人以足歲計算之年齡，但未滿一歲的零數超過六個月者加算一歲，以後每經過一個保險單年度加算一歲。",
+        "source_type": "DEFINITION_ALIGN",
+        "data_type": "INTEGER",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "INSURED_DATE_OF_BIRTH",
+          "POLICY_COMMENCEMENT_DATE",
+          "CURRENT_DATE"
+        ],
+        "formula_definition": "CALCULATE_INSURANCE_AGE(INSURED_DATE_OF_BIRTH, POLICY_COMMENCEMENT_DATE, CURRENT_DATE)"
+      },
+      {
+        "param_name": "HEALTH_STATUS",
+        "display_name": "體況",
+        "param_description": "被保險人的健康狀況。",
+        "source_type": "USER_INPUT",
+        "data_type": "STRING",
+        "value_binding": {
+          "binding_type": "USER_INPUT"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "NET_RISK_SUM_INSURED",
+        "display_name": "淨危險保額",
+        "param_description": "依要保人在訂立本契約時選擇之保險型態，按下列方式所計算之金額：(一)甲型：基本保額扣除保單帳戶價值之餘額，但不得為負值。(二)乙型：基本保額。",
+        "source_type": "DEFINITION_ALIGN",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "INSURANCE_TYPE",
+          "BASIC_SUM_INSURED",
+          "POLICY_ACCOUNT_VALUE"
+        ],
+        "formula_definition": "IF INSURANCE_TYPE == '甲型' THEN MAX(0, BASIC_SUM_INSURED - POLICY_ACCOUNT_VALUE) ELSE BASIC_SUM_INSURED ENDIF"
+      },
+      {
+        "param_name": "BASIC_SUM_INSURED",
+        "display_name": "基本保額",
+        "param_description": "係指本契約所載明之投保金額。",
+        "source_type": "DEFINITION_ALIGN",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "USER_INPUT"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "INSURANCE_TYPE",
+        "display_name": "保險型態",
+        "param_description": "要保人選擇的保險型態（甲型或乙型）。",
+        "source_type": "USER_INPUT",
+        "data_type": "STRING",
+        "value_binding": {
+          "binding_type": "USER_INPUT"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "INSURED_DATE_OF_BIRTH",
+        "display_name": "被保險人出生年月日",
+        "param_description": "被保險人的出生年月日。",
+        "source_type": "USER_INPUT",
+        "data_type": "DATE",
+        "value_binding": {
+          "binding_type": "USER_INPUT"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "POLICY_COMMENCEMENT_DATE",
+        "display_name": "契約訂立或復效之日",
+        "param_description": "契約訂立或復效的日期。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "DATE",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "POLICY_START_DATE",
+          "REINSTATEMENT_DATE"
+        ]
+      },
+      {
+        "param_name": "REINSTATEMENT_DATE",
+        "display_name": "復效日期",
+        "param_description": "保單復效的日期。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "DATE",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "PREMIUM_DUE_DATE",
+        "display_name": "保費到期日",
+        "param_description": "保險費應繳納的日期。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "DATE",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "POLICY_START_DATE",
+          "PAYMENT_FREQUENCY"
+        ]
+      },
+      {
+        "param_name": "GRACE_PERIOD_DAYS",
+        "display_name": "寬限期間天數",
+        "param_description": "繳費的寬限期間天數。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "INTEGER",
+        "value_binding": {
+          "binding_type": "POLICY_FIXED",
+          "fixed_value": "30"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "POLICY_MANAGEMENT_FEE_DUE_DATE",
+        "display_name": "保單管理費到期日",
+        "param_description": "保單管理費應繳納的日期。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "DATE",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "POLICY_MONTHLY_ANNIVERSARY"
+        ]
+      },
+      {
+        "param_name": "PAYMENT_RECEIVED_DATE",
+        "display_name": "收到繳費日期",
+        "param_description": "實際收到保單管理費繳款的日期。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "DATE",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "DUE_DATE",
+        "display_name": "到期日",
+        "param_description": "款項的到期日。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "DATE",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "ACTUAL_DISTRIBUTION_DATE",
+        "display_name": "實際分配日",
+        "param_description": "投資標的提解的實際分配日期。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "DATE",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "PREMIUM",
+        "display_name": "保險費",
+        "param_description": "係指本契約所載明之躉繳保險費，用以提供被保險人身故、完全失能保障及投資需求。",
+        "source_type": "DEFINITION_ALIGN",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "USER_INPUT"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "PREMIUM_CHARGE",
+        "display_name": "保費費用",
+        "param_description": "係指因本契約簽訂及運作所產生並自保險費中扣除之相關費用。",
+        "source_type": "DEFINITION_ALIGN",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "PREMIUM",
+          "COMPANY_FEES_SCHEDULE_PREMIUM_CHARGE_RATE"
+        ],
+        "formula_definition": "PREMIUM * COMPANY_FEES_SCHEDULE_PREMIUM_CHARGE_RATE"
+      },
+      {
+        "param_name": "POLICY_ACCOUNT_MANAGEMENT_FEE_DEDUCTION_AMOUNT_BEFORE_INITIAL_ALLOCATION_DATE",
+        "display_name": "首次投資配置日前保單帳戶管理費扣除額",
+        "param_description": "首次投資配置日前，本契約應扣除之每月保險成本、保單管理費及保單帳戶管理費扣除額。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "COST_OF_INSURANCE",
+          "POLICY_MANAGEMENT_FEE",
+          "POLICY_ACCOUNT_MANAGEMENT_FEE",
+          "INITIAL_INVESTMENT_ALLOCATION_DATE",
+          "POLICY_EFFECTIVE_DATE"
+        ],
+        "formula_definition": "SUM_OF_MONTHLY_DEDUCTIONS_BEFORE_INITIAL_ALLOCATION_DATE(COST_OF_INSURANCE, POLICY_MANAGEMENT_FEE, POLICY_ACCOUNT_MANAGEMENT_FEE, POLICY_EFFECTIVE_DATE, INITIAL_INVESTMENT_ALLOCATION_DATE)"
+      },
+      {
+        "param_name": "INTEREST_ON_NET_AMOUNT",
+        "display_name": "淨額利息",
+        "param_description": "首次投資配置日前，按每日淨額依活期存款年利率逐日以日單利計算至首次投資配置日前一日止之利息。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "PREMIUM",
+          "PREMIUM_CHARGE",
+          "POLICY_ACCOUNT_MANAGEMENT_FEE_DEDUCTION_AMOUNT_BEFORE_INITIAL_ALLOCATION_DATE",
+          "POLICY_EFFECTIVE_DATE",
+          "CUSTODIAN_BANK_DEMAND_DEPOSIT_INTEREST_RATE",
+          "INITIAL_INVESTMENT_ALLOCATION_DATE"
+        ],
+        "formula_definition": "CALCULATE_DAILY_SIMPLE_INTEREST(PREMIUM - PREMIUM_CHARGE - POLICY_ACCOUNT_MANAGEMENT_FEE_DEDUCTION_AMOUNT_BEFORE_INITIAL_ALLOCATION_DATE, POLICY_EFFECTIVE_DATE, INITIAL_INVESTMENT_ALLOCATION_DATE - 1, CUSTODIAN_BANK_DEMAND_DEPOSIT_INTEREST_RATE)"
+      },
+      {
+        "param_name": "POLICY_CANCELLATION_EXPIRATION_DATE",
+        "display_name": "契約撤銷期限屆滿日",
+        "param_description": "契約撤銷期限屆滿的日期。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "DATE",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "POLICY_START_DATE",
+          "CANCELLATION_PERIOD_DAYS"
+        ]
+      },
+      {
+        "param_name": "LAST_LOAN_INTEREST_CALCULATION_DATE",
+        "display_name": "上次借款利息計算日期",
+        "param_description": "上次計算保險單借款利息的日期。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "DATE",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "POLICY_MONTHLY_ANNIVERSARY",
+        "display_name": "保單週月日",
+        "param_description": "係指本契約有效期間內，每月與契約生效日相當之日，若當月無相當日者，指該月之末日。",
+        "source_type": "DEFINITION_ALIGN",
+        "data_type": "DATE",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "POLICY_START_DATE",
+          "CURRENT_DATE"
+        ]
+      },
+      {
+        "param_name": "PAYMENT_FREQUENCY",
+        "display_name": "繳費頻率",
+        "param_description": "保險費的繳費頻率。",
+        "source_type": "USER_INPUT",
+        "data_type": "STRING",
+        "value_binding": {
+          "binding_type": "USER_INPUT"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "COMPANY_FEES_SCHEDULE_PREMIUM_CHARGE_RATE",
+        "display_name": "附表一保費費用率",
+        "param_description": "附表一「本公司收取之相關費用一覽表」中「保費費用表」所列之百分率。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "POLICY_FIXED",
+          "fixed_value": "0.0"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "POLICY_ACCOUNT_MANAGEMENT_FEE",
+        "display_name": "保單帳戶管理費",
+        "param_description": "係指為管理本契約保單帳戶所產生且自保單帳戶價值中扣除之費用。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "POLICY_MONTHLY_ANNIVERSARY"
+        ]
+      },
+      {
+        "param_name": "POLICY_EFFECTIVE_DATE",
+        "display_name": "保單生效日期",
+        "param_description": "保單契約的實際生效日期。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "DATE",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "POLICY_START_DATE"
+        ]
+      },
+      {
+        "param_name": "CUSTODIAN_BANK_DEMAND_DEPOSIT_INTEREST_RATE",
+        "display_name": "保管銀行活期存款年利率",
+        "param_description": "保單生效日當月保管銀行之月初第一營業日牌告活期存款年利率。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "POLICY_EFFECTIVE_DATE"
+        ]
+      },
+      {
+        "param_name": "CANCELLATION_PERIOD_DAYS",
+        "display_name": "撤銷期間天數",
+        "param_description": "契約撤銷的期間天數。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "INTEGER",
+        "value_binding": {
+          "binding_type": "POLICY_FIXED",
+          "fixed_value": "10"
+        },
+        "depends_on": []
+      }
+    ],
+    "synonym_map": [
+      "保單帳戶價值返還",
+      "保單帳戶價值返還 (契約終止)",
+      "保單帳戶價值退還(除外責任)"
+    ],
+    "payment_type": "LUMP_SUM"
+  },
+  {
+    "type": "理賠項目定義",
+    "code": "INVESTMENT_TARGET_DISTRIBUTION",
+    "display_name": "投資標的提解",
+    "level": "BASE",
+    "classification": "EXISTING_MATCH",
+    "description": "要保人指定之全權委託投資帳戶若有應由受委託投資公司自投資標的價值中提解者(提解之條件請詳 附表二)，本公司應按提解實際分配為現金或投資標的單位數之不同，分別依下列方式辦理： 一、現金：本公司應自實際分配日起算十五日內，配置於同投資標的幣別之專屬帳戶，且不計入第二 十條第三項但書之轉換次數。除有附表三「評價時點一覽表」註解中所約定之時序交易情形外， 本公司應以每月二十五日為基準日，將配置於專屬帳戶之提解金額，依貨幣帳戶贖回評價時點所 約定匯率資產評價日之匯率計算所得之金額，以現金方式匯入要保人之個人帳戶，且不計入第二 十條第一項但書之部分提領次數。但各專屬帳戶內之提解金額合計未逾伍拾美元之金額時，該月 不執行匯款作業。若非因可歸責於本公司之原因致本公司無法成功匯款時，則配置於同投資標的 幣別之專屬帳戶。 二、投資標的單位數：本公司應於實際分配日之次二本公司所在地銀行營業日內，配置於同一全權委 託投資帳戶中。但本契約保單帳戶中已無配置原提解之投資標的或已無法配置該投資標的單位數 時，則改投資於該投資標的相同幣別之專屬帳戶；若本公司當時無提供相同幣別之專屬帳戶，將 投資於該投資標的相同幣別之貨幣帳戶；若本公司當時無提供相同幣別之貨幣帳戶，將投資於同 保單幣別之貨幣帳戶中。 前項情形，本契約若於提解實際分配日前已終止、停效、提解實際分配日已超過有效期間屆滿日或其 他原因造成無法投資該標的時，本公司依相關稅法規定，將扣繳稅捐後之餘額，於實際分配日起算十 五日內返還要保人或給付予受益人。但因可歸責於本公司之事由致未在前開期限內為給付者，應加計 利息給付，其利息按給付當時本保單辦理保險單借款之利率與民法第二百零三條法定週年利率兩者取 其大之值的利率計算。",
+    "base_definition": "要保人指定之全權委託投資帳戶若有應由受委託投資公司自投資標的價值中提解者(提解之條件請詳 附表二)，本公司應按提解實際分配為現金或投資標的單位數之不同，分別依下列方式辦理： 一、現金：本公司應自實際分配日起算十五日內，配置於同投資標的幣別之專屬帳戶，且不計入第二 十條第三項但書之轉換次數。除有附表三「評價時點一覽表」註解中所約定之時序交易情形外， 本公司應以每月二十五日為基準日，將配置於專屬帳戶之提解金額，依貨幣帳戶贖回評價時點所 約定匯率資產評價日之匯率計算所得之金額，以現金方式匯入要保人之個人帳戶，且不計入第二 十條第一項但書之部分提領次數。但各專屬帳戶內之提解金額合計未逾伍拾美元之金額時，該月 不執行匯款作業。若非因可歸責於本公司之原因致本公司無法成功匯款時，則配置於同投資標的 幣別之專屬帳戶。 二、投資標的單位數：本公司應於實際分配日之次二本公司所在地銀行營業日內，配置於同一全權委 託投資帳戶中。但本契約保單帳戶中已無配置原提解之投資標的或已無法配置該投資標的單位數 時，則改投資於該投資標的相同幣別之專屬帳戶；若本公司當時無提供相同幣別之專屬帳戶，將 投資於該投資標的相同幣別之貨幣帳戶；若本公司當時無提供相同幣別之貨幣帳戶，將投資於同 保單幣別之貨幣帳戶中。 前項情形，本契約若於提解實際分配日前已終止、停效、提解實際分配日已超過有效期間屆滿日或其 他原因造成無法投資該標的時，本公司依相關稅法規定，將扣繳稅捐後之餘額，於實際分配日起算十 五日內返還要保人或給付予受益人。但因可歸責於本公司之事由致未在前開期限內為給付者，應加計 利息給付，其利息按給付當時本保單辦理保險單借款之利率與民法第二百零三條法定週年利率兩者取 其大之值的利率計算。",
+    "logic_structure": {
+      "trigger_condition": "DISCRETIONARY_INVESTMENT_ACCOUNT.has_distributable_amount AND ENTRUSTED_INVESTMENT_COMPANY.initiates_distribution(INVESTMENT_WITHDRAWAL_CONDITIONS)",
+      "effective_condition": "POLICY_EFFECTIVE_PERIOD.is_active",
+      "termination_condition": "CONTRACT_TERMINATION.is_true OR LAPSE.is_true OR ACTUAL_DISTRIBUTION_DATE > POLICY_EXPIRATION_DATE OR INVESTMENT_OPTION.cannot_be_invested_due_to_other_reasons_before_ACTUAL_DISTRIBUTION_DATE",
+      "formula_template": {
+        "syntax_type": "DSL",
+        "expression": "IF (DISCRETIONARY_INVESTMENT_ACCOUNT.has_distributable_amount AND ENTRUSTED_INVESTMENT_COMPANY.initiates_distribution(INVESTMENT_WITHDRAWAL_CONDITIONS))\nTHEN\n    IF (distribution_type == CASH)\n    THEN\n        ALLOCATE(INVESTMENT_WITHDRAWAL_AMOUNT, INVESTMENT_INCOME_WITHDRAWAL_EXCLUSIVE_ACCOUNT, INVESTMENT_OPTION_CURRENCY) WITHIN 15 DAYS FROM ACTUAL_DISTRIBUTION_DATE\n        IF (CURRENT_DATE == TWENTY_FIFTH_OF_MONTH AND SUM(INVESTMENT_INCOME_WITHDRAWAL_EXCLUSIVE_ACCOUNT.balance_by_currency) >= FIFTY_USD)\n        THEN\n            REMIT(CALCULATE_AMOUNT(INVESTMENT_INCOME_WITHDRAWAL_EXCLUSIVE_ACCOUNT.balance, MONEY_MARKET_ACCOUNT.REDEMPTION_VALUATION_POINT.EXCHANGE_RATE_ASSET_VALUATION_DATE.EXCHANGE_RATE), INDIVIDUAL_ACCOUNT)\n        ELSE IF (REMITTANCE_OPERATION.failed AND NOT REMITTANCE_OPERATION.is_insurer_fault)\n        THEN\n            ALLOCATE(INVESTMENT_WITHDRAWAL_AMOUNT, INVESTMENT_INCOME_WITHDRAWAL_EXCLUSIVE_ACCOUNT, INVESTMENT_OPTION_CURRENCY)\n        ENDIF\n    ELSE IF (distribution_type == INVESTMENT_OPTION_UNITS)\n    THEN\n        IF (POLICY_ACCOUNT.has_INVESTMENT_OPTION(original_distributed_INVESTMENT_OPTION) AND POLICY_ACCOUNT.can_allocate_INVESTMENT_OPTION_UNITS(original_distributed_INVESTMENT_OPTION))\n        THEN\n            ALLOCATE(INVESTMENT_OPTION_UNITS, DISCRETIONARY_INVESTMENT_ACCOUNT) WITHIN 2 INSURER_BANK_BUSINESS_DAY FROM ACTUAL_DISTRIBUTION_DATE\n        ELSE\n            IF (INSURER.provides_INVESTMENT_INCOME_WITHDRAWAL_EXCLUSIVE_ACCOUNT(INVESTMENT_OPTION_CURRENCY))\n            THEN\n                ALLOCATE(INVESTMENT_OPTION_UNITS, INVESTMENT_INCOME_WITHDRAWAL_EXCLUSIVE_ACCOUNT, INVESTMENT_OPTION_CURRENCY)\n            ELSE IF (INSURER.provides_MONEY_MARKET_ACCOUNT(INVESTMENT_OPTION_CURRENCY))\n            THEN\n                ALLOCATE(INVESTMENT_OPTION_UNITS, MONEY_MARKET_ACCOUNT, INVESTMENT_OPTION_CURRENCY)\n            ELSE\n                ALLOCATE(INVESTMENT_OPTION_UNITS, MONEY_MARKET_ACCOUNT, POLICY_CURRENCY)\n            ENDIF\n        ENDIF\n    ENDIF\nELSE IF (CONTRACT_TERMINATION.is_true OR LAPSE.is_true OR ACTUAL_DISTRIBUTION_DATE > POLICY_EXPIRATION_DATE OR INVESTMENT_OPTION.cannot_be_invested_due_to_other_reasons_before_ACTUAL_DISTRIBUTION_DATE)\nTHEN\n    RETURN_AMOUNT = BALANCE - WITHHOLDING_TAX(TAX_LAW_REGULATIONS)\n    RETURN(RETURN_AMOUNT, POLICYHOLDER OR BENEFICIARY) WITHIN 15 DAYS FROM ACTUAL_DISTRIBUTION_DATE\n    IF (PAYMENT_DEADLINE.exceeded AND PAYMENT_DEADLINE.is_insurer_fault)\n    THEN\n        ADD_INTEREST(MAX(POLICY_LOAN_INTEREST_RATE, CIVIL_CODE_STATUTORY_ANNUAL_INTEREST_RATE))\n    ENDIF\nENDIF"
+      },
+      "python_logic_eval": "if discretionary_investment_account_has_distributable_amount and entrusted_investment_company_initiates_distribution(investment_withdrawal_conditions): if distribution_type == 'CASH': allocate_to_exclusive_account(investment_withdrawal_amount, investment_option_currency, actual_distribution_date, 15); if current_date == TWENTY_FIFTH_OF_MONTH and sum_exclusive_account_balance_by_currency() >= FIFTY_USD: remittance_amount = calculate_remittance_amount(get_exclusive_account_balance(), get_money_market_account_redemption_exchange_rate()); remit_to_individual_account(remittance_amount) elif remittance_operation_failed and not remittance_operation_is_insurer_fault: allocate_to_exclusive_account(investment_withdrawal_amount, investment_option_currency, actual_distribution_date, 0) elif distribution_type == 'INVESTMENT_OPTION_UNITS': if policy_account_has_original_investment_option and policy_account_can_allocate_investment_option_units: allocate_to_discretionary_investment_account(investment_option_units, actual_distribution_date, 2) else: if insurer_provides_investment_income_withdrawal_exclusive_account(investment_option_currency): allocate_to_exclusive_account(investment_option_units, investment_option_currency, actual_distribution_date, 0) elif insurer_provides_money_market_account(investment_option_currency): allocate_to_money_market_account(investment_option_units, investment_option_currency, actual_distribution_date, 0) else: allocate_to_money_market_account(investment_option_units, policy_currency, actual_distribution_date, 0) else: if contract_termination_is_true or lapse_is_true or actual_distribution_date > policy_expiration_date or investment_option_cannot_be_invested_due_to_other_reasons_before_actual_distribution_date: return_amount = get_balance() - calculate_withholding_tax(tax_law_regulations); return_to_policyholder_or_beneficiary(return_amount, actual_distribution_date, 15); if payment_deadline_exceeded and payment_deadline_is_insurer_fault: add_interest(max(policy_loan_interest_rate, civil_code_statutory_annual_interest_rate))",
+      "is_recursive": true,
+      "payment_period": {
+        "frequency": "MONTHLY"
+      },
+      "conditions": [
+        {
+          "condition_type": "MIN_LIMIT",
+          "description": "各專屬帳戶內之提解金額合計未逾伍拾美元之金額時，該月不執行匯款作業。",
+          "formula_ref": "SUM(INVESTMENT_INCOME_WITHDRAWAL_EXCLUSIVE_ACCOUNT.balance_by_currency) < FIFTY_USD"
+        },
+        {
+          "condition_type": "EXCLUSION",
+          "description": "若非因可歸責於本公司之原因致本公司無法成功匯款時，則配置於同投資標的幣別之專屬帳戶。",
+          "formula_ref": "REMITTANCE_OPERATION.failed AND NOT REMITTANCE_OPERATION.is_insurer_fault"
+        },
+        {
+          "condition_type": "OTHER",
+          "description": "本契約保單帳戶中已無配置原提解之投資標的或已無法配置該投資標的單位數時，則改投資於該投資標的相同幣別之專屬帳戶；若本公司當時無提供相同幣別之專屬帳戶，將投資於該投資標的相同幣別之貨幣帳戶；若本公司當時無提供相同幣別之貨幣帳戶，將投資於同保單幣別之貨幣帳戶中。",
+          "formula_ref": "NOT POLICY_ACCOUNT.has_INVESTMENT_OPTION(original_distributed_INVESTMENT_OPTION) OR NOT POLICY_ACCOUNT.can_allocate_INVESTMENT_OPTION_UNITS(original_distributed_INVESTMENT_OPTION)"
+        }
+      ]
+    },
+    "parameters": [
+      {
+        "param_name": "DISCRETIONARY_INVESTMENT_ACCOUNT_HAS_DISTRIBUTABLE_AMOUNT",
+        "display_name": "全權委託投資帳戶有可提解金額",
+        "param_description": "判斷全權委託投資帳戶是否有可提解金額",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "BOOLEAN",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "ENTRUSTED_INVESTMENT_COMPANY_INITIATES_DISTRIBUTION",
+        "display_name": "受委託投資公司啟動提解",
+        "param_description": "判斷受委託投資公司是否依提解條件啟動提解",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "BOOLEAN",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "INVESTMENT_WITHDRAWAL_CONDITIONS"
+        ]
+      },
+      {
+        "param_name": "INVESTMENT_WITHDRAWAL_CONDITIONS",
+        "display_name": "提解之條件",
+        "param_description": "投資標的提解的條件，詳見附表二",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "STRING",
+        "value_binding": {
+          "binding_type": "POLICY_FIXED",
+          "fixed_value": "詳附表二"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "POLICY_EFFECTIVE_PERIOD_IS_ACTIVE",
+        "display_name": "保單有效期間內",
+        "param_description": "判斷保單是否在有效期間內",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "BOOLEAN",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "CONTRACT_TERMINATION_IS_TRUE",
+        "display_name": "契約已終止",
+        "param_description": "判斷契約是否已終止",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "BOOLEAN",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "LAPSE_IS_TRUE",
+        "display_name": "保單已停效",
+        "param_description": "判斷保單是否已停效",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "BOOLEAN",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "ACTUAL_DISTRIBUTION_DATE",
+        "display_name": "實際分配日",
+        "param_description": "投資標的提解的實際分配日期",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "DATE",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "POLICY_EXPIRATION_DATE",
+        "display_name": "保單有效期間屆滿日",
+        "param_description": "保險契約有效期間屆滿的日期",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "DATE",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "INVESTMENT_OPTION_CANNOT_BE_INVESTED",
+        "display_name": "投資標的無法投資",
+        "param_description": "判斷投資標的是否因其他原因在實際分配日前無法投資",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "BOOLEAN",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "ACTUAL_DISTRIBUTION_DATE"
+        ]
+      },
+      {
+        "param_name": "DISTRIBUTION_TYPE",
+        "display_name": "提解分配類型",
+        "param_description": "提解實際分配為現金或投資標的單位數",
+        "source_type": "USER_INPUT",
+        "data_type": "STRING",
+        "value_binding": {
+          "binding_type": "USER_INPUT"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "INVESTMENT_WITHDRAWAL_AMOUNT",
+        "display_name": "提解金額",
+        "param_description": "投資標的提解的金額",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "INVESTMENT_INCOME_WITHDRAWAL_EXCLUSIVE_ACCOUNT_BALANCE",
+        "display_name": "投資收益及提解專屬帳戶餘額",
+        "param_description": "投資收益及提解專屬帳戶的當前餘額",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "INVESTMENT_WITHDRAWAL_AMOUNT",
+          "INVESTMENT_OPTION_CURRENCY",
+          "REMITTANCE_AMOUNT"
+        ]
+      },
+      {
+        "param_name": "INVESTMENT_OPTION_CURRENCY",
+        "display_name": "投資標的幣別",
+        "param_description": "投資標的計價的幣別",
+        "source_type": "USER_INPUT",
+        "data_type": "STRING",
+        "value_binding": {
+          "binding_type": "USER_INPUT"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "CURRENT_DATE",
+        "display_name": "當前日期",
+        "param_description": "系統執行計算時的當前日期",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "DATE",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "TWENTY_FIFTH_OF_MONTH",
+        "display_name": "每月二十五日",
+        "param_description": "每月執行特定作業的固定日期",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "INTEGER",
+        "value_binding": {
+          "binding_type": "POLICY_FIXED",
+          "fixed_value": "25"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "EXCLUSIVE_ACCOUNT_BALANCE_BY_CURRENCY_SUM",
+        "display_name": "專屬帳戶各幣別餘額總和",
+        "param_description": "投資收益及提解專屬帳戶中，各幣別餘額的總和",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "INVESTMENT_INCOME_WITHDRAWAL_EXCLUSIVE_ACCOUNT_BALANCE",
+          "INVESTMENT_OPTION_CURRENCY"
+        ],
+        "formula_definition": "SUM(INVESTMENT_INCOME_WITHDRAWAL_EXCLUSIVE_ACCOUNT_BALANCE_FOR_CURRENCY)"
+      },
+      {
+        "param_name": "FIFTY_USD",
+        "display_name": "伍拾美元",
+        "param_description": "提解金額的最低門檻，伍拾美元",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "POLICY_FIXED",
+          "fixed_value": "50"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "MONEY_MARKET_ACCOUNT_BALANCE",
+        "display_name": "貨幣帳戶餘額",
+        "param_description": "貨幣帳戶的當前餘額",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "REDEMPTION_VALUATION_POINT",
+        "display_name": "贖回評價時點",
+        "param_description": "用於贖回操作的評價時點",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "STRING",
+        "value_binding": {
+          "binding_type": "POLICY_FIXED",
+          "fixed_value": "詳附表三"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "EXCHANGE_RATE_ASSET_VALUATION_DATE",
+        "display_name": "匯率資產評價日",
+        "param_description": "用於匯率計算的資產評價日",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "DATE",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "REDEMPTION_VALUATION_POINT"
+        ]
+      },
+      {
+        "param_name": "EXCHANGE_RATE",
+        "display_name": "匯率",
+        "param_description": "特定日期（匯率資產評價日）的匯率",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "EXCHANGE_RATE_ASSET_VALUATION_DATE"
+        ]
+      },
+      {
+        "param_name": "REMITTANCE_AMOUNT",
+        "display_name": "匯款金額",
+        "param_description": "從專屬帳戶匯入個人帳戶的金額",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "INVESTMENT_INCOME_WITHDRAWAL_EXCLUSIVE_ACCOUNT_BALANCE",
+          "EXCHANGE_RATE"
+        ],
+        "formula_definition": "INVESTMENT_INCOME_WITHDRAWAL_EXCLUSIVE_ACCOUNT_BALANCE * EXCHANGE_RATE"
+      },
+      {
+        "param_name": "INDIVIDUAL_ACCOUNT",
+        "display_name": "個人帳戶",
+        "param_description": "要保人接收匯款的個人銀行帳戶",
+        "source_type": "USER_INPUT",
+        "data_type": "STRING",
+        "value_binding": {
+          "binding_type": "USER_INPUT"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "REMITTANCE_OPERATION_FAILED",
+        "display_name": "匯款作業失敗",
+        "param_description": "判斷匯款作業是否失敗",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "BOOLEAN",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "REMITTANCE_OPERATION_IS_INSURER_FAULT",
+        "display_name": "匯款作業失敗是否歸責於本公司",
+        "param_description": "判斷匯款作業失敗是否因保險公司原因造成",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "BOOLEAN",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "INVESTMENT_OPTION_UNITS",
+        "display_name": "投資標的單位數",
+        "param_description": "投資標的提解的單位數",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "POLICY_ACCOUNT_HAS_ORIGINAL_INVESTMENT_OPTION",
+        "display_name": "保單帳戶中是否有原提解之投資標的",
+        "param_description": "判斷保單帳戶中是否仍配置有原提解的投資標的",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "BOOLEAN",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "ORIGINAL_DISTRIBUTED_INVESTMENT_OPTION"
+        ]
+      },
+      {
+        "param_name": "ORIGINAL_DISTRIBUTED_INVESTMENT_OPTION",
+        "display_name": "原提解之投資標的",
+        "param_description": "原先進行提解的投資標的",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "STRING",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "POLICY_ACCOUNT_CAN_ALLOCATE_INVESTMENT_OPTION_UNITS",
+        "display_name": "保單帳戶可配置投資標的單位數",
+        "param_description": "判斷保單帳戶是否能配置原提解投資標的單位數",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "BOOLEAN",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "ORIGINAL_DISTRIBUTED_INVESTMENT_OPTION",
+          "INVESTMENT_OPTION_UNITS"
+        ]
+      },
+      {
+        "param_name": "INSURER_PROVIDES_INVESTMENT_INCOME_WITHDRAWAL_EXCLUSIVE_ACCOUNT",
+        "display_name": "本公司提供投資收益及提解專屬帳戶",
+        "param_description": "判斷保險公司是否提供特定幣別的投資收益及提解專屬帳戶",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "BOOLEAN",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "INVESTMENT_OPTION_CURRENCY"
+        ]
+      },
+      {
+        "param_name": "INSURER_PROVIDES_MONEY_MARKET_ACCOUNT",
+        "display_name": "本公司提供貨幣帳戶",
+        "param_description": "判斷保險公司是否提供特定幣別的貨幣帳戶",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "BOOLEAN",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "INVESTMENT_OPTION_CURRENCY"
+        ]
+      },
+      {
+        "param_name": "POLICY_CURRENCY",
+        "display_name": "保單幣別",
+        "param_description": "保險單的計價幣別",
+        "source_type": "USER_INPUT",
+        "data_type": "STRING",
+        "value_binding": {
+          "binding_type": "USER_INPUT"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "BALANCE",
+        "display_name": "餘額",
+        "param_description": "保單帳戶的剩餘金額",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "POLICY_ACCOUNT_VALUE"
+        ]
+      },
+      {
+        "param_name": "WITHHOLDING_TAX",
+        "display_name": "扣繳稅捐",
+        "param_description": "依稅法規定應扣繳的稅捐金額",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "BALANCE",
+          "TAX_LAW_REGULATIONS"
+        ],
+        "formula_definition": "CALCULATE_WITHHOLDING_TAX_BASED_ON_TAX_LAW_REGULATIONS(BALANCE)"
+      },
+      {
+        "param_name": "TAX_LAW_REGULATIONS",
+        "display_name": "稅法規定",
+        "param_description": "相關稅法規定，用於計算扣繳稅捐",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "STRING",
+        "value_binding": {
+          "binding_type": "POLICY_FIXED",
+          "fixed_value": "依相關稅法規定"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "RETURN_AMOUNT",
+        "display_name": "返還金額",
+        "param_description": "扣除稅捐後應返還給要保人或受益人的金額",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "BALANCE",
+          "WITHHOLDING_TAX"
+        ],
+        "formula_definition": "BALANCE - WITHHOLDING_TAX"
+      },
+      {
+        "param_name": "PAYEE",
+        "display_name": "受款人",
+        "param_description": "保險金或返還金額的受款人，可能是要保人或受益人",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "STRING",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "PAYMENT_DEADLINE_EXCEEDED",
+        "display_name": "給付期限已逾",
+        "param_description": "判斷給付期限是否已逾期",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "BOOLEAN",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "ACTUAL_DISTRIBUTION_DATE",
+          "FIFTEEN_DAYS"
+        ]
+      },
+      {
+        "param_name": "PAYMENT_DEADLINE_IS_INSURER_FAULT",
+        "display_name": "給付期限逾期是否歸責於本公司",
+        "param_description": "判斷給付期限逾期是否因保險公司原因造成",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "BOOLEAN",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "INTEREST",
+        "display_name": "利息",
+        "param_description": "因逾期給付而加計的利息",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "RETURN_AMOUNT",
+          "INTEREST_RATE_FOR_OVERDUE_PAYMENT",
+          "NUMBER_OF_DAYS_OVERDUE"
+        ],
+        "formula_definition": "RETURN_AMOUNT * INTEREST_RATE_FOR_OVERDUE_PAYMENT * NUMBER_OF_DAYS_OVERDUE / 365"
+      },
+      {
+        "param_name": "POLICY_LOAN_INTEREST_RATE",
+        "display_name": "保險單借款之利率",
+        "param_description": "保單辦理保險單借款時的利率",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "POLICY_FIXED",
+          "fixed_value": "依本保單當時利率"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "CIVIL_CODE_STATUTORY_ANNUAL_INTEREST_RATE",
+        "display_name": "民法第二百零三條法定週年利率",
+        "param_description": "民法第二百零三條規定的法定週年利率",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "POLICY_FIXED",
+          "fixed_value": "依民法第二百零三條規定"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "INTEREST_RATE_FOR_OVERDUE_PAYMENT",
+        "display_name": "逾期給付利率",
+        "param_description": "因逾期給付而加計利息所採用的利率，取保單借款利率與民法法定利率之較大者",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "POLICY_LOAN_INTEREST_RATE",
+          "CIVIL_CODE_STATUTORY_ANNUAL_INTEREST_RATE"
+        ],
+        "formula_definition": "MAX(POLICY_LOAN_INTEREST_RATE, CIVIL_CODE_STATUTORY_ANNUAL_INTEREST_RATE)"
+      },
+      {
+        "param_name": "NUMBER_OF_DAYS_OVERDUE",
+        "display_name": "逾期天數",
+        "param_description": "從給付期限後到實際給付日期的天數",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "INTEGER",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "ACTUAL_DISTRIBUTION_DATE",
+          "PAYMENT_DEADLINE_EXCEEDED",
+          "FIFTEEN_DAYS"
+        ]
+      },
+      {
+        "param_name": "FIFTEEN_DAYS",
+        "display_name": "十五日",
+        "param_description": "特定作業的期限天數，例如現金提解配置期限",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "INTEGER",
+        "value_binding": {
+          "binding_type": "POLICY_FIXED",
+          "fixed_value": "15"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "TWO_INSURER_BANK_BUSINESS_DAYS",
+        "display_name": "次二本公司所在地銀行營業日",
+        "param_description": "特定作業的期限天數，指實際分配日後第二個本公司所在地銀行營業日",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "INTEGER",
+        "value_binding": {
+          "binding_type": "POLICY_FIXED",
+          "fixed_value": "2"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "INSURER_BANK_BUSINESS_DAY",
+        "display_name": "本公司所在地銀行營業日",
+        "param_description": "保險公司所在地銀行的營業日",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "BOOLEAN",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "CURRENT_DATE"
+        ]
+      },
+      {
+        "param_name": "UNPAID_AMOUNTS",
+        "display_name": "未償款項",
+        "param_description": "要保人尚未償還的款項，如保險單借款本息、寬限期間欠繳之保險成本、保單管理費等",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "INTEREST_PAYABLE",
+        "display_name": "應付利息",
+        "param_description": "應付的利息金額",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "UNPAID_AMOUNTS"
+        ]
+      },
+      {
+        "param_name": "REMITTANCE_RELATED_FEES",
+        "display_name": "匯款相關費用",
+        "param_description": "匯款時產生的各項費用，包括匯出、受款及轉匯費用",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "BANK_EXEMPT_FROM_REMITTANCE_FEES",
+        "display_name": "免收匯款相關費用之銀行",
+        "param_description": "本公司指定免收匯款相關費用的銀行列表",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "STRING",
+        "value_binding": {
+          "binding_type": "POLICY_FIXED",
+          "fixed_value": "本公司指定銀行列表"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "DOMESTIC_BANK_FOREIGN_CURRENCY_DEPOSIT_ACCOUNT",
+        "display_name": "境內銀行外匯存款帳戶",
+        "param_description": "要保人於境內銀行開設的外匯存款帳戶",
+        "source_type": "USER_INPUT",
+        "data_type": "STRING",
+        "value_binding": {
+          "binding_type": "USER_INPUT"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "AUTOMATIC_TRANSFER_METHOD",
+        "display_name": "自動轉帳方式",
+        "param_description": "繳納保險費或返還款項的自動轉帳方式",
+        "source_type": "USER_INPUT",
+        "data_type": "BOOLEAN",
+        "value_binding": {
+          "binding_type": "USER_INPUT"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "OVERSEAS_BANK_ACCOUNT",
+        "display_name": "境外銀行帳戶",
+        "param_description": "受款人於境外銀行開設的帳戶",
+        "source_type": "USER_INPUT",
+        "data_type": "STRING",
+        "value_binding": {
+          "binding_type": "USER_INPUT"
+        },
+        "depends_on": []
+      }
+    ],
+    "synonym_map": [
+      "投資收益分配或全委提解"
+    ],
+    "payment_type": "REFUND"
+  }
+]

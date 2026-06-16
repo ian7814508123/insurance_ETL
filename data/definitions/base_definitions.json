@@ -1,0 +1,851 @@
+[
+  {
+    "type": "名詞定義",
+    "code": "DISEASE",
+    "display_name": "疾病",
+    "base_definition": "本契約所稱「疾病」係指被保險人自本契約生效日（或復效日）起所發生之疾病。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "被保險人自契約生效日（或復效日）起所發生的疾病。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "code": "INJURY",
+    "display_name": "傷害",
+    "base_definition": "本契約所稱「傷害」係指被保險人於本契約有效期間內，遭受意外傷害事故，因而蒙受之傷害。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "被保險人於契約有效期間內，因意外傷害事故所蒙受的傷害。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "code": "ACCIDENTAL_INJURY_EVENT",
+    "display_name": "意外傷害事故",
+    "base_definition": "本契約所稱「意外傷害事故」係指非由疾病引起之外來突發事故。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "非由疾病引起的外來突發事故。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "code": "HOSPITAL",
+    "display_name": "醫院",
+    "base_definition": "本契約所稱「醫院」係指依照醫療法規定領有開業執照並設有病房收治病人之公、私立及醫療法人醫院。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "指依當地醫療法規領有執照，並設有病房收治病患的公、私立及醫療法人醫院。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "code": "HOSPITALIZATION_INCL_DAY_CARE",
+    "display_name": "住院",
+    "base_definition": "本契約所稱「住院」係指被保險人經醫師診斷其疾病或傷害必須入住醫院，且正式辦理住院手續並確實在醫院接受診療者，包含精神衛生法所稱之日間留院／日間照護。",
+    "parameter": {},
+    "synonym_map": [
+      "住院 (給付日間留院／日間照護適用)",
+      "日間照護",
+      "日間留院"
+    ],
+    "description": "被保險人經醫師診斷需入住醫院並接受診療，包含日間留院/日間照護。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "code": "HOSPITALIZATION_EXCL_DAY_CARE",
+    "display_name": "住院",
+    "base_definition": "本契約所稱「住院」係指被保險人經醫師診斷其疾病或傷害必須入住醫院，且正式辦理住院手續並確實在醫院接受診療者。但不包含全民健康保險法所稱之日間住院及精神衛生法所稱之日間留院／日間照護。",
+    "parameter": {},
+    "synonym_map": [
+      "住院 (不給付日間留院／日間照護適用)"
+    ],
+    "description": "指被保險人因突發疾病經醫師診斷需入住醫院，並辦理住院手續接受診療，但不包含日間住院及日間照護。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "code": "PHYSICIAN",
+    "display_name": "醫師",
+    "base_definition": "係指依照當地政府之法令規定，合法領有醫師執照之執業醫師，且非要保人本人或被保險人本人。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "指依當地法令合法領有醫師執照的執業醫師，且非要保人或被保險人本人。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "code": "SPECIALIST_PHYSICIAN",
+    "display_name": "專科醫師",
+    "base_definition": "本契約所稱「專科醫師」係指經醫師考試及格並完成專科醫師訓練，且經衛生福利部甄審合格，領有復健科、神經科、精神科或主要疾病相關科別之專科醫師證書者之執業醫師。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "經醫師考試及格、完成專科訓練、衛福部甄審合格，並領有特定專科醫師證書的執業醫師。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "code": "LONG_TERM_CARE_STATUS",
+    "display_name": "長期照顧狀態",
+    "base_definition": "「長期照顧狀態」係指被保險人經專科醫師診斷判定，符合下列之生理功能障礙或認知功能障礙二項情形之一者。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "被保險人經專科醫師診斷判定，符合生理功能障礙或認知功能障礙其中一項情形。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "code": "PHYSICAL_FUNCTIONAL_IMPAIRMENT",
+    "display_name": "生理功能障礙",
+    "base_definition": "係指被保險人經專科醫師依巴氏量表（Barthel Index ）或依其它臨床專業評量表診斷判定達{MONTHS_FOR_PHYSICAL_IMPAIRMENT}個月以上（不得高於六個月），其進食、移位、如廁、沐浴、平地行動及更衣等六項日常生活自理能力（Activitiesof Daily Living,ADLs）持續存有三項（含）以上之障礙。但經專科醫師診斷判定前述生理功能障礙為終身無法治癒者，不受{MONTHS_FOR_PHYSICAL_IMPAIRMENT}個月之限制。",
+    "parameter": {},
+    "synonym_map": [
+      "ADLs",
+      "日常生活自理能力",
+      "Activities of Daily Living",
+      "ADLs障礙"
+    ],
+    "description": "被保險人經專科醫師診斷，六項日常生活自理能力（ADLs）中持續存有三項（含）以上障礙。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "code": "EATING_IMPAIRMENT",
+    "display_name": "進食障礙",
+    "base_definition": "進食障礙：須別人協助才能取用食物或穿脫進食輔具。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "須別人協助才能取用食物或穿脫進食輔具。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "code": "TRANSFER_IMPAIRMENT",
+    "display_name": "移位障礙",
+    "base_definition": "移位障礙：須別人協助才能由床移位至椅子或輪椅。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "須別人協助才能由床移位至椅子或輪椅。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "code": "TOILETING_IMPAIRMENT",
+    "display_name": "如廁障礙",
+    "base_definition": "如廁障礙：如廁過程中須別人協助才能保持平衡、整理衣物或使用衛生紙。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "如廁過程中須別人協助才能保持平衡、整理衣物或使用衛生紙。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "code": "BATHING_IMPAIRMENT",
+    "display_name": "沐浴障礙",
+    "base_definition": "沐浴障礙：須別人協助才能完成盆浴或淋浴。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "須別人協助才能完成盆浴或淋浴。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "code": "MOBILITY_IMPAIRMENT_LEVEL_GROUND",
+    "display_name": "平地行動障礙",
+    "base_definition": "平地行動障礙：雖經別人扶持或使用輔具亦無法行動，且須別人協助才能操作輪椅或電動輪椅。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "雖經別人扶持或使用輔具亦無法行動，且須別人協助才能操作輪椅或電動輪椅。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "code": "DRESSING_IMPAIRMENT",
+    "display_name": "更衣障礙",
+    "base_definition": "更衣障礙：須別人完全協助才能完成穿脫衣褲鞋襪（含義肢、支架）。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "須別人完全協助才能完成穿脫衣褲鞋襪（含義肢、支架）。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "code": "COGNITIVE_FUNCTIONAL_IMPAIRMENT",
+    "display_name": "認知功能障礙",
+    "base_definition": "係指被保險人經專科醫師診斷判定達{MONTHS_FOR_COGNITIVE_IMPAIRMENT}個月以上（不得高於六個月），仍為持續失智狀態（係指按「國際疾病傷害及死因分類標準」第十版（ICD-10-CM ），如附表所列項目），且依臨床失智量表（Clinical Dementia RatingScale,CDR ）評估達中度（含）以上（即 CDR  大於或等於 {CDR_THRESHOLD} 分，非各分項總和）者。但經專科醫師診斷判定前述認知功能障礙為終身無法治癒者，不受{MONTHS_FOR_COGNITIVE_IMPAIRMENT}個月的限制。",
+    "parameter": {},
+    "synonym_map": [
+      "Clinical Dementia RatingScale",
+      "CDR",
+      "持續失智狀態",
+      "失智狀態"
+    ],
+    "description": "被保險人經專科醫師診斷，持續失智狀態達一定期間，且依臨床失智量表（CDR）評估達中度（含）以上。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "code": "DESIGNATED_INSURANCE_BENEFIT",
+    "display_name": "指定保險金",
+    "base_definition": "指符合本契約○○保險金申領條件時，以該保險金各受益人得受領之保險金乘以於要保書或另行批註約定之比例所得之金額；該金額係作為本公司分期定期給付每期應給付予受益人保險金之換算依據。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "用於分期定額給付的保險金，其金額是根據符合契約條件的保險金乘以約定比例計算而得。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "code": "INSTALLMENT_INSURANCE_BENEFIT_PRESET_INTEREST_RATE",
+    "display_name": "分期定期保險金預定利率",
+    "base_definition": "指本公司於分期定額給付開始日或分期定額給付年度週年日當月宣告並用以計算該分期定額給付年度分期定額保險金餘額利息之利率，該利率本公司將參考○○○訂定之，且不得為負數。宣告利率於每月第一個營業日宣告，並於本公司網站公告。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "指保險公司在分期定期給付開始日，用來計算分期給付金額的利率，以該日公司網站公告的利率為準。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "code": "INSTALLMENT_BENEFIT_COMMENCEMENT_DATE",
+    "display_name": "分期定期給付開始日",
+    "base_definition": "係指要保人與本公司約定開始分期定額給付指定保險金之日。但該給付開始日不得晚於受益人備齊本契約給付申領文件之日起[MAX_DAYS_FOR_COMMENCEMENT]日。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "要保人與保險公司約定開始分期給付指定保險金的日期，且不得晚於受益人備齊文件後的特定天數。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "code": "INSTALLMENT_INSURANCE_BENEFIT_PAYMENT_PERIOD",
+    "display_name": "分期定期保險金給付期間",
+    "base_definition": "指依本契約要保書約定之給付期間，該期間最短為○○年，最長為○○年，如該期間有所變更時，則以變更後並批註於保險單之期間為準。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "從分期定額給付開始日起，直到所有尚未領取的分期定額保險金及利息給付完畢為止的期間。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "code": "INSTALLMENT_PAYMENT_YEAR",
+    "display_name": "分期定額給付年度",
+    "base_definition": "指第一給付年度及其後每滿一年之給付年度。第一給付年度自分期定額給付開始日起算，每滿一年後則為下一給付年度。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "指分期定額給付的第一個年度，以及之後每滿一年所計算的給付年度。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "code": "INSTALLMENT_PAYMENT_YEAR_ANNIVERSARY",
+    "display_name": "分期定額給付年度週年日",
+    "base_definition": "指自分期定額給付開始日起，每屆滿一年後與分期定額給付開始日相當之日。若當年該月無相當日者，以該月之末日為分期定額給付年度週年日。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "指自分期定額給付開始日起，每滿一年與開始日相同之日期，若無相同日則為該月最後一日。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "code": "UNCLAIMED_INSTALLMENT_BENEFIT_AND_INTEREST",
+    "display_name": "尚未領取的分期定額保險金及利息",
+    "base_definition": "指受益人於分期定額保險金給付期間內尚未領取的分期定額保險金的餘額及利息。給付每[PAYMENT_FREQUENCY]應給付金額後，分期定額保險金之餘額將依本公司分期定額保險金宣告利率計算利息。利息之計算適用各分期定額給付年度首月之分期定額保險金宣告利率，同一分期定額給付年度以單利、每一年度末未分配之利息滾入本金複利計算。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "指受益人在給付期間內尚未領取的保險金餘額及其依宣告利率計算的利息。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "code": "INSTALLMENT_INSURANCE_BENEFIT_AMOUNT",
+    "display_name": "分期定額保險金",
+    "base_definition": "指依本契約要保書約定之金額，如該金額有所變更時，則以變更後並批註於保險單之金額為準。分期定額保險金每[PAYMENT_FREQUENCY]最低為[MIN_INSTALLMENT_AMOUNT]元，最高為[MAX_INSTALLMENT_AMOUNT]元。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "依契約約定或變更批註於保險單上的金額，並設有每期給付的最低與最高限制。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "code": "GUARANTEED_PERIOD",
+    "display_name": "保證期間",
+    "base_definition": "係指依本契約約定，於年金給付開始日後，不論被保險人生存與否，本公司保證給付年金之期間。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "年金給付開始日後，保險公司保證給付年金的期間，不論被保險人是否生存。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "code": "GUARANTEED_AMOUNT",
+    "display_name": "保證金額",
+    "base_definition": "係指依本契約約定，不論被保險人生存與否，本公司保證給付年金之總額。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "指保險公司無論被保險人生存與否，都保證給付年金的總金額。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "code": "ANNUITY_AMOUNT",
+    "display_name": "年金金額",
+    "base_definition": "係指依本契約約定之條件及期間，本公司分期給付之金額。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "保險公司依契約約定條件及期間分期給付的金額。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "code": "UNCLAIMED_ANNUITY_BALANCE",
+    "display_name": "未支領之年金餘額",
+    "base_definition": "係指被保險人於本契約年金保證期間（或保證金額）內尚未領取之年金金額。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "被保險人在年金保證期間內尚未領取的年金金額。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "code": "SURVIVAL_ANNUITY_AMOUNT",
+    "display_name": "生存年金金額",
+    "base_definition": "係指被保險人於本契約約定之期間內仍生存時，本公司分期給付之年金金額。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "指被保險人在契約約定期間內仍生存時，保險公司分期給付的年金金額。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "code": "DECLARED_INTEREST_RATE",
+    "display_name": "宣告利率",
+    "base_definition": "係指本公司於本契約生效日或各保單週年日當月宣告並用以計算該年度年金保單價值準備金之利率，該利率本公司將參考○○○訂定之，且不得為負數。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "指保險公司每月第一個營業日宣告，用於計算「當年度宣告利率平均值」的當月利率，並參考特定標準訂定。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "code": "ASSUMED_INTEREST_RATE",
+    "display_name": "預定利率",
+    "base_definition": "係指本公司於年金給付開始日用以計算年金金額之利率，本公司將參考○○○○訂定。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "保險公司在年金給付開始日用來計算年金金額的利率。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "code": "BASIC_SUM_INSURED",
+    "display_name": "基本保險金額",
+    "base_definition": "係指本契約所載明之投保金額。要保人在本契約有效期間內，得申請增加或減少基本保額，且須符合第十條第二項約定。惟增加基本保額，需經本公司同意；減少後之基本保額，不得低於本保險最低承保金額。如該基本保額有所變更時，以變更後之基本保額為準。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "指保險契約中載明的投保金額，要保人可在契約有效期間內申請增減，但需符合特定條件並經保險公司同意。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "code": "ACCUMULATED_INCREASED_SUM_INSURED",
+    "display_name": "累計增加保險金額",
+    "base_definition": "本契約所稱「累計增加保險金額」係指就每一保單週年日依第十條約定計算所得增額繳清保險金額逐次累計之值。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "指每一保單週年日依約定計算所得增額繳清保險金額逐次累計的值。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "code": "SUM_INSURED",
+    "display_name": "保險金額",
+    "base_definition": "係指本公司於被保險人身故或完全失能所給付之金額。該金額以淨危險保額與保單帳戶價值兩者之總和給付，其中，淨危險保額及保單帳戶價值係以受益人檢齊申請身故、完全失能保險金之所須文件並送達本公司之次○個資產評價日的保單帳戶價值計算。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "指保險公司在被保險人身故或完全失能時給付的金額，計算方式為淨危險保額與保單帳戶價值的總和。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "code": "POLICY_VALUE_RESERVE",
+    "display_name": "保單價值準備金",
+    "base_definition": "本契約所稱「保單價值準備金」係指基本保險金額對應之保單價值準備金與累計增加保險金額對應之保單價值準備金加總之值。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "指基本保險金額與累計增加保險金額各自對應的保單價值準備金的總和。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "code": "SURRENDER_VALUE",
+    "display_name": "解約金",
+    "base_definition": "本契約所稱「解約金」係指基本保險金額對應之解約金與累計增加保險金額對應之保單價值準備金加總之值。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "指基本保險金額對應的解約金與累計增加保險金額對應的保單價值準備金的總和。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "code": "CURRENT_YEAR_DECLARED_INTEREST_RATE_AVERAGE",
+    "display_name": "當年度宣告利率平均值",
+    "base_definition": "本契約所稱「當年度宣告利率平均值」係指本契約保單週年日當月（不含）起算，往前推算十二個月之宣告利率平均值，該平均值若低於本契約之預定利率，則以本契約預定利率為準。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "指保單週年日當月前十二個月的宣告利率平均值，若低於預定利率則以預定利率為準。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "code": "NET_RISK_SUM_INSURED",
+    "display_name": "淨危險保額",
+    "base_definition": "係指依要保人在訂立本契約時選擇之保險型態，按下列方式所計算之金額：(一)甲型：基本保額扣除保單帳戶價值之餘額，但不得為負值。(二)乙型：基本保額。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "根據要保人選擇的保險型態，以基本保額扣除保單帳戶價值（甲型）或直接以基本保額（乙型）計算出的金額。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "code": "TARGET_PREMIUM",
+    "display_name": "目標保險費",
+    "base_definition": "係指本契約所載明之定期繳付保險費，該保險費係依據○○○○訂定，用以提供被保險人身故、完全失能保障及投資需求。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "指契約中定期繳付的保險費，用於提供身故、完全失能保障及投資需求。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "code": "EXCESS_PREMIUM",
+    "display_name": "超額保險費",
+    "base_definition": "係指由要保人申請並經本公司同意，為增加其保單帳戶價值，於目標保險費以外所繳付之保險費。超額保險費得以定期或不定期方式繳交，要保人應先繳足當期及累計未繳之目標保險費後，始得計入超額保險費。（上開繳交超額保險費條件得由各公司自行修正約定）。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "指要保人為增加保單帳戶價值，在目標保險費之外額外繳付的保險費，可定期或不定期繳交，但需先繳足目標保險費。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "code": "PREMIUM_CHARGE",
+    "display_name": "保費費用",
+    "base_definition": "係指因本契約簽訂及運作所產生並自保險費中扣除之相關費用，包含核保、發單、銷售、服務及其他必要費用。保費費用之金額為要保人繳付之保險費乘以附表○相關費用一覽表中「保費費用表」所列之百分率所得之數額。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "簽訂及運作契約產生並從保險費中扣除的費用，包含核保、發單、銷售、服務等，金額依保險費乘以特定百分率計算。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "code": "POLICY_MANAGEMENT_FEE",
+    "display_name": "保單管理費",
+    "base_definition": "係指為維持本契約每月管理所產生且自保單帳戶價值中扣除之費用，並依第十一條約定時點扣除，其費用額度如附表○。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "為維持契約每月管理而從保單帳戶價值中扣除的費用。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "code": "COST_OF_INSURANCE",
+    "display_name": "保險成本",
+    "base_definition": "係指提供被保險人本契約身故、完全失能保障所需的成本（標準體之費率表如附表○）。由本公司每月根據訂立本契約時被保險人的性別、體況、扣款當時之保險年齡及淨危險保額計算，並依第十一條約定時點扣除。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "指提供被保險人身故、完全失能保障所需的費用，每月根據被保險人的性別、體況、保險年齡及淨危險保額計算並扣除。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "code": "SURRENDER_CHARGE",
+    "display_name": "解約費用",
+    "base_definition": "係指本公司依本契約第十九條約定於要保人終止契約時，自給付金額中所收取之費用。其金額按附表○所載之方式計算。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "要保人終止契約時，保險公司從給付金額中收取的費用。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "code": "PARTIAL_WITHDRAWAL_FEE",
+    "display_name": "部分提領費用",
+    "base_definition": "係指本公司依本契約第二十條約定於要保人部分提領保單帳戶價值時，自給付金額中所收取之費用。其金額按附表○所載之方式計算。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "要保人部分提領保單帳戶價值時，保險公司從給付金額中收取的費用。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "code": "INSURANCE_AGE",
+    "display_name": "保險年齡",
+    "base_definition": "係指按投保時被保險人以足歲計算之年齡，但未滿一歲的零數超過六個月者加算一歲，以後每經過一個保險單年度加算一歲。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "投保時被保險人以足歲計算的年齡，未滿一歲零數超過六個月者加算一歲，之後每經過一個保險單年度加算一歲。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "code": "INITIAL_INVESTMENT_ALLOCATION_AMOUNT",
+    "display_name": "首次投資配置金額",
+    "base_definition": "係指依下列順序計算之金額：(一)要保人所交付之第一期保險費扣除保費費用後之餘額；(二)加上要保人於首次投資配置日前，再繳交之目標保險費及超額保險費扣除保費費用後之餘額；(三)扣除首次投資配置日前，本契約應扣除之保險成本及保單管理費（由各公司視實際情況訂定）；(四)加上按前三目之每日淨額，依○○○○之利率，逐日以日單利計算至首次投資配置日之前一日止之利息。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "首次將保險費投入投資標的之金額，計算方式包含首期及後續繳交保費扣除費用，並加計利息。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "code": "INITIAL_INVESTMENT_ALLOCATION_DATE",
+    "display_name": "首次投資配置日",
+    "base_definition": "係指根據第四條約定之契約撤銷期限屆滿之後的第○個資產評價日。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "契約撤銷期限屆滿後的特定資產評價日。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "code": "INVESTMENT_OPTION",
+    "display_name": "投資標的",
+    "base_definition": "係指本契約提供要保人選擇以累積保單帳戶價值之投資工具，其內容如附表○。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "契約提供要保人選擇用來累積保單帳戶價值的投資工具。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "code": "ASSET_VALUATION_DATE",
+    "display_name": "資產評價日",
+    "base_definition": "係指投資標的報價市場報價或證券交易所營業之日期，且為我國境內銀行及本公司之營業日。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "投資標的報價市場或證券交易所營業，且為我國境內銀行及保險公司營業的日期。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "code": "INVESTMENT_OPTION_UNIT_NET_VALUE",
+    "display_name": "投資標的單位淨值",
+    "base_definition": "係指投資標的於資產評價日實際交易所採用之每單位「淨資產價值或市場價值」。本契約投資標的單位淨值將公告於本公司網站。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "投資標的在資產評價日實際交易時採用的每單位淨資產價值或市場價值。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "code": "INVESTMENT_OPTION_VALUE",
+    "display_name": "投資標的價值",
+    "base_definition": "係指以原投資標的計價幣別作為投資標的之單位基準，在本契約年金累積期間內，其價值係依本契約項下各該投資標的之單位數乘以其投資標的單位淨值計算所得之值。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "在年金累積期間內，以原計價幣別為基準，依投資標的單位數乘以單位淨值計算所得的價值。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "code": "POLICY_ACCOUNT_VALUE",
+    "display_name": "保單帳戶價值",
+    "base_definition": "係指以新臺幣為單位基準，在本契約年金累積期間內，其價值係依本契約所有投資標的之投資標的價值總和加上尚未投入投資標的之金額；但於首次投資配置日前，係指依第十二款方式計算至計算日之金額。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "在年金累積期間內，以新臺幣為基準，所有投資標的價值總和加上尚未投入投資標的之金額；首次投資配置日前則依特定方式計算。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "code": "POLICY_MONTHLY_ANNIVERSARY",
+    "display_name": "保單週月日",
+    "base_definition": "係指本契約生效日以後每月與契約生效日相當之日，若當月無相當日者，指該月之末日。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "契約生效日後每月與生效日相同的日期，若無則為該月最後一天。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "code": "PREMIUM_YEAR",
+    "display_name": "保險費年度",
+    "base_definition": "係指要保人繳付目標保險費之保單年度。惟若歷保單年度有目標保險費未繳足之情形者，應依序補齊之，受遞補之保單年度為該筆目標保險費之保險費年度。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "指要保人繳付目標保險費的保單年度，若有未繳足情況，補齊後該筆保費所屬的年度。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "code": "ANNUITY_COMMENCEMENT_DATE",
+    "display_name": "年金給付開始日",
+    "base_definition": "係指本契約所載明，依本契約約定本公司開始負有給付年金義務之日期，如有變更，以變更後之日期為準。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "契約中載明保險公司開始給付年金的日期，若有變更則以變更後日期為準。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "code": "ANNUITY_ACCUMULATION_PERIOD",
+    "display_name": "年金累積期間",
+    "base_definition": "係指本契約生效日至年金給付開始日前一日之期間。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "契約生效日到年金給付開始日前一天的期間。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "code": "ANNUITY_MORTALITY_TABLE",
+    "display_name": "年金生命表",
+    "base_definition": "係指本公司於年金給付開始日用以計算年金金額之生命表。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "保險公司在年金給付開始日用來計算年金金額的生命表。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "code": "STATUTORY_INFECTIOUS_DISEASE",
+    "display_name": "法定傳染病",
+    "base_definition": "指中央衛生主管機關依傳染病防治法第三條規定所稱之傳染病。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "依中央衛生主管機關《傳染病防治法》第三條規定所稱的傳染病。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "code": "NEGATIVE_PRESSURE_ISOLATION_WARD",
+    "display_name": "負壓隔離病房",
+    "base_definition": "係指符合中央衛生主管機關規定標準之負壓隔離病房，醫院為控制法定傳染病患者身體產生的生物氣膠汙染範圍，刻意使病房內之氣壓恆低於病房外之氣壓，迫使病房外之空氣透過各種結構縫隙（門縫、平衡風門開口等）單向流入病房內部空間，造成病房內空氣之單向隔絕，並經醫院認定為負壓隔離病房（床）者。",
+    "parameter": {},
+    "synonym_map": [
+      "負壓隔離病房(床)"
+    ],
+    "description": "符合中央衛生主管機關標準，醫院為控制法定傳染病患者生物氣膠污染，使病房內氣壓低於病房外，造成空氣單向隔絕，並經醫院認定的病房。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "code": "DAYS_IN_NEGATIVE_PRESSURE_ISOLATION_WARD",
+    "display_name": "入住負壓隔離病房日數",
+    "base_definition": "指被保險人實際入住負壓隔離病房日數（含轉入及轉出當日），但如被保險人於同一日轉出負壓隔離病房後，又轉入負壓隔離病房時，不論其原因為何，該日不得重複計入「入住負壓隔離病房日數」。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "被保險人實際入住負壓隔離病房的日數（含轉入轉出當日），但同一日轉出後又轉入不得重複計算。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "code": "OVERSEAS",
+    "display_name": "海外",
+    "base_definition": "係指臺灣、澎湖、金門、馬祖等由中華民國政府所轄範圍以外之地區。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "指中華民國政府管轄範圍以外的地區。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "code": "SUDDEN_ILLNESS",
+    "display_name": "突發疾病",
+    "base_definition": "係指被保險人需即時在醫院或診所診療始能避免損及身體健康之疾病，且在本附約生效前ＯＯ日（不得高於一百八十日）以內，未曾接受該疾病之診療者。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "指被保險人需立即就醫以避免健康受損的疾病，且在附約生效前特定天數內未曾接受該疾病診療。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "code": "CLINIC",
+    "display_name": "診所",
+    "base_definition": "係指依照當地醫療法規定領有開業執照的診所。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "指依當地醫療法規領有開業執照的診所。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "code": "INSTALLMENT_BENEFIT_DECLARED_INTEREST_RATE",
+    "display_name": "分期定額保險金宣告利率",
+    "base_definition": "指本公司於分期定額給付開始日或分期定額給付年度週年日當月宣告並用以計算該分期定額給付年度分期定額保險金餘額利息之利率，該利率本公司將參考○○○訂定之，且不得為負數。宣告利率於每月第一個營業日宣告，並於本公司網站公告。",
+    "level": "BASE",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "用於計算分期定額保險金餘額利息的利率，由保險公司每月宣告，且不得為負數。",
+    "classification": "EXISTING_MATCH"
+  },
+  {
+    "type": "名詞定義",
+    "description": "指當事人約定，要保人交付保險費，保險人對於因不可預料或不可抗力之事故所致損害負擔賠償或給付保險金額責任的法律文件。",
+    "code": "INS_ACT_ART_1",
+    "display_name": "保險契約",
+    "base_definition": "本法所稱保險，謂當事人約定，一方交付保險費於他方，他方對於因不可預料，或不可抗力之事故所致之損害，負擔賠償財物之行為。依前項所訂之契約，為保險契約。(中華民國保險法第一條)",
+    "level": "BASE",
+    "parameter": {},
+    "synonym_map": []
+  },
+  {
+    "type": "名詞定義",
+    "description": "指經營保險事業的組織，在保險契約成立時，承擔賠償或給付保險金額責任的一方。",
+    "code": "INS_ACT_ART_2",
+    "display_name": "保險人",
+    "base_definition": "本法所稱保險人，指經營保險事業之各種組織，在保險契約成立時，負賠償或給付保險金額責任之當事人。(中華民國保險法第二條)",
+    "level": "BASE",
+    "parameter": {},
+    "synonym_map": []
+  },
+  {
+    "type": "名詞定義",
+    "description": "指向保險人申請訂立保險契約，並負有支付保險費義務的人。",
+    "code": "POLICY_HOLDER",
+    "display_name": "要保人",
+    "base_definition": "本法所稱要保人，指向保險人申請訂立保險契約，並負有交付保險費義務之人。(中華民國保險法第三條)",
+    "level": "BASE",
+    "parameter": {},
+    "synonym_map": []
+  },
+  {
+    "type": "名詞定義",
+    "description": "指在保險事故發生時，遭受損害並享有賠償請求權的人。要保人也可以是被保險人。",
+    "code": "INSURED",
+    "display_name": "被保險人",
+    "base_definition": "本法所稱被保險人，指於保險事故發生時，遭受損害，享有賠償請求權之人；要保人亦得為被保險人。(中華民國保險法第四條)",
+    "level": "BASE",
+    "parameter": {},
+    "synonym_map": []
+  },
+  {
+    "type": "名詞定義",
+    "description": "指由被保險人或要保人指定，在保險事故發生時，有權獲得賠償或給付保險金額的人。",
+    "code": "BENEFICIARY",
+    "display_name": "受益人",
+    "base_definition": "本法所稱受益人，指被保險人或要保人約定，於保險事故發生時，得受賠償或給付金額之人；要保人或被保險人均得為受益人。(中華民國保險法第五條)",
+    "level": "BASE",
+    "parameter": {},
+    "synonym_map": []
+  },
+  {
+    "type": "名詞定義",
+    "description": "指要保人依保險契約約定，向保險人支付的對價，以換取保險人承擔保險責任。",
+    "code": "PREMIUM",
+    "display_name": "保險費",
+    "base_definition": "本法第一條規定「一方交付保險費於他方」；第三條規定「負有交付保險費義務之人」為要保人。(中華民國保險法第一條、第三條)",
+    "level": "BASE",
+    "parameter": {},
+    "synonym_map": []
+  },
+  {
+    "type": "名詞定義",
+    "description": "指保險契約中約定，一旦發生即觸發保險人賠償或給付保險金額責任的事件。",
+    "code": "INSURANCE_ACCIDENT",
+    "display_name": "保險事故",
+    "base_definition": "本法第一條規定「因不可預料，或不可抗力之事故所致之損害」；第四條規定「於保險事故發生時，遭受損害」；第五條規定「於保險事故發生時，得受賠償或給付金額之人」。(中華民國保險法第一條、第四條、第五條)",
+    "level": "BASE",
+    "parameter": {},
+    "synonym_map": []
+  },
+  {
+    "type": "名詞定義",
+    "description": "指人壽保險契約中，保險費到期未繳付時，保險人給予要保人的一段緩衝期，在此期間內保險契約效力仍持續，但若期滿仍未繳付，契約效力將停止。",
+    "code": "GRACE_PERIOD",
+    "display_name": "寬限期間",
+    "base_definition": "人壽保險之保險費到期未交付者，除契約另有約定外，經保險人催告到達後屆三十日，或經契約約定，遲延給付保險費已達六十日者，保險契約之效力停止。(中華民國保險法第一百十六條)",
+    "level": "BASE",
+    "parameter": {},
+    "synonym_map": []
+  },
+  {
+    "type": "名詞定義",
+    "description": "指保險契約因保險費未繳而停止效力後，要保人在一定期限內，依約定條件向保險人申請恢復契約效力的行為。",
+    "code": "REINSTATEMENT",
+    "display_name": "復效",
+    "base_definition": "保險契約停止效力後，要保人得在停止效力之日起二年內，申請復效。(中華民國保險法第一百十六條第三項)",
+    "level": "BASE",
+    "parameter": {},
+    "synonym_map": []
+  },
+  {
+    "type": "名詞定義",
+    "description": "指當事人約定，一方交付保險費於他方，他方對於因不可預料或不可抗力之事故所致之損害，負擔賠償財物之行為。",
+    "code": "INSURANCE_CONTRACT",
+    "display_name": "保險契約",
+    "base_definition": "依《保險法》第一條及第十一條之規定，指當事人約定，一方交付保險費於他方，他方對於因不可預料或不可抗力之事故所致之損害，負擔賠償財物之行為，並以當事人之一方對於他方負擔危險，而他方支付保險費為其對價。",
+    "level": "BASE",
+    "parameter": {},
+    "synonym_map": []
+  },
+  {
+    "type": "名詞定義",
+    "description": "指經營保險事業之各種組織，在保險契約成立時，負擔賠償或給付保險金責任之當事人。",
+    "code": "INSURER",
+    "display_name": "保險人",
+    "base_definition": "依《保險法》第十條之規定，指經營保險事業之各種組織，在保險契約成立時，負擔賠償或給付保險金責任之當事人。",
+    "level": "BASE",
+    "parameter": {},
+    "synonym_map": []
+  },
+  {
+    "type": "名詞定義",
+    "description": "指組織細胞具惡性生長、擴張及侵害特性之惡性腫瘤或惡性白血球過多症，並經病理檢驗符合國際疾病傷害及死因分類標準中惡性腫瘤或原位癌的疾病。",
+    "code": "CANCER",
+    "display_name": "癌症",
+    "base_definition": "係指組織細胞有惡性細胞不斷生長、擴張及對組織侵害的特性之惡性腫瘤或惡性白血球過多症，經病理檢驗確定符合最近採用之「國際疾病傷害及死因分類標準」版本歸屬於惡性腫瘤或原位癌之疾病。",
+    "parameter": {},
+    "synonym_map": [],
+    "level": "BASE"
+  },
+  {
+    "type": "名詞定義",
+    "description": "指同一次住院的實際日數（含住院及出院當日），同一日出入院不重複計算，日間住（留）院/日間照護不計入。",
+    "code": "HOSPITALIZATION_DAYS",
+    "display_name": "住院日數",
+    "base_definition": "「住院日數」係指按被保險人同一次「住院」之實際「住院日數」 （含住院及出院當日）定之。若被保險人出院後，又於同一日入院診療時，該日不得重覆計入「住院日數」 。被保險人如僅係日間住（留）院/日間照護，不計入「住院日數」 。",
+    "parameter": {},
+    "synonym_map": [],
+    "level": "BASE"
+  },
+  {
+    "type": "名詞定義",
+    "code": "HOSPITALIZATION_EXCL_DAY_CARE",
+    "display_name": "住院",
+    "base_definition": "「住院」 係指被保險人經醫師診斷其疾病或傷害必須入住醫院， 且正式辦理住院手續並確實在醫院接受診療者。但不包含全民健康保險法所稱之日間住院及精神衛生法所稱之日間留院/日間照護。",
+    "level": "CATEGORY",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "指被保險人經醫師診斷因疾病或傷害需入住醫院，並正式辦理住院手續且實際接受診療。不包含健保法規定的日間住院及精神衛生法規定的日間留院/日間照護。"
+  },
+  {
+    "type": "名詞定義",
+    "description": "契約生效日起持續有效一段時間。",
+    "code": "WAITING_PERIOD",
+    "display_name": "等待期間",
+    "base_definition": "係指被保險人自本契約生效日起持續有效一段期間。各商品之等待期間另計載於條款書",
+    "parameter": {},
+    "synonym_map": [],
+    "level": "BASE"
+  },
+  {
+    "type": "名詞定義",
+    "description": "搭乘大眾運輸交通工具的乘客，不含工作人員。",
+    "code": "PASSENGER",
+    "display_name": "乘客",
+    "base_definition": "係指搭乘大眾運輸交通工具之乘客，不含配置在該大眾運輸交通工具上之工作人員。",
+    "parameter": {},
+    "synonym_map": [],
+    "level": "BASE"
+  },
+  {
+    "type": "名詞定義",
+    "description": "保險單首頁載明的本契約繳費年限。",
+    "code": "PAYMENT_PERIOD",
+    "display_name": "繳費期間",
+    "base_definition": "係指保險單首頁所載本契約之繳費年限。",
+    "parameter": {},
+    "synonym_map": [],
+    "level": "BASE"
+  }
+]

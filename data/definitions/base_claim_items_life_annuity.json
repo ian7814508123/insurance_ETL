@@ -1,0 +1,2011 @@
+[
+  {
+    "type": "理賠項目定義",
+    "code": "ANNUITY_INSTALLMENT",
+    "display_name": "年金給付",
+    "level": "BASE",
+    "description": "被保險人於年金給付開始日後仍生存時，保險公司依約定定期給付之保險金。",
+    "base_definition": "被保險人於年金給付開始日後仍生存者，本公司依本契約約定，於每一保單週年日給付年金。",
+    "logic_structure": {
+      "trigger_condition": "被保險人生存且達年金給付日",
+      "payment_period": "至被保險人身故或約定之年金保證期間屆滿為止",
+      "formula_template": "{{ANNUITY_AMOUNT}}",
+      "is_recursive": true
+    },
+    "parameters": [
+      {
+        "param_name": "ANNUITY_AMOUNT",
+        "param_description": "年金金額",
+        "source_type": "DEFINITION_ALIGN"
+      }
+    ],
+    "synonym_map": [
+      "年金",
+      "生存年金"
+    ]
+  },
+  {
+    "type": "理賠項目定義",
+    "code": "MATURITY_BENEFIT",
+    "display_name": "滿期保險金",
+    "level": "BASE",
+    "description": "被保險人於保險期間屆滿時仍生存，保險公司依約定給付予受益人之保險金。",
+    "base_definition": "被保險人於本契約保險期間屆滿時仍生存者，本公司依本契約約定給付滿期保險金。",
+    "logic_structure": {
+      "trigger_condition": "被保險人於保險期間屆滿時仍生存",
+      "payment_period": "一次性給付",
+      "formula_template": "{{SUM_INSURED}}",
+      "is_recursive": false
+    },
+    "parameters": [
+      {
+        "param_name": "SUM_INSURED",
+        "param_description": "保險金額",
+        "source_type": "DEFINITION_ALIGN"
+      }
+    ],
+    "synonym_map": [
+      "期滿金",
+      "屆滿保險金"
+    ]
+  },
+  {
+    "type": "理賠項目定義",
+    "description": "常見於還本型保險或年金保險，被保險人於特定時間點生存即可領取，與滿期保險金不同，通常為分期給付。",
+    "code": "SURVIVAL_BENEFIT",
+    "display_name": "生存保險金",
+    "base_definition": "被保險人於保險期間內，每屆約定之保單週年日或特定期間仍生存時，保險公司依約定給付予被保險人之保險金。",
+    "level": "BASE",
+    "parameter": {},
+    "synonym_map": []
+  },
+  {
+    "type": "理賠項目定義",
+    "description": "被保險人於年金給付開始日後仍生存時，保險公司分期給付的年金金額。",
+    "code": "SURVIVAL_ANNUITY_BENEFIT",
+    "display_name": "生存年金",
+    "base_definition": "當[INSURED]於[ANNUITY_COMMENCEMENT_DATE]後仍生存時，[INSURER]依約定期間分期給付[SURVIVAL_ANNUITY_AMOUNT]。",
+    "level": "BASE",
+    "parameter": {},
+    "synonym_map": [
+      "生存年金給付"
+    ]
+  },
+  {
+    "type": "理賠項目定義",
+    "description": "年金給付開始日後，不論被保險人是否生存，保險公司保證給付的年金金額。",
+    "code": "GUARANTEED_ANNUITY_BENEFIT",
+    "display_name": "保證年金",
+    "base_definition": "自[ANNUITY_COMMENCEMENT_DATE]起，[INSURER]於[GUARANTEED_PERIOD]內，不論[INSURED]是否生存，皆保證給付[ANNUITY_AMOUNT]。",
+    "level": "BASE",
+    "parameter": {},
+    "synonym_map": [
+      "保證給付年金"
+    ]
+  },
+  {
+    "type": "理賠項目定義",
+    "description": "被保險人於年金保證期間內身故時，受益人可領取尚未領取的年金餘額。",
+    "code": "ANNUITY_LUMP_SUM_DEATH_BENEFIT",
+    "display_name": "年金身故保險金(保證期間)",
+    "base_definition": "當[INSURED]於[GUARANTEED_PERIOD]內身故時，[BENEFICIARY]可領取[UNCLAIMED_ANNUITY_BALANCE]。",
+    "level": "BASE",
+    "parameter": {},
+    "synonym_map": [
+      "年金死亡給付",
+      "保證期間未領年金"
+    ]
+  },
+  {
+    "type": "理賠項目定義",
+    "code": "PAID_UP_SURVIVAL_BENEFIT",
+    "display_name": "繳清生存保險金",
+    "level": "BASE",
+    "classification": "EXISTING_MATCH",
+    "description": "如「繳清生存保險金」受益人非為被保險人，且先於被保險人身故，除要保人於保險事故發生前已另行指定受益人，或本契約另已約定其他受益人外，以被保險人為該項保險金之受益人。",
+    "base_definition": "如「繳清生存保險金」受益人非為被保險人，且先於被保險人身故，除要保人於保險事故發生前已另行指定受益人，或本契約另已約定其他受益人外，以被保險人為該項保險金之受益人。",
+    "logic_structure": {
+      "trigger_condition": "",
+      "effective_condition": "",
+      "termination_condition": "",
+      "formula_template": {
+        "syntax_type": "PYTHON_EXPR",
+        "expression": ""
+      },
+      "python_logic_eval": "",
+      "is_recursive": false,
+      "conditions": [
+        {
+          "condition_type": "OTHER",
+          "description": "如「繳清生存保險金」受益人非為被保險人，且先於被保險人身故，除要保人於 保險事故發生前已另行指定受益人，或本契約另已約定其他受益人外，以被保險 人為該項保險金之受益人。",
+          "formula_ref": ""
+        }
+      ]
+    },
+    "parameters": [
+      {
+        "param_name": "PAID_UP_SURVIVAL_BENEFIT_BENEFICIARY",
+        "display_name": "繳清生存保險金指定受益人",
+        "param_description": "本契約中繳清生存保險金的指定受益人",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "STRING",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "INSURED",
+        "display_name": "被保險人",
+        "param_description": "本契約的被保險人",
+        "source_type": "DEFINITION_ALIGN",
+        "data_type": "STRING",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "BENEFICIARY_DECEASED_BEFORE_INSURED",
+        "display_name": "指定受益人先於被保險人身故",
+        "param_description": "判斷繳清生存保險金的指定受益人是否先於被保險人身故",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "BOOLEAN",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "POLICYHOLDER_DESIGNATED_OTHER_BENEFICIARY",
+        "display_name": "要保人已另行指定其他受益人",
+        "param_description": "判斷要保人是否於保險事故發生前已另行指定繳清生存保險金受益人",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "BOOLEAN",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "CONTRACT_HAS_OTHER_BENEFICIARY",
+        "display_name": "契約另已約定其他受益人",
+        "param_description": "判斷本契約是否另已約定其他繳清生存保險金受益人",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "BOOLEAN",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "ACTUAL_BENEFICIARY_OF_PAID_UP_SURVIVAL_BENEFIT",
+        "display_name": "繳清生存保險金實際受益人",
+        "param_description": "根據條款規定，繳清生存保險金的實際受益人",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "STRING",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "PAID_UP_SURVIVAL_BENEFIT_BENEFICIARY",
+          "INSURED",
+          "BENEFICIARY_DECEASED_BEFORE_INSURED",
+          "POLICYHOLDER_DESIGNATED_OTHER_BENEFICIARY",
+          "CONTRACT_HAS_OTHER_BENEFICIARY"
+        ],
+        "formula_definition": "IF (PAID_UP_SURVIVAL_BENEFIT_BENEFICIARY != INSURED AND BENEFICIARY_DECEASED_BEFORE_INSURED AND NOT POLICYHOLDER_DESIGNATED_OTHER_BENEFICIARY AND NOT CONTRACT_HAS_OTHER_BENEFICIARY) THEN INSURED ELSE PAID_UP_SURVIVAL_BENEFIT_BENEFICIARY"
+      }
+    ],
+    "synonym_map": [],
+    "payment_type": "LUMP_SUM"
+  },
+  {
+    "type": "理賠項目定義",
+    "code": "VALUE_ADDED_FEEDBACK_BONUS",
+    "display_name": "增值回饋分享金",
+    "level": "BASE",
+    "classification": "EXISTING_MATCH",
+    "description": "被保險人於本契約有效期間內，每屆滿一保單年度仍生存且未致成附表三所列完全失能程度之一者， 本公司按各該保單年度始日當月之宣告利率減去本契約預定利率（ 1.5 ％）之差值，乘以同年度期末總 保單價值準備金後所得之數值為增值回饋分享金，並依下列約定辦理： 一、購買增額繳清保險金額：本公司於每一保單週年日將前一保單年度之增值回饋分享金作為躉繳純 保險費，計算自該保單週年日當日起生效之增額繳清保險金額。但被保險人保險年齡到達十六歲 前之增值回饋分享金，應採抵繳保險費之方式辦理；倘因繳費期間已屆滿或要保人依 第二十八條 申請減額繳清保險而無法抵繳保險費者，則改依第二款第一目之約定，以儲存生息之方式至被保 險人保險年齡到達十六歲止，並就累計儲存生息之金額一次購買增額繳清保險金額，其後保單年 度仍依本款約定辦理。保險期間屆滿當年之增值回饋分享金將於保險期間屆滿時給付。 二、要保人得以書面方式申請，將第七保單年度起且被保險人保險年齡到達十六歲者之增值回饋分享 金，改以下列方式給付： (一)儲存生息：各保單年度之增值回饋分享金，將按每月之宣告利率，逐月以日單利月複利方式 儲存生息至要保人請求時給付，或至本契約終止或應給付各項保險金時一併給付。但被保險 人保險年齡到達十六歲前要保人不得請求給付。 被保險人保險年齡到達五十五歲者，要保人得以書面向本公司申請，改以每一保單週月日當 時總保險金額對應之期末總保單價值準備金，按前述計算增值回饋分享金之方式所得之金額， 再除以十二後所得之數值，逐月以日單利月複利方式儲存生息至要保人請求時給付，或至本 契約終止或應給付各項保險金時一併給付。但若該保單週月日與保單週年日為相同之日者， 該保單週月日之增值回饋分享金，則以前一年度期末總保單價值準備金之值計算。 (二)現金給付：本公司於每一保單週年日依本契約約定給付前一保單年度之增值回饋分享金予要 保人。 被保險人保險年齡到達五十五歲者，要保人得以書面向本公司申請，改以每一保單週月日當 時總保險金額對應之期末總保單價值準備金，按前述計算增值回饋分享金之方式所得之金額， 再除以十二後所得之數值，每月給付前一個月之增值回饋分享金予要保人。但若該保單週月 日與保單週年日為相同之日者，該保單週月日之增值回饋分享金，則以前一年度期末總保單 價值準備金之值計算。 保險期間屆滿當次之增值回饋分享金將於保險期間屆滿之翌日給付。 增值回饋分享金依約定以儲存生息給付者，或約定購買增額繳清保險金額於保險期間屆滿當年度之增 值回饋分享金，本公司於給付身故保險金或喪葬費用保險金、完全失能保險金或祝壽保險金時，一併 將當時已累計之金額給付予該保險金受益人。但於要保人請求或本契約發生 第七條第十項、 第九條或 第二十四條第三項之約定情形時，則給付予要保人。 要保人申請將增值回饋分享金給付方式由儲存生息變更為現金給付或購買增額繳清保險金額者，本公 司將已儲存生息之增值回饋分享金計息至變更申請日時給付予要保人。 本公司依第一項約定計算所得之增值回饋分享金，應以書面或其他方式通知要保人，但保險期間屆滿 當次之增值回饋分享金將於保險期間屆滿之翌日通知。 本公司依 第八條約定解除本契約時，不負給付增值回饋分享金之責任。",
+    "base_definition": "被保險人於本契約有效期間內，每屆滿一保單年度仍生存且未致成附表三所列完全失能程度之一者， 本公司按各該保單年度始日當月之宣告利率減去本契約預定利率（ 1.5 ％）之差值，乘以同年度期末總 保單價值準備金後所得之數值為增值回饋分享金，並依下列約定辦理： 一、購買增額繳清保險金額：本公司於每一保單週年日將前一保單年度之增值回饋分享金作為躉繳純 保險費，計算自該保單週年日當日起生效之增額繳清保險金額。但被保險人保險年齡到達十六歲 前之增值回饋分享金，應採抵繳保險費之方式辦理；倘因繳費期間已屆滿或要保人依 第二十八條 申請減額繳清保險而無法抵繳保險費者，則改依第二款第一目之約定，以儲存生息之方式至被保 險人保險年齡到達十六歲止，並就累計儲存生息之金額一次購買增額繳清保險金額，其後保單年 度仍依本款約定辦理。保險期間屆滿當年之增值回饋分享金將於保險期間屆滿時給付。 二、要保人得以書面方式申請，將第七保單年度起且被保險人保險年齡到達十六歲者之增值回饋分享 金，改以下列方式給付： (一)儲存生息：各保單年度之增值回饋分享金，將按每月之宣告利率，逐月以日單利月複利方式 儲存生息至要保人請求時給付，或至本契約終止或應給付各項保險金時一併給付。但被保險 人保險年齡到達十六歲前要保人不得請求給付。 被保險人保險年齡到達五十五歲者，要保人得以書面向本公司申請，改以每一保單週月日當 時總保險金額對應之期末總保單價值準備金，按前述計算增值回饋分享金之方式所得之金額， 再除以十二後所得之數值，逐月以日單利月複利方式儲存生息至要保人請求時給付，或至本 契約終止或應給付各項保險金時一併給付。但若該保單週月日與保單週年日為相同之日者， 該保單週月日之增值回饋分享金，則以前一年度期末總保單價值準備金之值計算。 (二)現金給付：本公司於每一保單週年日依本契約約定給付前一保單年度之增值回饋分享金予要 保人。 被保險人保險年齡到達五十五歲者，要保人得以書面向本公司申請，改以每一保單週月日當 時總保險金額對應之期末總保單價值準備金，按前述計算增值回饋分享金之方式所得之金額， 再除以十二後所得之數值，每月給付前一個月之增值回饋分享金予要保人。但若該保單週月 日與保單週年日為相同之日者，該保單週月日之增值回饋分享金，則以前一年度期末總保單 價值準備金之值計算。 保險期間屆滿當次之增值回饋分享金將於保險期間屆滿之翌日給付。 增值回饋分享金依約定以儲存生息給付者，或約定購買增額繳清保險金額於保險期間屆滿當年度之增 值回饋分享金，本公司於給付身故保險金或喪葬費用保險金、完全失能保險金或祝壽保險金時，一併 將當時已累計之金額給付予該保險金受益人。但於要保人請求或本契約發生 第七條第十項、 第九條或 第二十四條第三項之約定情形時，則給付予要保人。 要保人申請將增值回饋分享金給付方式由儲存生息變更為現金給付或購買增額繳清保險金額者，本公 司將已儲存生息之增值回饋分享金計息至變更申請日時給付予要保人。 本公司依第一項約定計算所得之增值回饋分享金，應以書面或其他方式通知要保人，但保險期間屆滿 當次之增值回饋分享金將於保險期間屆滿之翌日通知。 本公司依 第八條約定解除本契約時，不負給付增值回饋分享金之責任。",
+    "logic_structure": {
+      "trigger_condition": "INSURED is alive and not totally disabled at each POLICY_ANNIVERSARY during POLICY_EFFECTIVE_PERIOD",
+      "effective_condition": "POLICY_EFFECTIVE_PERIOD",
+      "termination_condition": "POLICY_CONTRACT_TERMINATION OR EXTENDED_TERM_INSURANCE_APPLIED OR COMPANY_TERMINATES_POLICY",
+      "formula_template": {
+        "syntax_type": "DSL",
+        "expression": "IF (POLICY_EFFECTIVE_PERIOD AND INSURED_IS_ALIVE AND NOT INSURED_IS_TOTAL_DISABLED) THEN LET base_bonus_amount = (DECLARED_INTEREST_RATE - POLICY_PRESET_INTEREST_RATE) * END_OF_PERIOD_TOTAL_POLICY_VALUE_RESERVE; IF (IS_POLICY_PERIOD_END_YEAR) THEN base_bonus_amount ELSE IF (POLICYHOLDER_OPTION == \"CASH_PAYMENT\" AND POLICY_YEAR >= 7 AND INSURANCE_AGE >= 16) THEN IF (INSURANCE_AGE >= 55 AND IS_POLICY_MONTHLY_ANNIVERSARY) THEN IF (POLICY_MONTHLY_ANNIVERSARY == POLICY_ANNIVERSARY) THEN ((DECLARED_INTEREST_RATE - POLICY_PRESET_INTEREST_RATE) * PREVIOUS_YEAR_END_OF_PERIOD_TOTAL_POLICY_VALUE_RESERVE) / 12 ELSE base_bonus_amount / 12 ENDIF ELSE IF (IS_POLICY_ANNIVERSARY_DATE) THEN base_bonus_amount ELSE 0 ENDIF ELSE IF (POLICYHOLDER_OPTION == \"INTEREST_ACCRUAL\" AND POLICY_YEAR >= 7 AND INSURANCE_AGE >= 16) THEN IF (INSURANCE_AGE >= 55 AND IS_POLICY_MONTHLY_ANNIVERSARY) THEN IF (POLICY_MONTHLY_ANNIVERSARY == POLICY_ANNIVERSARY) THEN ACCUMULATE_WITH_INTEREST(((DECLARED_INTEREST_RATE - POLICY_PRESET_INTEREST_RATE) * PREVIOUS_YEAR_END_OF_PERIOD_TOTAL_POLICY_VALUE_RESERVE) / 12, DECLARED_INTEREST_RATE, \"DAILY_SIMPLE_MONTHLY_COMPOUND\") ELSE ACCUMULATE_WITH_INTEREST(base_bonus_amount / 12, DECLARED_INTEREST_RATE, \"DAILY_SIMPLE_MONTHLY_COMPOUND\") ENDIF ELSE IF (IS_POLICY_ANNIVERSARY_DATE) THEN ACCUMULATE_WITH_INTEREST(base_bonus_amount, DECLARED_INTEREST_RATE, \"DAILY_SIMPLE_MONTHLY_COMPOUND\") ELSE 0 ENDIF ELSE IF (POLICYHOLDER_OPTION == \"PURCHASE_PAID_UP_ADDITIONS_SUM_INSURED\") THEN IF (INSURANCE_AGE < 16) THEN IF (PREMIUM_PAYMENT_PERIOD_ENDED OR REDUCED_PAID_UP_INSURANCE_APPLIED) THEN ACCUMULATE_WITH_INTEREST(base_bonus_amount, DECLARED_INTEREST_RATE, \"DAILY_SIMPLE_MONTHLY_COMPOUND\") ELSE PREMIUM_OFFSET(base_bonus_amount) ENDIF ELSE PURCHASE_PAID_UP_ADDITIONS_SUM_INSURED(base_bonus_amount) ENDIF ELSE 0 ENDIF ENDIF ELSE 0 ENDIF"
+      },
+      "python_logic_eval": "0 if not (POLICY_EFFECTIVE_PERIOD and INSURED_IS_ALIVE and not INSURED_IS_TOTAL_DISABLED) else ((DECLARED_INTEREST_RATE - 0.015) * END_OF_PERIOD_TOTAL_POLICY_VALUE_RESERVE if IS_POLICY_PERIOD_END_YEAR else ( ( ( (DECLARED_INTEREST_RATE - 0.015) * PREVIOUS_YEAR_END_OF_PERIOD_TOTAL_POLICY_VALUE_RESERVE / 12 ) if POLICY_MONTHLY_ANNIVERSARY_IS_POLICY_ANNIVERSARY_DATE else (DECLARED_INTEREST_RATE - 0.015) * END_OF_PERIOD_TOTAL_POLICY_VALUE_RESERVE / 12 ) if INSURANCE_AGE >= 55 and IS_POLICY_MONTHLY_ANNIVERSARY else (DECLARED_INTEREST_RATE - 0.015) * END_OF_PERIOD_TOTAL_POLICY_VALUE_RESERVE if IS_POLICY_ANNIVERSARY_DATE else 0 ) if POLICYHOLDER_OPTION == 'CASH_PAYMENT' and POLICY_YEAR >= 7 and INSURANCE_AGE >= 16 else ( ( f_accumulate_with_interest( (DECLARED_INTEREST_RATE - 0.015) * PREVIOUS_YEAR_END_OF_PERIOD_TOTAL_POLICY_VALUE_RESERVE / 12, DECLARED_INTEREST_RATE, 'DAILY_SIMPLE_MONTHLY_COMPOUND' ) if POLICY_MONTHLY_ANNIVERSARY_IS_POLICY_ANNIVERSARY_DATE else f_accumulate_with_interest( (DECLARED_INTEREST_RATE - 0.015) * END_OF_PERIOD_TOTAL_POLICY_VALUE_RESERVE / 12, DECLARED_INTEREST_RATE, 'DAILY_SIMPLE_MONTHLY_COMPOUND' ) ) if INSURANCE_AGE >= 55 and IS_POLICY_MONTHLY_ANNIVERSARY else f_accumulate_with_interest( (DECLARED_INTEREST_RATE - 0.015) * END_OF_PERIOD_TOTAL_POLICY_VALUE_RESERVE, DECLARED_INTEREST_RATE, 'DAILY_SIMPLE_MONTHLY_COMPOUND' ) if IS_POLICY_ANNIVERSARY_DATE else 0 ) if POLICYHOLDER_OPTION == 'INTEREST_ACCRUAL' and POLICY_YEAR >= 7 and INSURANCE_AGE >= 16 else ( ( f_accumulate_with_interest( (DECLARED_INTEREST_RATE - 0.015) * END_OF_PERIOD_TOTAL_POLICY_VALUE_RESERVE, DECLARED_INTEREST_RATE, 'DAILY_SIMPLE_MONTHLY_COMPOUND' ) if PREMIUM_PAYMENT_PERIOD_ENDED or REDUCED_PAID_UP_INSURANCE_APPLIED else f_premium_offset( (DECLARED_INTEREST_RATE - 0.015) * END_OF_PERIOD_TOTAL_POLICY_VALUE_RESERVE ) ) if INSURANCE_AGE < 16 else f_purchase_paid_up_additions_sum_insured( (DECLARED_INTEREST_RATE - 0.015) * END_OF_PERIOD_TOTAL_POLICY_VALUE_RESERVE ) ) ) )",
+      "is_recursive": true,
+      "payment_period": {
+        "frequency": "MONTHLY",
+        "coverage_period": "POLICY_EFFECTIVE_PERIOD",
+        "max_period": "POLICY_PERIOD_END"
+      },
+      "conditions": [
+        {
+          "condition_type": "EXCLUSION",
+          "description": "本契約變更為展期定期保險後，無增值回饋分享金約定之適用。",
+          "formula_ref": "EXTENDED_TERM_INSURANCE_APPLIED"
+        },
+        {
+          "condition_type": "EXCLUSION",
+          "description": "本公司依第八條約定解除本契約時，不負給付增值回饋分享金之責任。",
+          "formula_ref": "COMPANY_TERMINATES_POLICY"
+        },
+        {
+          "condition_type": "LIMITATION",
+          "description": "被保險人保險年齡到達十六歲前之增值回饋分享金，應採抵繳保險費之方式辦理；倘因繳費期間已屆滿或要保人依第二十八條申請減額繳清保險而無法抵繳保險費者，則改以儲存生息之方式至被保險人保險年齡到達十六歲止，並就累計儲存生息之金額一次購買增額繳清保險金額。",
+          "formula_ref": "INSURANCE_AGE < 16 AND (PREMIUM_PAYMENT_PERIOD_ENDED OR REDUCED_PAID_UP_INSURANCE_APPLIED)"
+        },
+        {
+          "condition_type": "LIMITATION",
+          "description": "要保人得以書面方式申請，將第七保單年度起且被保險人保險年齡到達十六歲者之增值回饋分享金，改以下列方式給付。",
+          "formula_ref": "POLICY_YEAR >= 7 AND INSURANCE_AGE >= 16"
+        },
+        {
+          "condition_type": "LIMITATION",
+          "description": "被保險人保險年齡到達五十五歲者，要保人得以書面向本公司申請，改以每一保單週月日當時總保險金額對應之期末總保單價值準備金，按前述計算增值回饋分享金之方式所得之金額，再除以十二後所得之數值，逐月以日單利月複利方式儲存生息或每月給付前一個月之增值回饋分享金。",
+          "formula_ref": "INSURANCE_AGE >= 55"
+        },
+        {
+          "condition_type": "LIMITATION",
+          "description": "但被保險人保險年齡到達十六歲前要保人不得請求給付儲存生息之增值回饋分享金。",
+          "formula_ref": "INSURANCE_AGE < 16 AND POLICYHOLDER_OPTION == 'INTEREST_ACCRUAL'"
+        },
+        {
+          "condition_type": "OTHER",
+          "description": "但若該保單週月日與保單週年日為相同之日者，該保單週月日之增值回饋分享金，則以前一年度期末總保單價值準備金之值計算。",
+          "formula_ref": "POLICY_MONTHLY_ANNIVERSARY == POLICY_ANNIVERSARY"
+        }
+      ]
+    },
+    "parameters": [
+      {
+        "param_name": "POLICY_EFFECTIVE_PERIOD",
+        "display_name": "本契約有效期間內",
+        "param_description": "指本契約有效期間內",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "BOOLEAN",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "INSURED_IS_ALIVE",
+        "display_name": "被保險人仍生存",
+        "param_description": "指被保險人於給付時仍生存",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "BOOLEAN",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "INSURED_IS_TOTAL_DISABLED",
+        "display_name": "被保險人是否完全失能",
+        "param_description": "指被保險人是否致成附表三所列完全失能程度之一",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "BOOLEAN",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "DECLARED_INTEREST_RATE",
+        "display_name": "宣告利率",
+        "param_description": "指本公司每月宣告，用於計算增值回饋分享金的利率，參考三銀行定存利率及公司資產狀況訂定。",
+        "source_type": "DEFINITION_ALIGN",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "POLICY_PRESET_INTEREST_RATE",
+        "display_name": "本契約預定利率",
+        "param_description": "本契約預定利率，固定為1.5%。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "POLICY_FIXED",
+          "fixed_value": "0.015"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "END_OF_PERIOD_TOTAL_POLICY_VALUE_RESERVE",
+        "display_name": "期末總保單價值準備金",
+        "param_description": "指本契約有效期間內，按保單年度屆滿時保險金額及累計增加保險金額計算的期末總保單價值準備金。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "SUM_INSURED",
+          "ACCUMULATED_INCREASED_SUM_INSURED",
+          "POLICY_YEAR"
+        ],
+        "formula_definition": "計算該保單年度的期末總保單價值準備金之值"
+      },
+      {
+        "param_name": "BASE_BONUS_AMOUNT",
+        "display_name": "增值回饋分享金基礎金額",
+        "param_description": "增值回饋分享金的基礎計算金額。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "DECLARED_INTEREST_RATE",
+          "POLICY_PRESET_INTEREST_RATE",
+          "END_OF_PERIOD_TOTAL_POLICY_VALUE_RESERVE"
+        ],
+        "formula_definition": "(DECLARED_INTEREST_RATE - POLICY_PRESET_INTEREST_RATE) * END_OF_PERIOD_TOTAL_POLICY_VALUE_RESERVE"
+      },
+      {
+        "param_name": "IS_POLICY_PERIOD_END_YEAR",
+        "display_name": "是否為保險期間屆滿當年",
+        "param_description": "判斷是否為保險期間屆滿的年度。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "BOOLEAN",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "POLICY_YEAR",
+          "POLICY_PERIOD"
+        ]
+      },
+      {
+        "param_name": "POLICYHOLDER_OPTION",
+        "display_name": "增值回饋分享金給付方式",
+        "param_description": "要保人選擇的增值回饋分享金給付方式，可選現金給付、儲存生息或購買增額繳清保險金額。",
+        "source_type": "USER_INPUT",
+        "data_type": "STRING",
+        "value_binding": {
+          "binding_type": "USER_INPUT"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "POLICY_YEAR",
+        "display_name": "保單年度",
+        "param_description": "本契約的保單年度。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "INTEGER",
+        "value_binding": {
+          "binding_type": "USER_INPUT"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "INSURANCE_AGE",
+        "display_name": "保險年齡",
+        "param_description": "被保險人的保險年齡。",
+        "source_type": "DEFINITION_ALIGN",
+        "data_type": "INTEGER",
+        "value_binding": {
+          "binding_type": "USER_INPUT"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "IS_POLICY_MONTHLY_ANNIVERSARY",
+        "display_name": "是否為保單週月日",
+        "param_description": "判斷是否為被保險人保險年齡達五十五歲保單週年日起，每月相當日期。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "BOOLEAN",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "INSURANCE_AGE",
+          "POLICY_ANNIVERSARY"
+        ]
+      },
+      {
+        "param_name": "POLICY_MONTHLY_ANNIVERSARY",
+        "display_name": "保單週月日",
+        "param_description": "被保險人保險年齡達五十五歲保單週年日起，每月相當日期。",
+        "source_type": "DEFINITION_ALIGN",
+        "data_type": "DATE",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "INSURANCE_AGE",
+          "POLICY_ANNIVERSARY"
+        ]
+      },
+      {
+        "param_name": "POLICY_ANNIVERSARY",
+        "display_name": "保單週年日",
+        "param_description": "本契約的保單週年日。",
+        "source_type": "DEFINITION_ALIGN",
+        "data_type": "DATE",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "PREVIOUS_YEAR_END_OF_PERIOD_TOTAL_POLICY_VALUE_RESERVE",
+        "display_name": "前一年度期末總保單價值準備金",
+        "param_description": "前一保單年度屆滿時的期末總保單價值準備金。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "END_OF_PERIOD_TOTAL_POLICY_VALUE_RESERVE"
+        ],
+        "formula_definition": "END_OF_PERIOD_TOTAL_POLICY_VALUE_RESERVE (from previous policy year)"
+      },
+      {
+        "param_name": "ACCUMULATED_INTEREST_ACCRUAL_AMOUNT",
+        "display_name": "累計儲存生息之金額",
+        "param_description": "增值回饋分享金以儲存生息方式累計的金額。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "BASE_BONUS_AMOUNT",
+          "DECLARED_INTEREST_RATE",
+          "POLICY_PRESET_INTEREST_RATE",
+          "PREVIOUS_YEAR_END_OF_PERIOD_TOTAL_POLICY_VALUE_RESERVE",
+          "POLICY_MONTHLY_ANNIVERSARY_EQUALS_POLICY_ANNIVERSARY_DATE"
+        ],
+        "formula_definition": "ACCUMULATE_WITH_INTEREST(amount, DECLARED_INTEREST_RATE, 'DAILY_SIMPLE_MONTHLY_COMPOUND')"
+      },
+      {
+        "param_name": "PREMIUM_PAYMENT_PERIOD_ENDED",
+        "display_name": "繳費期間是否屆滿",
+        "param_description": "判斷本契約的繳費期間是否已屆滿。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "BOOLEAN",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "PAYMENT_PERIOD",
+          "POLICY_YEAR"
+        ]
+      },
+      {
+        "param_name": "REDUCED_PAID_UP_INSURANCE_APPLIED",
+        "display_name": "是否已申請減額繳清保險",
+        "param_description": "判斷要保人是否已申請減額繳清保險。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "BOOLEAN",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "PREMIUM_OFFSET",
+        "display_name": "抵繳保險費",
+        "param_description": "將增值回饋分享金用於抵繳保險費的金額。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "BASE_BONUS_AMOUNT"
+        ],
+        "formula_definition": "f_premium_offset(BASE_BONUS_AMOUNT)"
+      },
+      {
+        "param_name": "PAID_UP_ADDITIONS_SUM_INSURED",
+        "display_name": "增額繳清保險金額",
+        "param_description": "將增值回饋分享金用於購買增額繳清保險的金額。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "BASE_BONUS_AMOUNT"
+        ],
+        "formula_definition": "f_purchase_paid_up_additions_sum_insured(BASE_BONUS_AMOUNT)"
+      },
+      {
+        "param_name": "POLICY_CONTRACT_TERMINATION",
+        "display_name": "本契約終止",
+        "param_description": "判斷本契約是否已終止。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "BOOLEAN",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "EXTENDED_TERM_INSURANCE_APPLIED",
+        "display_name": "是否變更為展期定期保險",
+        "param_description": "判斷本契約是否已變更為展期定期保險。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "BOOLEAN",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "COMPANY_TERMINATES_POLICY",
+        "display_name": "本公司是否解除本契約",
+        "param_description": "判斷本公司是否依第八條約定解除本契約。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "BOOLEAN",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "POLICY_PERIOD",
+        "display_name": "保險期間",
+        "param_description": "本契約的保險期間。",
+        "source_type": "USER_INPUT",
+        "data_type": "INTEGER",
+        "value_binding": {
+          "binding_type": "USER_INPUT"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "SUM_INSURED",
+        "display_name": "保險金額",
+        "param_description": "指保單首頁所載主契約保險金額，變更或減額繳清後以新金額為準。",
+        "source_type": "DEFINITION_ALIGN",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "USER_INPUT"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "ACCUMULATED_INCREASED_SUM_INSURED",
+        "display_name": "累計增加保險金額",
+        "param_description": "指依第十條約定計算所得增額繳清保險金額逐次累計之值。",
+        "source_type": "DEFINITION_ALIGN",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "PAID_UP_ADDITIONS_SUM_INSURED"
+        ],
+        "formula_definition": "SUM(PAID_UP_ADDITIONS_SUM_INSURED for each policy anniversary)"
+      },
+      {
+        "param_name": "POLICY_MONTHLY_ANNIVERSARY_EQUALS_POLICY_ANNIVERSARY_DATE",
+        "display_name": "保單週月日與保單週年日是否相同",
+        "param_description": "判斷保單週月日與保單週年日是否為相同日期。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "BOOLEAN",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "POLICY_MONTHLY_ANNIVERSARY",
+          "POLICY_ANNIVERSARY"
+        ],
+        "formula_definition": "POLICY_MONTHLY_ANNIVERSARY == POLICY_ANNIVERSARY"
+      },
+      {
+        "param_name": "PAYMENT_PERIOD",
+        "display_name": "繳費期間",
+        "param_description": "本契約的繳費期間。",
+        "source_type": "DEFINITION_ALIGN",
+        "data_type": "INTEGER",
+        "value_binding": {
+          "binding_type": "USER_INPUT"
+        },
+        "depends_on": []
+      }
+    ],
+    "synonym_map": [
+      "增值回饋分享金"
+    ],
+    "payment_type": "RECURSIVE_INSTALLMENT"
+  },
+  {
+    "type": "理賠項目定義",
+    "code": "LONGEVITY_BENEFIT",
+    "display_name": "祝壽保險金",
+    "level": "BASE",
+    "classification": "EXISTING_MATCH",
+    "description": "被保險人「保險年齡」達一百一十歲之保單年度末仍生存，且本公司未依第二十一條、第二十三條給付「完全失能保險金」或分期定期保險金而本契約仍有效時，本公司將視同本契約保險期間屆滿，並分別以下列二款計算所得之金額，再依其總和給付「祝壽保險金」，本契約效力即行終止：一、「基本保額」對應部分為下列二者中之最大值：（一）保險期間屆滿當時之「當年度保險金額」。（二）「年繳保險費總和」的一點零一倍。二、「累計增額繳清保險基本保額」對應部分為下列二者中之最大值：（一）保險期間屆滿當時之「當年度保險金額」。（二）「年繳保險費總和」的一點零一倍。",
+    "base_definition": "被保險人「保險年齡」達一百一十歲之保單年度末仍生存，且本公司未依第二十一條、第二十三條給付「完全失能保險金」或分期定期保險金而本契約仍有效時，本公司將視同本契約保險期間屆滿，並分別以下列二款計算所得之金額，再依其總和給付「祝壽保險金」，本契約效力即行終止：一、「基本保額」對應部分為下列二者中之最大值：（一）保險期間屆滿當時之「當年度保險金額」。（二）「年繳保險費總和」的一點零一倍。二、「累計增額繳清保險基本保額」對應部分為下列二者中之最大值：（一）保險期間屆滿當時之「當年度保險金額」。（二）「年繳保險費總和」的一點零一倍。",
+    "logic_structure": {
+      "trigger_condition": "被保險人保險年齡達一百一十歲之保單年度末仍生存，且本契約仍有效，且未曾給付完全失能保險金或分期定期保險金",
+      "effective_condition": "被保險人保險年齡達一百一十歲之保單年度末",
+      "termination_condition": "本契約效力即行終止",
+      "formula_template": {
+        "syntax_type": "DSL",
+        "expression": "MAX(CURRENT_YEAR_SUM_INSURED_BASIC_PORTION, TOTAL_ANNUAL_PREMIUM_BASIC_PORTION * 1.01) + MAX(CURRENT_YEAR_SUM_INSURED_ACCUMULATED_INCREASED_PORTION, TOTAL_ANNUAL_PREMIUM_ACCUMULATED_INCREASED_PORTION * 1.01)"
+      },
+      "python_logic_eval": "max(CURRENT_YEAR_SUM_INSURED_BASIC_PORTION, TOTAL_ANNUAL_PREMIUM_BASIC_PORTION * 1.01) + max(CURRENT_YEAR_SUM_INSURED_ACCUMULATED_INCREASED_PORTION, TOTAL_ANNUAL_PREMIUM_ACCUMULATED_INCREASED_PORTION * 1.01)",
+      "is_recursive": false,
+      "payment_period": {
+        "frequency": "ONCE",
+        "max_payment_count": 1
+      },
+      "conditions": [
+        {
+          "condition_type": "EXCLUSION",
+          "description": "已給付完全失能保險金或分期定期保險金",
+          "formula_ref": "TOTAL_PERMANENT_DISABILITY_BENEFIT_PAID OR INSTALLMENT_INSURANCE_BENEFIT_PAID"
+        },
+        {
+          "condition_type": "LIMITATION",
+          "description": "給付時扣除欠繳保險費或保險單借款未還清者及其應付利息",
+          "formula_ref": "OVERDUE_PREMIUM > 0 OR POLICY_LOAN > 0"
+        }
+      ]
+    },
+    "parameters": [
+      {
+        "param_name": "MATURITY_SURVIVAL_BENEFIT",
+        "display_name": "祝壽保險金",
+        "param_description": "被保險人保險年齡達一百一十歲之保單年度末仍生存時給付的保險金。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "BASIC_SUM_INSURED_CURRENT_YEAR_AMOUNT",
+          "TOTAL_ANNUAL_PREMIUM_BASIC_PORTION",
+          "PREMIUM_MULTIPLIER_1_01",
+          "ACCUMULATED_INCREASED_SUM_INSURED_CURRENT_YEAR_AMOUNT",
+          "TOTAL_ANNUAL_PREMIUM_ACCUMULATED_INCREASED_PORTION"
+        ],
+        "formula_definition": "MAX(BASIC_SUM_INSURED_CURRENT_YEAR_AMOUNT, TOTAL_ANNUAL_PREMIUM_BASIC_PORTION * PREMIUM_MULTIPLIER_1_01) + MAX(ACCUMULATED_INCREASED_SUM_INSURED_CURRENT_YEAR_AMOUNT, TOTAL_ANNUAL_PREMIUM_ACCUMULATED_INCREASED_PORTION * PREMIUM_MULTIPLIER_1_01)"
+      },
+      {
+        "param_name": "BASIC_SUM_INSURED_CURRENT_YEAR_AMOUNT",
+        "display_name": "基本保額對應之當年度保險金額",
+        "param_description": "依基本保額按保單年度及年繳保險費總和或係數計算的保險金額。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "POLICY_YEAR",
+          "TOTAL_ANNUAL_PREMIUM_BASIC_PORTION",
+          "PREMIUM_MULTIPLIER_1_01",
+          "BASIC_SUM_INSURED",
+          "CURRENT_YEAR_COVERAGE_FACTOR"
+        ],
+        "formula_definition": "IF POLICY_YEAR <= 3 THEN TOTAL_ANNUAL_PREMIUM_BASIC_PORTION * PREMIUM_MULTIPLIER_1_01 ELSE BASIC_SUM_INSURED * CURRENT_YEAR_COVERAGE_FACTOR"
+      },
+      {
+        "param_name": "TOTAL_ANNUAL_PREMIUM_BASIC_PORTION",
+        "display_name": "基本保額對應之年繳保險費總和",
+        "param_description": "依繳費方式及基本保額對應部分，以保險費率表或保單年度數、最近一次繳交保險費及年繳保險費費率計算的總和。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "PREMIUM_PAYMENT_METHOD",
+          "BASIC_SUM_INSURED",
+          "PREMIUM_RATE_TABLE",
+          "POLICY_YEAR",
+          "LAST_PREMIUM_PAID",
+          "ANNUAL_PREMIUM_RATE"
+        ],
+        "formula_definition": "IF PREMIUM_PAYMENT_METHOD == \"SINGLE_PREMIUM\" THEN PREMIUM_RATE_TABLE_LOOKUP(BASIC_SUM_INSURED) ELSE POLICY_YEAR * BASIC_SUM_INSURED * ANNUAL_PREMIUM_RATE"
+      },
+      {
+        "param_name": "ACCUMULATED_INCREASED_SUM_INSURED_CURRENT_YEAR_AMOUNT",
+        "display_name": "累計增額繳清保險基本保額對應之當年度保險金額",
+        "param_description": "依累計增額繳清保險基本保額按保單年度及年繳保險費總和或係數計算的保險金額。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "POLICY_YEAR",
+          "TOTAL_ANNUAL_PREMIUM_ACCUMULATED_INCREASED_PORTION",
+          "PREMIUM_MULTIPLIER_1_01",
+          "ACCUMULATED_INCREASED_SUM_INSURED",
+          "CURRENT_YEAR_COVERAGE_FACTOR"
+        ],
+        "formula_definition": "IF POLICY_YEAR <= 3 THEN TOTAL_ANNUAL_PREMIUM_ACCUMULATED_INCREASED_PORTION * PREMIUM_MULTIPLIER_1_01 ELSE ACCUMULATED_INCREASED_SUM_INSURED * CURRENT_YEAR_COVERAGE_FACTOR"
+      },
+      {
+        "param_name": "TOTAL_ANNUAL_PREMIUM_ACCUMULATED_INCREASED_PORTION",
+        "display_name": "累計增額繳清保險基本保額對應之年繳保險費總和",
+        "param_description": "依繳費方式及累計增額繳清保險基本保額對應部分，以保險費率表或保單年度數、最近一次繳交保險費及年繳保險費費率計算的總和。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "PREMIUM_PAYMENT_METHOD",
+          "ACCUMULATED_INCREASED_SUM_INSURED",
+          "PREMIUM_RATE_TABLE",
+          "POLICY_YEAR",
+          "LAST_PREMIUM_PAID",
+          "ANNUAL_PREMIUM_RATE"
+        ],
+        "formula_definition": "IF PREMIUM_PAYMENT_METHOD == \"SINGLE_PREMIUM\" THEN PREMIUM_RATE_TABLE_LOOKUP(ACCUMULATED_INCREASED_SUM_INSURED) ELSE POLICY_YEAR * ACCUMULATED_INCREASED_SUM_INSURED * ANNUAL_PREMIUM_RATE"
+      },
+      {
+        "param_name": "PREMIUM_MULTIPLIER_1_01",
+        "display_name": "年繳保險費總和的倍數係數",
+        "param_description": "用於計算年繳保險費總和的倍數係數。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "POLICY_FIXED",
+          "fixed_value": "1.01"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "INSURANCE_AGE",
+        "display_name": "保險年齡",
+        "param_description": "按投保時被保險人以足歲計算之年齡，但未滿一歲的零數超過六個月者加算一歲，以後每經過一個保險單年度加算一歲。",
+        "source_type": "DEFINITION_ALIGN",
+        "data_type": "INTEGER",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "DATE_OF_BIRTH",
+          "POLICY_START_DATE",
+          "CURRENT_DATE"
+        ]
+      },
+      {
+        "param_name": "INSURANCE_AGE_AT_MATURITY",
+        "display_name": "祝壽保險金給付時的保險年齡",
+        "param_description": "祝壽保險金給付條件中被保險人需達到的保險年齡。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "INTEGER",
+        "value_binding": {
+          "binding_type": "POLICY_FIXED",
+          "fixed_value": "110"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "TOTAL_PERMANENT_DISABILITY_BENEFIT_PAID",
+        "display_name": "是否已給付完全失能保險金",
+        "param_description": "判斷本契約是否已給付過完全失能保險金。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "BOOLEAN",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "INSTALLMENT_INSURANCE_BENEFIT_PAID",
+        "display_name": "是否已給付分期定期保險金",
+        "param_description": "判斷本契約是否已給付過分期定期保險金。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "BOOLEAN",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "OVERDUE_PREMIUM",
+        "display_name": "欠繳保險費",
+        "param_description": "要保人欠繳的保險費金額。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "POLICY_LOAN",
+        "display_name": "保險單借款",
+        "param_description": "保險單借款未還清的金額。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "INTEREST_PAYABLE",
+        "display_name": "應付利息",
+        "param_description": "因欠繳保險費或保險單借款而產生的應付利息。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "OVERDUE_PREMIUM",
+          "POLICY_LOAN",
+          "POLICY_LOAN_INTEREST_RATE"
+        ]
+      },
+      {
+        "param_name": "BASIC_SUM_INSURED",
+        "display_name": "基本保額",
+        "param_description": "保險單首頁載明的主契約保額，變更後以變更金額為準。",
+        "source_type": "DEFINITION_ALIGN",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "USER_INPUT"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "ACCUMULATED_INCREASED_SUM_INSURED",
+        "display_name": "累計增額繳清保險基本保額",
+        "param_description": "依第十六條約定計算並逐次累計的增額繳清保險基本保額，變更後以變更金額為準。",
+        "source_type": "DEFINITION_ALIGN",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "VALUE_ADDED_FEEDBACK_BONUS"
+        ]
+      },
+      {
+        "param_name": "POLICY_YEAR",
+        "display_name": "保單年度數",
+        "param_description": "自本契約生效日起所經過之週年數。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "INTEGER",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "POLICY_START_DATE",
+          "CURRENT_DATE"
+        ]
+      },
+      {
+        "param_name": "CURRENT_YEAR_COVERAGE_FACTOR",
+        "display_name": "當年度保障係數",
+        "param_description": "依被保險人身故、完全失能或變更為展期定期保險時的保險年齡，對應附表三的保障係數。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "INSURANCE_AGE"
+        ]
+      },
+      {
+        "param_name": "PREMIUM_PAYMENT_METHOD",
+        "display_name": "繳費方式",
+        "param_description": "保險費繳費方式，如躉繳或分期繳。",
+        "source_type": "USER_INPUT",
+        "data_type": "STRING",
+        "value_binding": {
+          "binding_type": "USER_INPUT"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "PREMIUM_RATE_TABLE",
+        "display_name": "保險費率表",
+        "param_description": "用於計算保險費率的表格。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "STRING",
+        "value_binding": {
+          "binding_type": "POLICY_FIXED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "LAST_PREMIUM_PAID",
+        "display_name": "最近一次繳交之保險費",
+        "param_description": "要保人於特定事件發生前或辦理減額繳清保險前最近一次繳交的保險費。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "ANNUAL_PREMIUM_RATE",
+        "display_name": "年繳保險費費率",
+        "param_description": "本契約年繳保險費所適用之費率。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "INSURANCE_AGE",
+          "GENDER"
+        ]
+      },
+      {
+        "param_name": "POLICY_LOAN_INTEREST_RATE",
+        "display_name": "保險單借款之利率",
+        "param_description": "保險單借款所適用之利率。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "POLICY_FIXED",
+          "fixed_value": "0.025"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "DATE_OF_BIRTH",
+        "display_name": "出生年月日",
+        "param_description": "被保險人的出生年月日。",
+        "source_type": "USER_INPUT",
+        "data_type": "DATE",
+        "value_binding": {
+          "binding_type": "USER_INPUT"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "POLICY_START_DATE",
+        "display_name": "保單生效日",
+        "param_description": "保險契約的生效日期。",
+        "source_type": "USER_INPUT",
+        "data_type": "DATE",
+        "value_binding": {
+          "binding_type": "USER_INPUT"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "CURRENT_DATE",
+        "display_name": "目前日期",
+        "param_description": "系統計算時的當前日期。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "DATE",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "GENDER",
+        "display_name": "性別",
+        "param_description": "被保險人的性別。",
+        "source_type": "USER_INPUT",
+        "data_type": "STRING",
+        "value_binding": {
+          "binding_type": "USER_INPUT"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "VALUE_ADDED_FEEDBACK_BONUS",
+        "display_name": "增值回饋分享金",
+        "param_description": "於保障期間內，每月依宣告利率與預定利率差值、保單價值準備金及日單利計算並累計至保單年度末的金額。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "DECLARED_INTEREST_RATE",
+          "ASSUMED_INTEREST_RATE",
+          "POLICY_VALUE_RESERVE",
+          "DAILY_SIMPLE_INTEREST",
+          "COVERAGE_PERIOD"
+        ],
+        "formula_definition": "Monthly (DECLARED_INTEREST_RATE - MAX(ASSUMED_INTEREST_RATE, DECLARED_INTEREST_RATE)) * POLICY_VALUE_RESERVE / 12 + Daily_Simple_Interest_Calculation(DECLARED_INTEREST_RATE)"
+      },
+      {
+        "param_name": "DECLARED_INTEREST_RATE",
+        "display_name": "宣告利率",
+        "param_description": "本公司每月第一個營業日宣告的當月利率。",
+        "source_type": "DEFINITION_ALIGN",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "ASSUMED_INTEREST_RATE",
+        "display_name": "預定利率",
+        "param_description": "本契約的預定利率，躉繳及繳費期間二年為1.75%，繳費期間六年為2.50%。",
+        "source_type": "DEFINITION_ALIGN",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "POLICY_FIXED",
+          "fixed_value": "1.75% (for single/2-year premium) or 2.50% (for 6-year premium)"
+        },
+        "depends_on": [
+          "PAYMENT_PERIOD"
+        ]
+      },
+      {
+        "param_name": "PAYMENT_PERIOD",
+        "display_name": "繳費期間",
+        "param_description": "保險單首頁所載本契約之繳費年限。",
+        "source_type": "DEFINITION_ALIGN",
+        "data_type": "INTEGER",
+        "value_binding": {
+          "binding_type": "USER_INPUT"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "POLICY_VALUE_RESERVE",
+        "display_name": "保單價值準備金",
+        "param_description": "基本保額與累計增額繳清保險基本保額對應的保單價值準備金之總和。",
+        "source_type": "DEFINITION_ALIGN",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "BASIC_SUM_INSURED",
+          "ACCUMULATED_INCREASED_SUM_INSURED",
+          "POLICY_YEAR",
+          "ASSUMED_INTEREST_RATE"
+        ],
+        "formula_definition": "Sum of Policy Value Reserve for Basic Sum Insured and Accumulated Increased Sum Insured portions."
+      },
+      {
+        "param_name": "DAILY_SIMPLE_INTEREST",
+        "display_name": "日單利",
+        "param_description": "用於計算利息的日單利方式。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "BOOLEAN",
+        "value_binding": {
+          "binding_type": "POLICY_FIXED",
+          "fixed_value": "TRUE"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "COVERAGE_PERIOD",
+        "display_name": "保障期間",
+        "param_description": "本契約有效期間內，自生效日起至被保險人身故或被保險人保險年齡達一百一十歲之保單年度末之期間。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "STRING",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "POLICY_START_DATE",
+          "INSURANCE_AGE",
+          "INSURANCE_AGE_AT_MATURITY"
+        ]
+      }
+    ],
+    "synonym_map": [
+      "祝壽保險金"
+    ],
+    "payment_type": "LUMP_SUM"
+  },
+  {
+    "type": "理賠項目定義",
+    "code": "INSTALLMENT_BALANCE_LUMP_SUM",
+    "display_name": "分期定期保險金餘額一次給付",
+    "level": "BASE",
+    "classification": "EXISTING_MATCH",
+    "description": "受益人在分期定期保險金給付期間內死亡者，尚未領取的分期定期保險金以第二 條定義之分期定期保險金預定利率計算，一次貼現給付予受益人之法定繼承人。 受益人為多數時，部分受益人在分期定期保險金給付期間死亡時，其他受益人部 分之契約效力不受影響。 前二項約定，於受益人於分期定期保險金給付期間內失蹤，並經法院宣告死亡之 情形，亦適用之。",
+    "base_definition": "受益人在分期定期保險金給付期間內死亡者，尚未領取的分期定期保險金以第二 條定義之分期定期保險金預定利率計算，一次貼現給付予受益人之法定繼承人。 受益人為多數時，部分受益人在分期定期保險金給付期間死亡時，其他受益人部 分之契約效力不受影響。 前二項約定，於受益人於分期定期保險金給付期間內失蹤，並經法院宣告死亡之 情形，亦適用之。",
+    "logic_structure": {
+      "trigger_condition": "BENEFICIARY_DEATH_DURING_INSTALLMENT_PERIOD",
+      "effective_condition": "true",
+      "termination_condition": "ALL_INSTALLMENTS_PAID_OR_LUMP_SUM_PAID",
+      "formula_template": {
+        "syntax_type": "DSL",
+        "expression": "PRESENT_VALUE_OF_REMAINING_INSTALLMENTS(REMAINING_INSTALLMENT_BENEFITS, INSTALLMENT_INSURANCE_BENEFIT_PRESET_INTEREST_RATE, INSTALLMENT_INSURANCE_BENEFIT_PAYMENT_CYCLE)"
+      },
+      "python_logic_eval": "calculate_present_value_of_future_installments(remaining_installments, INSTALLMENT_INSURANCE_BENEFIT_PRESET_INTEREST_RATE, INSTALLMENT_INSURANCE_BENEFIT_PAYMENT_CYCLE)",
+      "is_recursive": false,
+      "payment_period": {
+        "frequency": "ONCE"
+      },
+      "conditions": []
+    },
+    "parameters": [
+      {
+        "param_name": "INSTALLMENT_INSURANCE_BENEFIT",
+        "display_name": "分期定期保險金",
+        "param_description": "每期分期定期保險金的金額。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "DESIGNATED_INSURANCE_BENEFIT",
+          "INSTALLMENT_INSURANCE_BENEFIT_PRESET_INTEREST_RATE",
+          "INSTALLMENT_INSURANCE_BENEFIT_PAYMENT_PERIOD",
+          "INSTALLMENT_INSURANCE_BENEFIT_PAYMENT_CYCLE"
+        ],
+        "formula_definition": "Calculated based on DESIGNATED_INSURANCE_BENEFIT, INSTALLMENT_INSURANCE_BENEFIT_PRESET_INTEREST_RATE, INSTALLMENT_INSURANCE_BENEFIT_PAYMENT_PERIOD, and INSTALLMENT_INSURANCE_BENEFIT_PAYMENT_CYCLE using annuity payment formula."
+      },
+      {
+        "param_name": "REMAINING_INSTALLMENT_COUNT",
+        "display_name": "尚未領取的分期定期保險金期數",
+        "param_description": "距離分期定期保險金給付期間結束，尚未領取的期數。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "INTEGER",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "TOTAL_INSTALLMENT_COUNT",
+          "PAID_INSTALLMENT_COUNT"
+        ],
+        "formula_definition": "TOTAL_INSTALLMENT_COUNT - PAID_INSTALLMENT_COUNT"
+      },
+      {
+        "param_name": "PAID_INSTALLMENT_COUNT",
+        "display_name": "已領取分期定期保險金期數",
+        "param_description": "截至目前為止已領取的分期定期保險金期數。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "INTEGER",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "INSTALLMENT_BENEFIT_COMMENCEMENT_DATE",
+          "CURRENT_DATE",
+          "INSTALLMENT_INSURANCE_BENEFIT_PAYMENT_CYCLE"
+        ],
+        "formula_definition": "Calculated based on the time elapsed between INSTALLMENT_BENEFIT_COMMENCEMENT_DATE and CURRENT_DATE, adjusted by INSTALLMENT_INSURANCE_BENEFIT_PAYMENT_CYCLE."
+      },
+      {
+        "param_name": "INSTALLMENT_INSURANCE_BENEFIT_PRESET_INTEREST_RATE",
+        "display_name": "分期定期保險金預定利率",
+        "param_description": "本公司於分期定期給付開始日用以計算分期給付金額的公告利率。",
+        "source_type": "DEFINITION_ALIGN",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "INSTALLMENT_BENEFIT_COMMENCEMENT_DATE"
+        ]
+      },
+      {
+        "param_name": "INSTALLMENT_INSURANCE_BENEFIT_PAYMENT_CYCLE",
+        "display_name": "分期定期保險金給付週期",
+        "param_description": "依要保書約定之給付週期，可為每年或每月，未選擇則每年給付。",
+        "source_type": "USER_INPUT",
+        "data_type": "STRING",
+        "value_binding": {
+          "binding_type": "USER_INPUT"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "INSTALLMENT_INSURANCE_BENEFIT_PAYMENT_PERIOD",
+        "display_name": "分期定期保險金給付期間",
+        "param_description": "依本契約要保書約定之給付期間，該期間最短為五年，最長為三十年。",
+        "source_type": "DEFINITION_ALIGN",
+        "data_type": "INTEGER",
+        "value_binding": {
+          "binding_type": "USER_INPUT"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "DESIGNATED_INSURANCE_BENEFIT",
+        "display_name": "指定保險金",
+        "param_description": "符合身故或完全失能保險金條件時，依約定比例計算作為分期給付依據的金額。",
+        "source_type": "DEFINITION_ALIGN",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "DEATH_BENEFIT_BASIC",
+          "TOTAL_PERMANENT_DISABILITY_BENEFIT",
+          "BENEFICIARY_PROPORTION"
+        ],
+        "formula_definition": "(DEATH_BENEFIT_BASIC OR TOTAL_PERMANENT_DISABILITY_BENEFIT) * BENEFICIARY_PROPORTION"
+      },
+      {
+        "param_name": "DEATH_BENEFIT_BASIC",
+        "display_name": "身故保險金",
+        "param_description": "基本身故保險金金額。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "TOTAL_PERMANENT_DISABILITY_BENEFIT",
+        "display_name": "完全失能保險金",
+        "param_description": "完全失能保險金金額。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "BENEFICIARY_PROPORTION",
+        "display_name": "受益人分配比例",
+        "param_description": "受益人可受領保險金的比例。",
+        "source_type": "USER_INPUT",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "USER_INPUT"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "INSTALLMENT_BENEFIT_COMMENCEMENT_DATE",
+        "display_name": "分期定期給付開始日",
+        "param_description": "要保人與本公司約定開始分期定期給付指定保險金之日。",
+        "source_type": "DEFINITION_ALIGN",
+        "data_type": "DATE",
+        "value_binding": {
+          "binding_type": "USER_INPUT"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "CURRENT_DATE",
+        "display_name": "當前日期",
+        "param_description": "系統計算時的當前日期。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "DATE",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "TOTAL_INSTALLMENT_COUNT",
+        "display_name": "總分期期數",
+        "param_description": "依分期定期保險金給付期間和給付週期計算出的總期數。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "INTEGER",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "INSTALLMENT_INSURANCE_BENEFIT_PAYMENT_PERIOD",
+          "INSTALLMENT_INSURANCE_BENEFIT_PAYMENT_CYCLE"
+        ],
+        "formula_definition": "INSTALLMENT_INSURANCE_BENEFIT_PAYMENT_PERIOD * (12 / MONTHS_PER_PAYMENT_CYCLE)"
+      },
+      {
+        "param_name": "INSTALLMENT_BALANCE_LUMP_SUM",
+        "display_name": "尚未領取分期定期保險金一次貼現給付",
+        "param_description": "受益人在分期定期保險金給付期間內死亡者，尚未領取的分期定期保險金以分期定期保險金預定利率計算，一次貼現給付予受益人之法定繼承人。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "INSTALLMENT_INSURANCE_BENEFIT",
+          "REMAINING_INSTALLMENT_COUNT",
+          "INSTALLMENT_INSURANCE_BENEFIT_PRESET_INTEREST_RATE",
+          "INSTALLMENT_INSURANCE_BENEFIT_PAYMENT_CYCLE"
+        ],
+        "formula_definition": "PRESENT_VALUE_OF_REMAINING_INSTALLMENTS(INSTALLMENT_INSURANCE_BENEFIT, REMAINING_INSTALLMENT_COUNT, INSTALLMENT_INSURANCE_BENEFIT_PRESET_INTEREST_RATE, INSTALLMENT_INSURANCE_BENEFIT_PAYMENT_CYCLE)"
+      }
+    ],
+    "synonym_map": [
+      "受益人身故未領分期定期保險金一次貼現給付",
+      "未領取分期定期保險金一次給付"
+    ],
+    "payment_type": "LUMP_SUM"
+  },
+  {
+    "type": "理賠項目定義",
+    "code": "HEALTH_GRATITUDE_BONUS",
+    "display_name": "健康感恩回饋金",
+    "level": "BASE",
+    "classification": "EXISTING_MATCH",
+    "description": "於本契約有效期間內之每一保單週年日且被保險人仍生存時，本公司以「健康感恩回饋金」為躉繳純保險費，計算自該保單週年日當日起生效之增額繳清保險金額。但被保險人為受監護宣告尚未撤銷者，應依第十六條約定辦理。本公司於給付「完全失能一次保險金」、「長期照顧一次保險金」、「身故保險金」或喪葬費用保險金或「滿期保險金」時，本契約於該保單年度如有依第二條第九款約定計算之金額者，一次給付予該保險金受益人。但本契約係因第八條第十項、第十條、第十六條第五項之約定未給付任何「身故保險金」或喪葬費用保險金而僅退還已繳保險費或因第二十五條第三項之約定終止時，則給付予要保人或應得之人。",
+    "base_definition": "於本契約有效期間內之每一保單週年日且被保險人仍生存時，本公司以「健康感恩回饋金」為躉繳純保險費，計算自該保單週年日當日起生效之增額繳清保險金額。但被保險人為受監護宣告尚未撤銷者，應依第十六條約定辦理。本公司於給付「完全失能一次保險金」、「長期照顧一次保險金」、「身故保險金」或喪葬費用保險金或「滿期保險金」時，本契約於該保單年度如有依第二條第九款約定計算之金額者，一次給付予該保險金受益人。但本契約係因第八條第十項、第十條、第十六條第五項之約定未給付任何「身故保險金」或喪葬費用保險金而僅退還已繳保險費或因第二十五條第三項之約定終止時，則給付予要保人或應得之人。",
+    "logic_structure": {
+      "trigger_condition": "本契約有效期間內，生效日後每月屆至與生效日相當之日（無相當日者，改以該月之末日為準）且被保險人仍生存時",
+      "effective_condition": "本契約有效期間內",
+      "termination_condition": "本契約終止或被保險人身故",
+      "formula_template": {
+        "syntax_type": "DSL",
+        "expression": "LET monthly_declared_rate = DECLARED_INTEREST_RATE\nLET predetermined_rate = 0.0185\nLET rate_difference = MAX(monthly_declared_rate - predetermined_rate, 0)\nLET life_policy_value_reserve_at_year_end = LIFE_POLICY_VALUE_RESERVE_END_OF_POLICY_YEAR\nLET monthly_base_amount = (rate_difference * life_policy_value_reserve_at_year_end) / 12\nLET first_month_declared_rate = DECLARED_INTEREST_RATE_FIRST_MONTH_OF_POLICY_YEAR\nLET days_in_current_month = DAYS_IN_MONTH(CURRENT_DATE)\nmonthly_base_amount + monthly_interest_component"
+      },
+      "python_logic_eval": "monthly_declared_rate = DECLARED_INTEREST_RATE\npredetermined_rate = 0.0185\nrate_difference = max(monthly_declared_rate - predetermined_rate, 0)\nlife_policy_value_reserve_at_year_end = LIFE_POLICY_VALUE_RESERVE_END_OF_POLICY_YEAR\nmonthly_base_amount = (rate_difference * life_policy_value_reserve_at_year_end) / 12\nfirst_month_declared_rate = DECLARED_INTEREST_RATE_FIRST_MONTH_OF_POLICY_YEAR\ndays_in_current_month = DAYS_IN_MONTH(CURRENT_DATE)\nmonthly_interest_component = monthly_base_amount * (first_month_declared_rate / 365) * days_in_current_month\nmonthly_base_amount + monthly_interest_component",
+      "is_recursive": true,
+      "payment_period": {
+        "frequency": "YEARLY"
+      },
+      "conditions": [
+        {
+          "condition_type": "OTHER",
+          "description": "被保險人為受監護宣告尚未撤銷者，應依第十六條約定辦理",
+          "formula_ref": "PERSON_UNDER_GUARDIANSHIP"
+        },
+        {
+          "condition_type": "LIMITATION",
+          "description": "給付時，若要保人有欠繳保險費或保險單借款未還清，本公司得先抵銷欠款及應付利息",
+          "formula_ref": "POLICYHOLDER_OVERDUE_PREMIUMS OR POLICY_LOAN_UNPAID"
+        }
+      ]
+    },
+    "parameters": [
+      {
+        "param_name": "DECLARED_INTEREST_RATE",
+        "display_name": "宣告利率",
+        "param_description": "本公司於每月第一個營業日宣告之當月利率，根據資產狀況和市場利率訂定。",
+        "source_type": "DEFINITION_ALIGN",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "ASSUMED_INTEREST_RATE",
+        "display_name": "預定利率",
+        "param_description": "本契約之預定利率，固定為1.85%。",
+        "source_type": "DEFINITION_ALIGN",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "POLICY_FIXED",
+          "fixed_value": "0.0185"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "RATE_DIFFERENCE",
+        "display_name": "宣告利率與預定利率差值",
+        "param_description": "宣告利率減去預定利率，若差值為負則取0。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "DECLARED_INTEREST_RATE",
+          "ASSUMED_INTEREST_RATE"
+        ],
+        "formula_definition": "MAX(DECLARED_INTEREST_RATE - ASSUMED_INTEREST_RATE, 0)"
+      },
+      {
+        "param_name": "LIFE_POLICY_VALUE_RESERVE_END_OF_POLICY_YEAR",
+        "display_name": "當年度保單年度末之壽險部分保單價值準備金",
+        "param_description": "於各該保單年度末之壽險部分保單價值準備金。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "MONTHLY_BASE_AMOUNT",
+        "display_name": "每月基本回饋金額",
+        "param_description": "依宣告利率與預定利率差值、壽險部分保單價值準備金計算的每月基本回饋金額。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "RATE_DIFFERENCE",
+          "LIFE_POLICY_VALUE_RESERVE_END_OF_POLICY_YEAR"
+        ],
+        "formula_definition": "(RATE_DIFFERENCE * LIFE_POLICY_VALUE_RESERVE_END_OF_POLICY_YEAR) / 12"
+      },
+      {
+        "param_name": "DECLARED_INTEREST_RATE_FIRST_MONTH_OF_POLICY_YEAR",
+        "display_name": "保單年度首月宣告利率",
+        "param_description": "各該保單年度首月的宣告利率。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "CURRENT_DATE",
+        "display_name": "當前日期",
+        "param_description": "系統計算時的當前日期。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "DATE",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "DAYS_IN_CURRENT_MONTH",
+        "display_name": "當前月份天數",
+        "param_description": "系統計算時當前月份的天數。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "INTEGER",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "CURRENT_DATE"
+        ]
+      },
+      {
+        "param_name": "MONTHLY_INTEREST_COMPONENT",
+        "display_name": "每月利息成分",
+        "param_description": "依每月基本回饋金額、保單年度首月宣告利率及當前月份天數計算的利息成分。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "MONTHLY_BASE_AMOUNT",
+          "DECLARED_INTEREST_RATE_FIRST_MONTH_OF_POLICY_YEAR",
+          "DAYS_IN_CURRENT_MONTH"
+        ],
+        "formula_definition": "MONTHLY_BASE_AMOUNT * (DECLARED_INTEREST_RATE_FIRST_MONTH_OF_POLICY_YEAR / 365) * DAYS_IN_CURRENT_MONTH"
+      },
+      {
+        "param_name": "HEALTH_GRATITUDE_REBATE_MONTHLY_INCREMENT",
+        "display_name": "健康感恩回饋金每月增額",
+        "param_description": "每月計算所得的健康感恩回饋金增額，為每月基本回饋金額與每月利息成分之和。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "MONTHLY_BASE_AMOUNT",
+          "MONTHLY_INTEREST_COMPONENT"
+        ],
+        "formula_definition": "MONTHLY_BASE_AMOUNT + MONTHLY_INTEREST_COMPONENT"
+      },
+      {
+        "param_name": "HEALTH_GRATITUDE_REBATE",
+        "display_name": "健康感恩回饋金",
+        "param_description": "契約有效期間內，每月按宣告利率與預定利率差值計算，累計至保單年度末的回饋金。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "HEALTH_GRATITUDE_REBATE_MONTHLY_INCREMENT"
+        ]
+      },
+      {
+        "param_name": "PERSON_UNDER_GUARDIANSHIP",
+        "display_name": "受監護宣告尚未撤銷者",
+        "param_description": "被保險人是否為受監護宣告尚未撤銷者。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "BOOLEAN",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "POLICYHOLDER_OVERDUE_PREMIUMS",
+        "display_name": "要保人有欠繳保險費",
+        "param_description": "要保人是否有欠繳保險費（包括經本公司墊繳的保險費）。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "BOOLEAN",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "POLICY_LOAN_UNPAID",
+        "display_name": "保險單借款未還清",
+        "param_description": "保險單借款是否未還清。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "BOOLEAN",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "PAYABLE_INTEREST",
+        "display_name": "應付利息",
+        "param_description": "因欠繳保險費或保險單借款而產生的應付利息。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "POLICYHOLDER_OVERDUE_PREMIUMS",
+          "POLICY_LOAN_UNPAID"
+        ]
+      },
+      {
+        "param_name": "CONTRACT_EFFECTIVE_PERIOD",
+        "display_name": "契約有效期間",
+        "param_description": "本契約是否在有效期間內。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "BOOLEAN",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "STILL_ALIVE_STATUS",
+        "display_name": "仍生存",
+        "param_description": "被保險人是否仍生存。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "BOOLEAN",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      },
+      {
+        "param_name": "CURRENT_MONTH_DAY_EQUIVALENT_TO_EFFECTIVE_DATE",
+        "display_name": "每月生效日相當日",
+        "param_description": "生效日後每月屆至與生效日相當之日（無相當日者，改以該月之末日為準）。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "DATE",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "CONTRACT_EFFECTIVE_DATE",
+          "CURRENT_DATE"
+        ]
+      },
+      {
+        "param_name": "CONTRACT_EFFECTIVE_DATE",
+        "display_name": "本契約生效日",
+        "param_description": "本契約的生效日期。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "DATE",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": []
+      }
+    ],
+    "synonym_map": [],
+    "payment_type": "LUMP_SUM"
+  },
+  {
+    "type": "理賠項目定義",
+    "code": "TOTAL_PERMANENT_DISABILITY_INSTALLMENT",
+    "display_name": "完全失能保險金分期定期給付",
+    "level": "BASE",
+    "classification": "EXISTING_MATCH",
+    "description": "如要保人有指定分期方式給付「完全失能保險金」，本公司按第二項約定計算「完全失能保險金」，並依第二十一條約定給付予被保險人。自分期定期給付開始日起，本公司依分期定期保險金給付期間、分期定期保險金給付週期及第二條定義之分期定期保險金預定利率將指定保險金換算成每期期初應給付之金額，按約定將每期分期定期保險金給付予受益人。分期定期給付期間屆滿時，本契約即行終止。本公司依第十九條約定計算之「完全失能保險金」扣除被保險人之指定保險金後，倘有餘額時，應將該餘額給付予被保險人。",
+    "base_definition": "如要保人有指定分期方式給付「完全失能保險金」，本公司按第二項約定計算「完全失能保險金」，並依第二十一條約定給付予被保險人。自分期定期給付開始日起，本公司依分期定期保險金給付期間、分期定期保險金給付週期及第二條定義之分期定期保險金預定利率將指定保險金換算成每期期初應給付之金額，按約定將每期分期定期保險金給付予受益人。分期定期給付期間屆滿時，本契約即行終止。本公司依第十九條約定計算之「完全失能保險金」扣除被保險人之指定保險金後，倘有餘額時，應將該餘額給付予被保險人。",
+    "logic_structure": {
+      "trigger_condition": "被保險人在本契約有效期間內致成附表二所列完全失能等級之一，經醫院診斷確定，且要保人指定分期方式給付完全失能保險金，並自分期定期給付開始日起。",
+      "effective_condition": "本契約有效期間內",
+      "termination_condition": "分期定期給付期間屆滿時，本契約即行終止。若受益人在分期定期保險金給付期間內死亡或經法院宣告死亡，尚未領取的分期定期保險金將以分期定期保險金預定利率計算，一次貼現給付予受益人之法定繼承人。",
+      "formula_template": {
+        "syntax_type": "DSL",
+        "expression": "LET TOTAL_PERMANENT_DISABILITY_BENEFIT = MAX(CURRENT_YEAR_SUM_INSURED, POLICY_VALUE_RESERVE * CURRENT_YEAR_COVERAGE_FACTOR, SINGLE_PREMIUM * 1.06)\nLET DESIGNATED_INSURANCE_BENEFIT = TOTAL_PERMANENT_DISABILITY_BENEFIT * INSTALLMENT_AGREED_RATIO\n\nIF (INSTALLMENT_INSURANCE_BENEFIT_PAYMENT_CYCLE == \"MONTHLY\") THEN\n    LET PERIODIC_INTEREST_RATE = INSTALLMENT_INSURANCE_BENEFIT_PRESET_INTEREST_RATE / 12\n    LET NUMBER_OF_PERIODS = INSTALLMENT_INSURANCE_BENEFIT_PAYMENT_PERIOD * 12\nELSE IF (INSTALLMENT_INSURANCE_BENEFIT_PAYMENT_CYCLE == \"YEARLY\") THEN\n    LET PERIODIC_INTEREST_RATE = INSTALLMENT_INSURANCE_BENEFIT_PRESET_INTEREST_RATE\n    LET NUMBER_OF_PERIODS = INSTALLMENT_INSURANCE_BENEFIT_PAYMENT_PERIOD\nENDIF\n\nIF (PERIODIC_INTEREST_RATE == 0) THEN\n    AMOUNT_PAYABLE_AT_BEGINNING_OF_EACH_PERIOD = DESIGNATED_INSURANCE_BENEFIT / NUMBER_OF_PERIODS\nELSE\n    AMOUNT_PAYABLE_AT_BEGINNING_OF_EACH_PERIOD = DESIGNATED_INSURANCE_BENEFIT * PERIODIC_INTEREST_RATE / ((1 + PERIODIC_INTEREST_RATE) * (1 - (1 + PERIODIC_INTEREST_RATE)^-NUMBER_OF_PERIODS))\nENDIF"
+      },
+      "python_logic_eval": "total_permanent_disability_benefit = max(CURRENT_YEAR_SUM_INSURED, POLICY_VALUE_RESERVE * CURRENT_YEAR_COVERAGE_FACTOR, SINGLE_PREMIUM * 1.06)\ndesignated_insurance_benefit = total_permanent_disability_benefit * INSTALLMENT_AGREED_RATIO\n\nif INSTALLMENT_INSURANCE_BENEFIT_PAYMENT_CYCLE == \"MONTHLY\":\n    periodic_interest_rate = INSTALLMENT_INSURANCE_BENEFIT_PRESET_INTEREST_RATE / 12\n    number_of_periods = INSTALLMENT_INSURANCE_BENEFIT_PAYMENT_PERIOD * 12\nelif INSTALLMENT_INSURANCE_BENEFIT_PAYMENT_CYCLE == \"YEARLY\":\n    periodic_interest_rate = INSTALLMENT_INSURANCE_BENEFIT_PRESET_INTEREST_RATE\n    number_of_periods = INSTALLMENT_INSURANCE_BENEFIT_PAYMENT_PERIOD\nelse:\n    raise ValueError(\"Invalid INSTALLMENT_INSURANCE_BENEFIT_PAYMENT_CYCLE\")\n\nif periodic_interest_rate == 0:\n    amount_payable_at_beginning_of_each_period = designated_insurance_benefit / number_of_periods\nelse:\n    amount_payable_at_beginning_of_each_period = designated_insurance_benefit * periodic_interest_rate / ((1 + periodic_interest_rate) * (1 - (1 + periodic_interest_rate)**-number_of_periods))\n\nresult = amount_payable_at_beginning_of_each_period",
+      "is_recursive": true,
+      "payment_period": {
+        "frequency": "YEARLY",
+        "waiting_period": "0 DAYS",
+        "coverage_period": "INSTALLMENT_INSURANCE_BENEFIT_PAYMENT_PERIOD",
+        "max_period": "30 YEARS",
+        "max_payment_count": 360
+      },
+      "conditions": [
+        {
+          "condition_type": "LIMITATION",
+          "description": "每期給付之分期定期保險金低於約定金額時，將一次給付指定保險金並終止分期給付。",
+          "formula_ref": "IF (INSTALLMENT_INSURANCE_BENEFIT_PAYMENT_CYCLE == \"MONTHLY\" AND AMOUNT_PAYABLE_AT_BEGINNING_OF_EACH_PERIOD < 250) THEN LUMP_SUM_PAYMENT = DESIGNATED_INSURANCE_BENEFIT AND TERMINATE_INSTALLMENT_PAYMENT = TRUE ELSE IF (INSTALLMENT_INSURANCE_BENEFIT_PAYMENT_CYCLE == \"YEARLY\" AND AMOUNT_PAYABLE_AT_BEGINNING_OF_EACH_PERIOD < 3000) THEN LUMP_SUM_PAYMENT = DESIGNATED_INSURANCE_BENEFIT AND TERMINATE_INSTALLMENT_PAYMENT = TRUE ENDIF"
+        },
+        {
+          "condition_type": "OTHER",
+          "description": "分期定期保險金給付期間，要保人不得變更或終止本契約，且不得以保險契約為質向本公司借款。",
+          "formula_ref": "POLICY_CHANGE_PROHIBITED_DURING_INSTALLMENT_PAYMENT_PERIOD AND POLICY_LOAN_PROHIBITED_DURING_INSTALLMENT_PAYMENT_PERIOD"
+        },
+        {
+          "condition_type": "SURVIVAL_REQUIREMENT",
+          "description": "受益人於分期定期保險金給付期間每年第一次申領時，應提出生存證明文件。",
+          "formula_ref": "BENEFICIARY_SURVIVAL_PROOF_REQUIRED_ANNUALLY"
+        },
+        {
+          "condition_type": "CLAIM_INTERVAL",
+          "description": "首次申領於收齊文件後15日內給付；後續申領於約定給付日給付。",
+          "formula_ref": "IF (IS_FIRST_CLAIM) THEN PAYMENT_DUE_DAYS = 15 ELSE PAYMENT_DUE_DATE = AGREED_PAYMENT_DATE ENDIF"
+        }
+      ]
+    },
+    "parameters": [
+      {
+        "param_name": "TOTAL_PERMANENT_DISABILITY_BENEFIT",
+        "display_name": "完全失能保險金",
+        "param_description": "依條款約定計算的完全失能保險金，作為分期給付的基礎。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "CURRENT_YEAR_SUM_INSURED",
+          "POLICY_VALUE_RESERVE",
+          "CURRENT_YEAR_COVERAGE_FACTOR",
+          "SINGLE_PREMIUM"
+        ],
+        "formula_definition": "MAX(CURRENT_YEAR_SUM_INSURED, POLICY_VALUE_RESERVE * CURRENT_YEAR_COVERAGE_FACTOR, SINGLE_PREMIUM * 1.06)"
+      },
+      {
+        "param_name": "CURRENT_YEAR_SUM_INSURED",
+        "display_name": "當年度保險金額",
+        "param_description": "基本保額乘以附表一當年度保險金額係數所得數額。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "BASIC_SUM_INSURED_PRODUCT",
+          "CURRENT_YEAR_SUM_INSURED_FACTOR"
+        ],
+        "formula_definition": "BASIC_SUM_INSURED_PRODUCT * CURRENT_YEAR_SUM_INSURED_FACTOR"
+      },
+      {
+        "param_name": "BASIC_SUM_INSURED_PRODUCT",
+        "display_name": "基本保額",
+        "param_description": "保險單首頁所載之主契約保額，變更後以變更後金額為準。",
+        "source_type": "USER_INPUT",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "USER_INPUT"
+        }
+      },
+      {
+        "param_name": "CURRENT_YEAR_SUM_INSURED_FACTOR",
+        "display_name": "當年度保險金額係數",
+        "param_description": "附表一所列之當年度保險金額係數。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "POLICY_YEAR"
+        ]
+      },
+      {
+        "param_name": "POLICY_YEAR",
+        "display_name": "保單年度",
+        "param_description": "保單生效後的年度數。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "INTEGER",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        }
+      },
+      {
+        "param_name": "POLICY_VALUE_RESERVE",
+        "display_name": "保單價值準備金",
+        "param_description": "保單累積的價值準備金。",
+        "source_type": "DEFINITION_ALIGN",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        }
+      },
+      {
+        "param_name": "CURRENT_YEAR_COVERAGE_FACTOR",
+        "display_name": "當年度保障係數",
+        "param_description": "被保險人身故或完全失能時，依保險年齡對應附表三的保障係數。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "INSURANCE_AGE"
+        ]
+      },
+      {
+        "param_name": "INSURANCE_AGE",
+        "display_name": "保險年齡",
+        "param_description": "按投保時被保險人以足歲計算之年齡。",
+        "source_type": "DEFINITION_ALIGN",
+        "data_type": "INTEGER",
+        "value_binding": {
+          "binding_type": "USER_INPUT"
+        }
+      },
+      {
+        "param_name": "SINGLE_PREMIUM",
+        "display_name": "躉繳保險費",
+        "param_description": "以保險費率表所載金額為基礎的躉繳保險費。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "BASIC_SUM_INSURED_PRODUCT"
+        ]
+      },
+      {
+        "param_name": "DESIGNATED_INSURANCE_BENEFIT",
+        "display_name": "指定保險金",
+        "param_description": "符合身故或完全失能保險金條件時，依約定比例計算作為分期給付依據的金額。",
+        "source_type": "DEFINITION_ALIGN",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "TOTAL_PERMANENT_DISABILITY_BENEFIT",
+          "INSTALLMENT_AGREEMENT_RATIO"
+        ],
+        "formula_definition": "TOTAL_PERMANENT_DISABILITY_BENEFIT * INSTALLMENT_AGREEMENT_RATIO"
+      },
+      {
+        "param_name": "INSTALLMENT_AGREEMENT_RATIO",
+        "display_name": "分期給付約定比例",
+        "param_description": "要保人與本公司約定，將完全失能保險金轉換為分期給付的比例。",
+        "source_type": "USER_INPUT",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "USER_INPUT"
+        }
+      },
+      {
+        "param_name": "INSTALLMENT_INSURANCE_BENEFIT_PAYMENT_CYCLE",
+        "display_name": "分期定期保險金給付週期",
+        "param_description": "依要保書約定之給付週期，可為每年或每月。",
+        "source_type": "USER_INPUT",
+        "data_type": "STRING",
+        "value_binding": {
+          "binding_type": "USER_INPUT"
+        }
+      },
+      {
+        "param_name": "INSTALLMENT_INSURANCE_BENEFIT_PRESET_INTEREST_RATE",
+        "display_name": "分期定期保險金預定利率",
+        "param_description": "本公司於分期定期給付開始日用以計算分期給付金額之利率。",
+        "source_type": "DEFINITION_ALIGN",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "INSTALLMENT_BENEFIT_COMMENCEMENT_DATE"
+        ]
+      },
+      {
+        "param_name": "INSTALLMENT_BENEFIT_COMMENCEMENT_DATE",
+        "display_name": "分期定期給付開始日",
+        "param_description": "要保人與本公司約定開始分期定期給付指定保險金之日。",
+        "source_type": "DEFINITION_ALIGN",
+        "data_type": "DATE",
+        "value_binding": {
+          "binding_type": "USER_INPUT"
+        }
+      },
+      {
+        "param_name": "INSTALLMENT_INSURANCE_BENEFIT_PAYMENT_PERIOD",
+        "display_name": "分期定期保險金給付期間",
+        "param_description": "依要保書約定之給付期間，最短五年，最長三十年。",
+        "source_type": "DEFINITION_ALIGN",
+        "data_type": "INTEGER",
+        "value_binding": {
+          "binding_type": "USER_INPUT"
+        }
+      },
+      {
+        "param_name": "PERIODIC_INTEREST_RATE",
+        "display_name": "每期利率",
+        "param_description": "根據給付週期轉換後的每期利率。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "INSTALLMENT_INSURANCE_BENEFIT_PRESET_INTEREST_RATE",
+          "INSTALLMENT_INSURANCE_BENEFIT_PAYMENT_CYCLE"
+        ],
+        "formula_definition": "IF (INSTALLMENT_INSURANCE_BENEFIT_PAYMENT_CYCLE == \"MONTHLY\") THEN INSTALLMENT_INSURANCE_BENEFIT_PRESET_INTEREST_RATE / 12 ELSE INSTALLMENT_INSURANCE_BENEFIT_PRESET_INTEREST_RATE ENDIF"
+      },
+      {
+        "param_name": "NUMBER_OF_PERIODS",
+        "display_name": "總給付期數",
+        "param_description": "根據給付期間和週期計算的總給付期數。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "INTEGER",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "INSTALLMENT_INSURANCE_BENEFIT_PAYMENT_PERIOD",
+          "INSTALLMENT_INSURANCE_BENEFIT_PAYMENT_CYCLE"
+        ],
+        "formula_definition": "IF (INSTALLMENT_INSURANCE_BENEFIT_PAYMENT_CYCLE == \"MONTHLY\") THEN INSTALLMENT_INSURANCE_BENEFIT_PAYMENT_PERIOD * 12 ELSE INSTALLMENT_INSURANCE_BENEFIT_PAYMENT_PERIOD ENDIF"
+      },
+      {
+        "param_name": "AMOUNT_PAYABLE_AT_BEGINNING_OF_EACH_PERIOD",
+        "display_name": "每期期初應給付之金額",
+        "param_description": "依指定保險金、總期數及每期利率計算出的每期期初應給付金額。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "DESIGNATED_INSURANCE_BENEFIT",
+          "NUMBER_OF_PERIODS",
+          "PERIODIC_INTEREST_RATE"
+        ],
+        "formula_definition": "IF (PERIODIC_INTEREST_RATE == 0) THEN DESIGNATED_INSURANCE_BENEFIT / NUMBER_OF_PERIODS ELSE DESIGNATED_INSURANCE_BENEFIT * PERIODIC_INTEREST_RATE / ((1 + PERIODIC_INTEREST_RATE) * (1 - (1 + PERIODIC_INTEREST_RATE)^-NUMBER_OF_PERIODS)) ENDIF"
+      },
+      {
+        "param_name": "MONTHLY_MIN_PAYMENT_THRESHOLD",
+        "display_name": "按月給付最低金額門檻",
+        "param_description": "按月給付時，每期分期定期保險金的最低金額門檻（美元二百五十元）。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "POLICY_FIXED",
+          "fixed_value": "250"
+        }
+      },
+      {
+        "param_name": "YEARLY_MIN_PAYMENT_THRESHOLD",
+        "display_name": "按年給付最低金額門檻",
+        "param_description": "按年給付時，每期分期定期保險金的最低金額門檻（美元三千元）。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "POLICY_FIXED",
+          "fixed_value": "3000"
+        }
+      },
+      {
+        "param_name": "LUMP_SUM_PAYMENT",
+        "display_name": "一次性給付金額",
+        "param_description": "當每期給付金額低於約定門檻時，一次性給付的指定保險金。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "FLOAT",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "DESIGNATED_INSURANCE_BENEFIT",
+          "AMOUNT_PAYABLE_AT_BEGINNING_OF_EACH_PERIOD",
+          "MONTHLY_MIN_PAYMENT_THRESHOLD",
+          "YEARLY_MIN_PAYMENT_THRESHOLD",
+          "INSTALLMENT_INSURANCE_BENEFIT_PAYMENT_CYCLE"
+        ],
+        "formula_definition": "IF ( (INSTALLMENT_INSURANCE_BENEFIT_PAYMENT_CYCLE == \"MONTHLY\" AND AMOUNT_PAYABLE_AT_BEGINNING_OF_EACH_PERIOD < MONTHLY_MIN_PAYMENT_THRESHOLD) OR (INSTALLMENT_INSURANCE_BENEFIT_PAYMENT_CYCLE == \"YEARLY\" AND AMOUNT_PAYABLE_AT_BEGINNING_OF_EACH_PERIOD < YEARLY_MIN_PAYMENT_THRESHOLD) ) THEN DESIGNATED_INSURANCE_BENEFIT ELSE 0 ENDIF"
+      },
+      {
+        "param_name": "TERMINATE_INSTALLMENT_PAYMENT",
+        "display_name": "終止分期給付",
+        "param_description": "當每期給付金額低於約定門檻時，是否終止分期給付。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "BOOLEAN",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "AMOUNT_PAYABLE_AT_BEGINNING_OF_EACH_PERIOD",
+          "MONTHLY_MIN_PAYMENT_THRESHOLD",
+          "YEARLY_MIN_PAYMENT_THRESHOLD",
+          "INSTALLMENT_INSURANCE_BENEFIT_PAYMENT_CYCLE"
+        ],
+        "formula_definition": "(INSTALLMENT_INSURANCE_BENEFIT_PAYMENT_CYCLE == \"MONTHLY\" AND AMOUNT_PAYABLE_AT_BEGINNING_OF_EACH_PERIOD < MONTHLY_MIN_PAYMENT_THRESHOLD) OR (INSTALLMENT_INSURANCE_BENEFIT_PAYMENT_CYCLE == \"YEARLY\" AND AMOUNT_PAYABLE_AT_BEGINNING_OF_EACH_PERIOD < YEARLY_MIN_PAYMENT_THRESHOLD)"
+      },
+      {
+        "param_name": "POLICY_CHANGE_PROHIBITED_DURING_INSTALLMENT_PAYMENT_PERIOD",
+        "display_name": "分期給付期間禁止契約變更",
+        "param_description": "分期定期保險金給付期間，要保人不得變更或終止本契約。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "BOOLEAN",
+        "value_binding": {
+          "binding_type": "POLICY_FIXED",
+          "fixed_value": "TRUE"
+        }
+      },
+      {
+        "param_name": "POLICY_LOAN_PROHIBITED_DURING_INSTALLMENT_PAYMENT_PERIOD",
+        "display_name": "分期給付期間禁止保單借款",
+        "param_description": "分期定期保險金給付期間，要保人不得以保險契約為質向本公司借款。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "BOOLEAN",
+        "value_binding": {
+          "binding_type": "POLICY_FIXED",
+          "fixed_value": "TRUE"
+        }
+      },
+      {
+        "param_name": "BENEFICIARY_SURVIVAL_PROOF_REQUIRED_ANNUALLY",
+        "display_name": "受益人每年需提供生存證明",
+        "param_description": "受益人於分期定期保險金給付期間每年第一次申領時，應提出可資證明受益人生存之文件。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "BOOLEAN",
+        "value_binding": {
+          "binding_type": "POLICY_FIXED",
+          "fixed_value": "TRUE"
+        }
+      },
+      {
+        "param_name": "IS_FIRST_CLAIM",
+        "display_name": "是否為首次申領",
+        "param_description": "判斷本次申領是否為分期定期保險金的首次申領。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "BOOLEAN",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        }
+      },
+      {
+        "param_name": "FIRST_CLAIM_PAYMENT_DUE_DAYS",
+        "display_name": "首次申領給付期限（天數）",
+        "param_description": "首次申領分期定期給付保險金時，本公司應於收齊各該申領文件後十五日內給付。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "INTEGER",
+        "value_binding": {
+          "binding_type": "POLICY_FIXED",
+          "fixed_value": "15"
+        }
+      },
+      {
+        "param_name": "AGREED_PAYMENT_DATE",
+        "display_name": "約定給付日",
+        "param_description": "受益人申領第二次(含)以後之分期定期保險金時，本公司應於約定之給付日給付。",
+        "source_type": "SYSTEM_DERIVED",
+        "data_type": "DATE",
+        "value_binding": {
+          "binding_type": "SYSTEM_CALCULATED"
+        },
+        "depends_on": [
+          "INSTALLMENT_BENEFIT_COMMENCEMENT_DATE",
+          "INSTALLMENT_INSURANCE_BENEFIT_PAYMENT_CYCLE"
+        ]
+      }
+    ],
+    "synonym_map": [
+      "分期定期保險金",
+      "分期定期保險金給付",
+      "完全失能保險金分期給付選項",
+      "身故保險金分期定期給付",
+      "身故保險金分期給付選項"
+    ],
+    "payment_type": "INSTALLMENT"
+  }
+]

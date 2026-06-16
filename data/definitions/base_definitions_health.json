@@ -1,0 +1,351 @@
+[
+  {
+    "type": "名詞定義",
+    "code": "DISEASE",
+    "display_name": "疾病",
+    "base_definition": "本契約所稱「疾病」係指被保險人自本契約生效日（或復效日）起所發生之疾病。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "被保險人自契約生效日（或復效日）起所發生的疾病。",
+    "classification": "EXISTING_MATCH",
+    "level": "BASE"
+  },
+  {
+    "type": "名詞定義",
+    "code": "HOSPITAL",
+    "display_name": "醫院",
+    "base_definition": "本契約所稱「醫院」係指依照醫療法規定領有開業執照並設有病房收治病人之公、私立及醫療法人醫院。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "指依當地醫療法規領有執照，並設有病房收治病患的公、私立及醫療法人醫院。",
+    "classification": "EXISTING_MATCH",
+    "level": "BASE"
+  },
+  {
+    "type": "名詞定義",
+    "code": "HOSPITALIZATION_INCL_DAY_CARE",
+    "display_name": "住院",
+    "base_definition": "本契約所稱「住院」係指被保險人經醫師診斷其疾病或傷害必須入住醫院，且正式辦理住院手續並確實在醫院接受診療者，包含精神衛生法所稱之日間留院／日間照護。",
+    "parameter": {},
+    "synonym_map": [
+      "住院 (給付日間留院／日間照護適用)",
+      "日間照護",
+      "日間留院"
+    ],
+    "description": "被保險人經醫師診斷需入住醫院並接受診療，包含日間留院/日間照護。",
+    "classification": "EXISTING_MATCH",
+    "level": "BASE"
+  },
+  {
+    "type": "名詞定義",
+    "code": "HOSPITALIZATION_EXCL_DAY_CARE",
+    "display_name": "住院",
+    "base_definition": "本契約所稱「住院」係指被保險人經醫師診斷其疾病或傷害必須入住醫院，且正式辦理住院手續並確實在醫院接受診療者。但不包含全民健康保險法所稱之日間住院及精神衛生法所稱之日間留院／日間照護。",
+    "parameter": {},
+    "synonym_map": [
+      "住院 (不給付日間留院／日間照護適用)"
+    ],
+    "description": "指被保險人因突發疾病經醫師診斷需入住醫院，並辦理住院手續接受診療，但不包含日間住院及日間照護。",
+    "classification": "EXISTING_MATCH",
+    "level": "BASE"
+  },
+  {
+    "type": "名詞定義",
+    "code": "PHYSICIAN",
+    "display_name": "醫師",
+    "base_definition": "係指依照當地政府之法令規定，合法領有醫師執照之執業醫師，且非要保人本人或被保險人本人。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "指依當地法令合法領有醫師執照的執業醫師，且非要保人或被保險人本人。",
+    "classification": "EXISTING_MATCH",
+    "level": "BASE"
+  },
+  {
+    "type": "名詞定義",
+    "code": "SPECIALIST_PHYSICIAN",
+    "display_name": "專科醫師",
+    "base_definition": "本契約所稱「專科醫師」係指經醫師考試及格並完成專科醫師訓練，且經衛生福利部甄審合格，領有復健科、神經科、精神科或主要疾病相關科別之專科醫師證書者之執業醫師。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "經醫師考試及格、完成專科訓練、衛福部甄審合格，並領有特定專科醫師證書的執業醫師。",
+    "classification": "EXISTING_MATCH",
+    "level": "BASE"
+  },
+  {
+    "type": "名詞定義",
+    "code": "LONG_TERM_CARE_STATUS",
+    "display_name": "長期照顧狀態",
+    "base_definition": "「長期照顧狀態」係指被保險人經專科醫師診斷判定，符合下列之生理功能障礙或認知功能障礙二項情形之一者。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "被保險人經專科醫師診斷判定，符合生理功能障礙或認知功能障礙其中一項情形。",
+    "classification": "EXISTING_MATCH",
+    "level": "BASE"
+  },
+  {
+    "type": "名詞定義",
+    "code": "PHYSICAL_FUNCTIONAL_IMPAIRMENT",
+    "display_name": "生理功能障礙",
+    "base_definition": "係指被保險人經專科醫師依巴氏量表（Barthel Index ）或依其它臨床專業評量表診斷判定達{MONTHS_FOR_PHYSICAL_IMPAIRMENT}個月以上（不得高於六個月），其進食、移位、如廁、沐浴、平地行動及更衣等六項日常生活自理能力（Activitiesof Daily Living,ADLs）持續存有三項（含）以上之障礙。但經專科醫師診斷判定前述生理功能障礙為終身無法治癒者，不受{MONTHS_FOR_PHYSICAL_IMPAIRMENT}個月之限制。",
+    "parameter": {},
+    "synonym_map": [
+      "ADLs",
+      "日常生活自理能力",
+      "Activities of Daily Living",
+      "ADLs障礙"
+    ],
+    "description": "被保險人經專科醫師診斷，六項日常生活自理能力（ADLs）中持續存有三項（含）以上障礙。",
+    "classification": "EXISTING_MATCH",
+    "level": "BASE"
+  },
+  {
+    "type": "名詞定義",
+    "code": "EATING_IMPAIRMENT",
+    "display_name": "進食障礙",
+    "base_definition": "進食障礙：須別人協助才能取用食物或穿脫進食輔具。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "須別人協助才能取用食物或穿脫進食輔具。",
+    "classification": "EXISTING_MATCH",
+    "level": "BASE"
+  },
+  {
+    "type": "名詞定義",
+    "code": "TRANSFER_IMPAIRMENT",
+    "display_name": "移位障礙",
+    "base_definition": "移位障礙：須別人協助才能由床移位至椅子或輪椅。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "須別人協助才能由床移位至椅子或輪椅。",
+    "classification": "EXISTING_MATCH",
+    "level": "BASE"
+  },
+  {
+    "type": "名詞定義",
+    "code": "TOILETING_IMPAIRMENT",
+    "display_name": "如廁障礙",
+    "base_definition": "如廁障礙：如廁過程中須別人協助才能保持平衡、整理衣物或使用衛生紙。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "如廁過程中須別人協助才能保持平衡、整理衣物或使用衛生紙。",
+    "classification": "EXISTING_MATCH",
+    "level": "BASE"
+  },
+  {
+    "type": "名詞定義",
+    "code": "BATHING_IMPAIRMENT",
+    "display_name": "沐浴障礙",
+    "base_definition": "沐浴障礙：須別人協助才能完成盆浴或淋浴。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "須別人協助才能完成盆浴或淋浴。",
+    "classification": "EXISTING_MATCH",
+    "level": "BASE"
+  },
+  {
+    "type": "名詞定義",
+    "code": "MOBILITY_IMPAIRMENT_LEVEL_GROUND",
+    "display_name": "平地行動障礙",
+    "base_definition": "平地行動障礙：雖經別人扶持或使用輔具亦無法行動，且須別人協助才能操作輪椅或電動輪椅。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "雖經別人扶持或使用輔具亦無法行動，且須別人協助才能操作輪椅或電動輪椅。",
+    "classification": "EXISTING_MATCH",
+    "level": "BASE"
+  },
+  {
+    "type": "名詞定義",
+    "code": "DRESSING_IMPAIRMENT",
+    "display_name": "更衣障礙",
+    "base_definition": "更衣障礙：須別人完全協助才能完成穿脫衣褲鞋襪（含義肢、支架）。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "須別人完全協助才能完成穿脫衣褲鞋襪（含義肢、支架）。",
+    "classification": "EXISTING_MATCH",
+    "level": "BASE"
+  },
+  {
+    "type": "名詞定義",
+    "code": "COGNITIVE_FUNCTIONAL_IMPAIRMENT",
+    "display_name": "認知功能障礙",
+    "base_definition": "係指被保險人經專科醫師診斷判定達{MONTHS_FOR_COGNITIVE_IMPAIRMENT}個月以上（不得高於六個月），仍為持續失智狀態（係指按「國際疾病傷害及死因分類標準」第十版（ICD-10-CM ），如附表所列項目），且依臨床失智量表（Clinical Dementia RatingScale,CDR ）評估達中度（含）以上（即 CDR  大於或等於 {CDR_THRESHOLD} 分，非各分項總和）者。但經專科醫師診斷判定前述認知功能障礙為終身無法治癒者，不受{MONTHS_FOR_COGNITIVE_IMPAIRMENT}個月的限制。",
+    "parameter": {},
+    "synonym_map": [
+      "Clinical Dementia RatingScale",
+      "CDR",
+      "持續失智狀態",
+      "失智狀態"
+    ],
+    "description": "被保險人經專科醫師診斷，持續失智狀態達一定期間，且依臨床失智量表（CDR）評估達中度（含）以上。",
+    "classification": "EXISTING_MATCH",
+    "level": "BASE"
+  },
+  {
+    "type": "名詞定義",
+    "code": "STATUTORY_INFECTIOUS_DISEASE",
+    "display_name": "法定傳染病",
+    "base_definition": "指中央衛生主管機關依傳染病防治法第三條規定所稱之傳染病。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "依中央衛生主管機關《傳染病防治法》第三條規定所稱的傳染病。",
+    "classification": "EXISTING_MATCH",
+    "level": "BASE"
+  },
+  {
+    "type": "名詞定義",
+    "code": "NEGATIVE_PRESSURE_ISOLATION_WARD",
+    "display_name": "負壓隔離病房",
+    "base_definition": "係指符合中央衛生主管機關規定標準之負壓隔離病房，醫院為控制法定傳染病患者身體產生的生物氣膠汙染範圍，刻意使病房內之氣壓恆低於病房外之氣壓，迫使病房外之空氣透過各種結構縫隙（門縫、平衡風門開口等）單向流入病房內部空間，造成病房內空氣之單向隔絕，並經醫院認定為負壓隔離病房（床）者。",
+    "parameter": {},
+    "synonym_map": [
+      "負壓隔離病房(床)"
+    ],
+    "description": "符合中央衛生主管機關標準，醫院為控制法定傳染病患者生物氣膠污染，使病房內氣壓低於病房外，造成空氣單向隔絕，並經醫院認定的病房。",
+    "classification": "EXISTING_MATCH",
+    "level": "BASE"
+  },
+  {
+    "type": "名詞定義",
+    "code": "DAYS_IN_NEGATIVE_PRESSURE_ISOLATION_WARD",
+    "display_name": "入住負壓隔離病房日數",
+    "base_definition": "指被保險人實際入住負壓隔離病房日數（含轉入及轉出當日），但如被保險人於同一日轉出負壓隔離病房後，又轉入負壓隔離病房時，不論其原因為何，該日不得重複計入「入住負壓隔離病房日數」。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "被保險人實際入住負壓隔離病房的日數（含轉入轉出當日），但同一日轉出後又轉入不得重複計算。",
+    "classification": "EXISTING_MATCH",
+    "level": "BASE"
+  },
+  {
+    "type": "名詞定義",
+    "code": "SUDDEN_ILLNESS",
+    "display_name": "突發疾病",
+    "base_definition": "係指被保險人需即時在醫院或診所診療始能避免損及身體健康之疾病，且在本附約生效前ＯＯ日（不得高於一百八十日）以內，未曾接受該疾病之診療者。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "指被保險人需立即就醫以避免健康受損的疾病，且在附約生效前特定天數內未曾接受該疾病診療。",
+    "classification": "EXISTING_MATCH",
+    "level": "BASE"
+  },
+  {
+    "type": "名詞定義",
+    "code": "CLINIC",
+    "display_name": "診所",
+    "base_definition": "係指依照當地醫療法規定領有開業執照的診所。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "指依當地醫療法規領有開業執照的診所。",
+    "classification": "EXISTING_MATCH",
+    "level": "BASE"
+  },
+  {
+    "type": "名詞定義",
+    "description": "指組織細胞具惡性生長、擴張及侵害特性之惡性腫瘤或惡性白血球過多症，並經病理檢驗符合國際疾病傷害及死因分類標準中惡性腫瘤或原位癌的疾病。",
+    "code": "CANCER",
+    "display_name": "癌症",
+    "base_definition": "係指組織細胞有惡性細胞不斷生長、擴張及對組織侵害的特性之惡性腫瘤或惡性白血球過多症，經病理檢驗確定符合最近採用之「國際疾病傷害及死因分類標準」版本歸屬於惡性腫瘤或原位癌之疾病。",
+    "parameter": {},
+    "synonym_map": [],
+    "level": "BASE"
+  },
+  {
+    "type": "名詞定義",
+    "description": "指同一次住院的實際日數（含住院及出院當日），同一日出入院不重複計算，日間住（留）院/日間照護不計入。",
+    "code": "HOSPITALIZATION_DAYS",
+    "display_name": "住院日數",
+    "base_definition": "「住院日數」係指按被保險人同一次「住院」之實際「住院日數」 （含住院及出院當日）定之。若被保險人出院後，又於同一日入院診療時，該日不得重覆計入「住院日數」 。被保險人如僅係日間住（留）院/日間照護，不計入「住院日數」 。",
+    "parameter": {},
+    "synonym_map": [],
+    "level": "BASE"
+  },
+  {
+    "type": "名詞定義",
+    "description": "符合健保支付標準特定章節，並考量醫療技術進步之手術。",
+    "code": "SURGERY",
+    "display_name": "手術",
+    "base_definition": "係指符合中央衛生主管機關最新公布之全民健康保險醫療服務給付項目及支付標準第二部第二章第七節或第三部第三章第四節第三項列舉之手術，不包括該支付標準其他部、章或節內所列舉者，但因應醫療技術之進步所產生且經專科醫師認定為前述第二部第二章第七節或第三部第三章第四節第三項所列舉之手術項目，不在此限。如全民健康保險醫療服務給付項目及支付標準如有變更或停止適用者，本款前段內容亦將隨之變更或停止適用。前述「手術」所包含項目，可於中央衛生主管機關網站之「全民健康保險醫療服務給付項目及支付標準」網頁查詢。",
+    "parameter": {},
+    "synonym_map": [],
+    "level": "BASE"
+  },
+  {
+    "type": "名詞定義",
+    "description": "依全民健康保險法負責健保業務的保險人。",
+    "code": "NHI_INSURER",
+    "display_name": "全民健康保險保險人",
+    "base_definition": "係指依全民健康保險法負責全民健康保險相關業務的保險人。",
+    "parameter": {},
+    "synonym_map": [],
+    "level": "BASE"
+  },
+  {
+    "type": "名詞定義",
+    "description": "因同疾病或傷害，出院後14日內於同醫院再次住院，視為一次住院。",
+    "code": "SAME_HOSPITALIZATION",
+    "display_name": "同一次住院",
+    "base_definition": "係指被保險人於本契約有效期間，因同一疾病或傷害，或因此引起之併發症，於出院後十四 日內於同一醫院再次住院時，其各種保險金給付合計額，視為一次住院辦理。倘被保險人係於本契約有效期間屆 滿後出院者，本公司就再次住院部分不予給付保險金。",
+    "parameter": {},
+    "synonym_map": [],
+    "level": "BASE"
+  },
+  {
+    "type": "名詞定義",
+    "description": "經中央衛生主管機關評定為區域醫院的醫院。",
+    "code": "REGIONAL_HOSPITAL",
+    "display_name": "區域醫院",
+    "base_definition": "係指經中央衛生主管機關辦理醫院評鑑評定為區域醫院之醫院。",
+    "parameter": {},
+    "synonym_map": [],
+    "level": "BASE"
+  },
+  {
+    "type": "名詞定義",
+    "description": "被保險人經專科醫師診斷，依現有醫療技術無法治癒且平均存活期在六個月以下。",
+    "code": "TERMINAL_ILLNESS",
+    "display_name": "生命末期",
+    "base_definition": "係指被保險人於本契約有效期間內，經醫院專科醫師診斷認定依目前醫療技術無法治癒且根據醫學及臨床經驗，其平均存活期在六個月以下者。",
+    "parameter": {},
+    "synonym_map": [],
+    "level": "BASE"
+  },
+  {
+    "type": "名詞定義",
+    "description": "使用專一性藥物，阻斷癌細胞生長擴張，促進癌細胞死亡的治療方式。",
+    "code": "TARGETED_THERAPY",
+    "display_name": "標靶治療",
+    "base_definition": "係指使用專一性的藥物，針對癌細胞特有的表面標記或訊息傳遞途徑，以小分子化合物或單株抗體加以阻斷，抑制腫瘤細胞生長或擴張，促進癌細胞死亡的一種治療方式。",
+    "level": "BASE",
+    "classification": "EXISTING_MATCH",
+    "parameter": {},
+    "synonym_map": []
+  },
+  {
+    "type": "名詞定義",
+    "description": "合格醫事人員作成，包含腰圍、身高、體重、血壓、血糖、血脂肪等數值的檢查報告。",
+    "code": "HEALTH_CHECKUP_REPORT",
+    "display_name": "健康檢查報告",
+    "base_definition": "係指經中央衛生主管機關核准登記並領有開業執照之醫療機構或醫事檢驗所之合格醫事人員所作成，至少包含被保險人腰圍、身高、體重、血壓、血糖、血脂肪 ( 包括膽固醇及三酸甘油脂 ) 等數值之檢查報告。",
+    "level": "BASE",
+    "parameter": {},
+    "synonym_map": []
+  },
+  {
+    "type": "名詞定義",
+    "description": "醫療費用未經健保給付，由被保險人全額自行負擔。",
+    "code": "NOT_COVERED_BY_NHI",
+    "display_name": "未經全民健康保險給付",
+    "base_definition": "係指被保險人不以全民健康保險之保險對象身分診療或前往不具有全民健康保險之醫院診療者，致該項醫療費用未經全民健康保險給付，亦即由被保險人全額自行負擔。",
+    "parameter": {},
+    "synonym_map": [],
+    "level": "BASE"
+  },
+  {
+    "type": "名詞定義",
+    "description": "醫療費用全部由健保給付，被保險人無須支付部分負擔。",
+    "code": "FULLY_COVERED_BY_NHI",
+    "display_name": "全部由全民健康保險給付",
+    "base_definition": "係指被保險人以全民健康保險之保險對象身分診療且該項醫療費用全部由全民健康保險給付，亦即被保險人無須支付任何部分負擔。",
+    "parameter": {},
+    "synonym_map": [],
+    "level": "BASE"
+  }
+]

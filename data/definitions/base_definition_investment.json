@@ -1,0 +1,156 @@
+[
+  {
+    "type": "名詞定義",
+    "code": "SUM_INSURED",
+    "display_name": "保險金額",
+    "base_definition": "係指本公司於被保險人身故或完全失能所給付之金額。該金額以淨危險保額與保單帳戶價值兩者之總和給付，其中，淨危險保額及保單帳戶價值係以受益人檢齊申請身故、完全失能保險金之所須文件並送達本公司之次○個資產評價日的保單帳戶價值計算。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "指保險公司在被保險人身故或完全失能時給付的金額，計算方式為淨危險保額與保單帳戶價值的總和。",
+    "classification": "EXISTING_MATCH",
+    "level": "BASE"
+  },
+  {
+    "type": "名詞定義",
+    "code": "NET_RISK_SUM_INSURED",
+    "display_name": "淨危險保額",
+    "base_definition": "係指依要保人在訂立本契約時選擇之保險型態，按下列方式所計算之金額：一 ( ) 甲型：基本保額扣除保險金扣除額後，再扣除保單帳戶價值之餘額，但不得為負值。( 二 ) 戊型：淨危險保額為下列三者之最大者。1. 基本保額扣除保險金扣除額後，再扣除保單帳戶價值之餘額。2. 本契約累積所繳保險費扣除累積部分提領保單帳戶價值後，再扣除保單帳戶價值之餘額。3. 保單帳戶價值乘以保價乘數再扣除保單帳戶價值。訂立本契約時，以受監護宣告尚未撤銷者為被保險人，僅限投保甲型。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "依保險型態計算的金額，為基本保額扣除保險金扣除額及保單帳戶價值後的餘額，或特定情況下的最大值。",
+    "classification": "EXISTING_MATCH",
+    "level": "BASE"
+  },
+  {
+    "type": "名詞定義",
+    "code": "EXCESS_PREMIUM",
+    "display_name": "超額保險費",
+    "base_definition": "係指由要保人申請並經本公司同意，為增加其保單帳戶價值，於目標保險費以外所繳付之保險費。超額保險費得以定期或不定期方式繳交，要保人應先繳足當期及累計未繳之目標保險費後，始得計入超額保險費。（上開繳交超額保險費條件得由各公司自行修正約定）。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "指要保人為增加保單帳戶價值，在目標保險費之外額外繳付的保險費，可定期或不定期繳交，但需先繳足目標保險費。",
+    "classification": "EXISTING_MATCH",
+    "level": "BASE"
+  },
+  {
+    "type": "名詞定義",
+    "code": "POLICY_MANAGEMENT_FEE",
+    "display_name": "保單管理費",
+    "base_definition": "係指為維持本契約每月管理所產生且自保單帳戶價值中扣除之費用，並依第十一條約定時點扣除，其費用額度如附表○。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "為維持契約每月管理而從保單帳戶價值中扣除的費用。",
+    "classification": "EXISTING_MATCH",
+    "level": "BASE"
+  },
+  {
+    "type": "名詞定義",
+    "description": "保單管理費與保險成本的總和。",
+    "code": "MONTHLY_DEDUCTION_AMOUNT",
+    "display_name": "每月扣除額",
+    "base_definition": "係指下列各項金額之和：一 ( ) 保單管理費。( 二 ) 保險成本。",
+    "classification": "EXISTING_MATCH",
+    "level": "BASE",
+    "parameter": {},
+    "synonym_map": []
+  },
+  {
+    "type": "名詞定義",
+    "code": "PARTIAL_WITHDRAWAL_FEE",
+    "display_name": "部分提領費用",
+    "base_definition": "係指本公司依本契約第二十條約定於要保人部分提領保單帳戶價值時，自給付金額中所收取之費用。其金額按附表○所載之方式計算。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "要保人部分提領保單帳戶價值時，保險公司從給付金額中收取的費用。",
+    "classification": "EXISTING_MATCH",
+    "level": "BASE"
+  },
+  {
+    "type": "名詞定義",
+    "code": "INITIAL_INVESTMENT_ALLOCATION_AMOUNT",
+    "display_name": "首次投資配置金額",
+    "base_definition": "係指依下列順序計算之金額：(一)要保人所交付之第一期保險費扣除保費費用後之餘額；(二)加上要保人於首次投資配置日前，再繳交之目標保險費及超額保險費扣除保費費用後之餘額；(三)扣除首次投資配置日前，本契約應扣除之保險成本及保單管理費（由各公司視實際情況訂定）；(四)加上按前三目之每日淨額，依○○○○之利率，逐日以日單利計算至首次投資配置日之前一日止之利息。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "首次將保險費投入投資標的之金額，計算方式包含首期及後續繳交保費扣除費用，並加計利息。",
+    "classification": "EXISTING_MATCH",
+    "level": "BASE"
+  },
+  {
+    "type": "名詞定義",
+    "code": "INITIAL_INVESTMENT_ALLOCATION_DATE",
+    "display_name": "首次投資配置日",
+    "base_definition": "係指根據第四條約定之契約撤銷期限屆滿之後的第○個資產評價日。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "契約撤銷期限屆滿後的特定資產評價日。",
+    "classification": "EXISTING_MATCH",
+    "level": "BASE"
+  },
+  {
+    "type": "名詞定義",
+    "code": "INVESTMENT_OPTION",
+    "display_name": "投資標的",
+    "base_definition": "係指本契約提供要保人選擇以累積保單帳戶價值之投資工具，其內容如附表○。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "契約提供要保人選擇用來累積保單帳戶價值的投資工具。",
+    "classification": "EXISTING_MATCH",
+    "level": "BASE"
+  },
+  {
+    "type": "名詞定義",
+    "code": "ASSET_VALUATION_DATE",
+    "display_name": "資產評價日",
+    "base_definition": "係指投資標的報價市場報價或證券交易所營業之日期，且為我國境內銀行及本公司之營業日。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "投資標的報價市場或證券交易所營業，且為我國境內銀行及保險公司營業的日期。",
+    "classification": "EXISTING_MATCH",
+    "level": "BASE"
+  },
+  {
+    "type": "名詞定義",
+    "code": "INVESTMENT_OPTION_UNIT_NET_VALUE",
+    "display_name": "投資標的單位淨值",
+    "base_definition": "係指投資標的於資產評價日實際交易所採用之每單位「淨資產價值或市場價值」。本契約投資標的單位淨值將公告於本公司網站。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "投資標的在資產評價日實際交易時採用的每單位淨資產價值或市場價值。",
+    "classification": "EXISTING_MATCH",
+    "level": "BASE"
+  },
+  {
+    "type": "名詞定義",
+    "code": "INVESTMENT_OPTION_VALUE",
+    "display_name": "投資標的價值",
+    "base_definition": "係指以原投資標的計價幣別作為投資標的之單位基準，在本契約年金累積期間內，其價值係依本契約項下各該投資標的之單位數乘以其投資標的單位淨值計算所得之值。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "在年金累積期間內，以原計價幣別為基準，依投資標的單位數乘以單位淨值計算所得的價值。",
+    "classification": "EXISTING_MATCH",
+    "level": "BASE"
+  },
+  {
+    "type": "名詞定義",
+    "code": "POLICY_ACCOUNT_VALUE",
+    "display_name": "保單帳戶價值",
+    "base_definition": "係指以新臺幣為單位基準，在本契約年金累積期間內，其價值係依本契約所有投資標的之投資標的價值總和加上尚未投入投資標的之金額；但於首次投資配置日前，係指依第十二款方式計算至計算日之金額。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "在年金累積期間內，以新臺幣為基準，所有投資標的價值總和加上尚未投入投資標的之金額；首次投資配置日前則依特定方式計算。",
+    "classification": "EXISTING_MATCH",
+    "level": "BASE"
+  },
+  {
+    "type": "名詞定義",
+    "code": "PREMIUM_YEAR",
+    "display_name": "保險費年度",
+    "base_definition": "係指要保人繳付目標保險費之保單年度。惟若歷保單年度有目標保險費未繳足之情形者，應依序補齊之，受遞補之保單年度為該筆目標保險費之保險費年度。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "指要保人繳付目標保險費的保單年度，若有未繳足情況，補齊後該筆保費所屬的年度。",
+    "classification": "EXISTING_MATCH",
+    "level": "BASE"
+  }
+]

@@ -34,6 +34,7 @@
 - **Agent 3: Logic Parser (邏輯解析員)**: 深入解析條款中的數學邏輯、給付倍數與計算公式。
 - **Agent 4: Param Builder (參數建構員)**: 根據解析出的邏輯，提取並正規化所有輸入參數（如年齡、職業等級）。
 - **Agent 5: Lookup Modeler (查表模型建構員)**: 將參數與邏輯封裝成可供程式呼叫的查表模型或計算邏輯。
+- [欄位對照](../src/pipeline/models.py)
 
 ### 2. 管理與提取工具
 - **`manager.py`**: 提供用於合併、推播與管理 `base_{definition/claim_items}.json` 與產品專屬的定義檔。

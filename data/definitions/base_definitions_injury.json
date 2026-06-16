@@ -1,0 +1,54 @@
+[
+  {
+    "type": "名詞定義",
+    "code": "INJURY",
+    "display_name": "傷害",
+    "base_definition": "本契約所稱「傷害」係指被保險人於本契約有效期間內，遭受意外傷害事故，因而蒙受之傷害。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "被保險人於契約有效期間內，因意外傷害事故所蒙受的傷害。",
+    "classification": "EXISTING_MATCH",
+    "level": "BASE"
+  },
+  {
+    "type": "名詞定義",
+    "code": "ACCIDENTAL_INJURY_EVENT",
+    "display_name": "意外傷害事故",
+    "base_definition": "本契約所稱「意外傷害事故」係指非由疾病引起之外來突發事故。",
+    "parameter": {},
+    "synonym_map": [],
+    "description": "非由疾病引起的外來突發事故。",
+    "classification": "EXISTING_MATCH",
+    "level": "BASE"
+  },
+  {
+    "type": "名詞定義",
+    "description": "搭乘大眾運輸交通工具的乘客，不含工作人員。",
+    "code": "PASSENGER",
+    "display_name": "乘客",
+    "base_definition": "係指搭乘大眾運輸交通工具之乘客，不含配置在該大眾運輸交通工具上之工作人員。",
+    "parameter": {},
+    "synonym_map": [],
+    "level": "BASE"
+  },
+  {
+    "type": "名詞定義",
+    "description": "被保險人於等待期後經醫師診斷罹患特定疾病。",
+    "code": "CRITICAL_ILLNESS",
+    "display_name": "重大疾病",
+    "base_definition": "係指被保險人自本附約生效日起持續有效三十日 ( 不含 ) 以後 ( 但本款所稱之「癌症 ( 重度 ) 」則為 本附約生效日起持續有效九十日 ( 不含 ) 以後 ) 或自復效日起，經醫院醫師初次診斷確定罹患下列疾病之一者。但 被保險人因遭受意外傷害事故所致者，不受前述三十日或九十日等待期間之限制：",
+    "parameter": {},
+    "synonym_map": [],
+    "level": "BASE"
+  },
+  {
+    "type": "名詞定義",
+    "description": "針對特定健康問題或疾病提供保障的項目。",
+    "code": "SPECIFIC_ILLNESS_INJURY",
+    "display_name": "特定傷病",
+    "base_definition": "針對特定健康問題或疾病提供保障的項目。",
+    "parameter": {},
+    "synonym_map": [],
+    "level": "BASE"
+  }
+]

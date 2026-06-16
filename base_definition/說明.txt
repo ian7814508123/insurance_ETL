@@ -1,0 +1,22 @@
+目前已有 基本(層)名詞定義(這是所有保險公司保單商品的原始定義)
+接下來要使用seed_generator產生更多商品種類的理賠項目
+
+---
+輸出的json(先命名為definition.json)內容大致如下:
+```json
+{
+ {
+  "type": "理賠項目定義"
+  "code": "名詞代號 例如.POLICY_HOLDER",
+  "display_name": "條款書上所顯示的內容 例如.要保人"
+  "base_definition": "其名詞定義",
+  "parameter":{" "," "," "...} //定義中可能會出現一些條件或參數,例如.被保險人達{一百一十}歲,因為數值並非泛用所有商品,所以應抽離並參數化,以供未來相似比對
+  "synonym_map":{"","","",""...} //所有與其同義的display_name,未來如果在map找到該詞,直接映射到code、display_name
+ },
+ {
+  ...
+ }
+}
+
+目的:
+seed_generator 呼叫大語言模型循序讀取檔案與base_definitions.json (獲得名詞定義與column) 與 {示範條款.txt} (基本理賠項目) , 逐漸完整base_claim_items.json 的 定義與語意對齊
